@@ -1,5 +1,8 @@
 # Welcome to the Project Dynamic CDI
 
+Here we will start with an more dynamic version of the default cdi implementations.
+This project is based on the project ***ProxyBuilder***.
+
 [![Build Status](https://travis-ci.org/RapidPM/dynamic-cdi.svg?branch=develop)](https://travis-ci.org/RapidPM/dynamic-cdi)
 
 branch:
