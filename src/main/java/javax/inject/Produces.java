@@ -14,42 +14,25 @@
  *    limitations under the License.
  */
 
-package org.rapidpm.module.iot.cdi;
+package javax.inject;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import javax.inject.Inject;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
+ *
+ * Used to identify that a Producer will be used.
+ *
+ * Only one for each interface is allowed with the combination
+ *
+ * at Inject at Produced Interface
+ *
  * Created by Sven Ruppert on 06.12.2014.
  */
-public class DITest001 {
-
-  @Test
-  public void testInjection001() throws Exception {
-    Service service = new Service();
-    new DI().activateCDI(service);
-
-    Assert.assertNotNull(service.subService);
-
-    Assert.assertEquals("SubService test", service.work("test"));
-
-  }
-
-
-
-  public static class Service{
-    @Inject SubService subService;
-    public String work(String txt){
-      return subService.work(txt);
-    }
-  }
-
-  public static class SubService{
-    public String work(final String txt){
-      return "SubService " + txt;
-    }
-  }
-
+@Qualifier
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Produces {
+  String value() default "";
 }

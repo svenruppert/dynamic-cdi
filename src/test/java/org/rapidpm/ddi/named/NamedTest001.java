@@ -14,92 +14,52 @@
  *    limitations under the License.
  */
 
-package org.rapidpm.module.iot.cdi;
+package org.rapidpm.ddi.named;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.rapidpm.ddi.DI;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 /**
- * Created by Sven Ruppert on 07.12.2014.
+ * Created by Sven Ruppert on 06.12.2014.
  */
-public class NamedBaseTest002 {
-  @Test
+public class NamedTest001 {
+
+  @Test @Ignore
   public void testInjection001() throws Exception {
     BusinessModule businessModule = new BusinessModule();
 
-    final DI di = new DI();
-
-
-    di.activateCDI(businessModule);
+    new DI().activateDI(businessModule);
     Assert.assertNotNull(businessModule.service);
+    Assert.assertTrue(((ServiceImpl) businessModule.service).postconstructed);
 
-    //Exception da Multiplizitaeten
-
-    Assert.assertTrue(businessModule.service.isPostconstructed());
-
-    Assert.assertNotNull(businessModule.service.getSubService());
-    Assert.assertTrue(businessModule.service.getSubService().postconstructed);
+    Assert.assertNotNull(((ServiceImpl) businessModule.service).subService);
+    Assert.assertTrue(((ServiceImpl) businessModule.service).subService.postconstructed);
 
     Assert.assertEquals("SubSubService test", businessModule.work("test"));
   }
 
   public static class BusinessModule{
-
     @Inject Service service;
-
     public String work(String txt){
       return service.work(txt);
     }
   }
 
-
-  public static interface Service{
-    public String work(String txt);
-    public SubService getSubService();
-    public boolean isPostconstructed();
+  public interface Service{
+    String work(String txt);
   }
 
-  public static class ServiceImplA implements Service {
+  public static class ServiceImpl implements Service {
     @Inject SubService subService;
     public String work(String txt){
       return subService.work(txt);
     }
-
-    @Override
-    public SubService getSubService() {
-      return subService;
-    }
-
     boolean postconstructed = false;
-
-    public boolean isPostconstructed() {
-      return postconstructed;
-    }
-
-    @PostConstruct
-    public void postconstruct(){
-      postconstructed = true;
-    }
-  }
-  public static class ServiceImplB implements Service {
-    @Inject SubService subService;
-    public String work(String txt){
-      return subService.work(txt);
-    }
-
-    @Override
-    public SubService getSubService() {
-      return subService;
-    }
-
-    boolean postconstructed = false;
-    public boolean isPostconstructed() {
-      return postconstructed;
-    }
-
     @PostConstruct
     public void postconstruct(){
       postconstructed = true;
@@ -112,18 +72,15 @@ public class NamedBaseTest002 {
       return subSubService.work(txt);
     }
     boolean postconstructed = false;
-    public boolean isPostconstructed() {
-      return postconstructed;
-    }
     @PostConstruct
     public void postconstruct(){
       postconstructed = true;
     }
   }
-
   public static class SubSubService{
     public String work(final String txt){
       return "SubSubService " + txt;
     }
   }
+
 }

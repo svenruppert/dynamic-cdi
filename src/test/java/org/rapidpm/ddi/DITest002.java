@@ -14,29 +14,28 @@
  *    limitations under the License.
  */
 
-package org.rapidpm.module.iot.cdi;
+package org.rapidpm.ddi;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.rapidpm.ddi.DI;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 /**
  * Created by Sven Ruppert on 06.12.2014.
  */
-public class DITest003 {
+public class DITest002 {
 
   @Test
   public void testInjection001() throws Exception {
     Service service = new Service();
-
-    Assert.assertFalse(service.postconstructed);
-    new DI().activateCDI(service);
-    Assert.assertTrue(service.postconstructed);
+    new DI().activateDI(service);
 
     Assert.assertNotNull(service.subService);
-    Assert.assertEquals("SubService test", service.work("test"));
+    Assert.assertNotNull(service.subService.subSubService);
+
+    Assert.assertEquals("SubSubService test", service.work("test"));
 
   }
 
@@ -45,18 +44,17 @@ public class DITest003 {
     public String work(String txt){
       return subService.work(txt);
     }
-
-    boolean postconstructed = false;
-    @PostConstruct
-    public void postconstruct(){
-      postconstructed = true;
-    }
   }
 
   public static class SubService{
+    @Inject SubSubService subSubService;
     public String work(final String txt){
-      return "SubService " + txt;
+      return subSubService.work(txt);
     }
   }
-
+  public static class SubSubService{
+    public String work(final String txt){
+      return "SubSubService " + txt;
+    }
+  }
 }

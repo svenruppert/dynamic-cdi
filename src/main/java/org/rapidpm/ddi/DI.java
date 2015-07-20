@@ -14,12 +14,14 @@
  *    limitations under the License.
  */
 
-package org.rapidpm.module.iot.cdi;
+package org.rapidpm.ddi;
 
+
+import org.jetbrains.annotations.Nullable;
+import org.rapidpm.proxybuilder.ProxyBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +37,19 @@ import java.util.Set;
 public class DI {
 
 
-  public <T> void activateCDI(T instance){
+  public static void bootstrap() {
+    //hole alle Felder die mit einem @Inject versehen sind.
+    //pruefe ob es sich um ein Interface handelt
+    //pruefe ob es nur einen Producer / eine Implementierung  dazu gibt
+    // -- liste Multiplizitäten
+
+
+
+
+  }
+
+
+  public <T> void activateDI(T instance) {
     injectAttributes(instance);
     initialize(instance);
     //register at new Scope ?
@@ -56,16 +70,29 @@ public class DI {
     for (final Field field : fields) {
       if (field.isAnnotationPresent(Inject.class)) {
         Class<?> type = field.getType();
-        final String key = field.isAnnotationPresent(Named.class) ? field.getAnnotation(Named.class).value() : field.getName();
-        System.out.println("key = " + key);
+
+        T value = null;
+        if (field.isAnnotationPresent(Proxy.class)){
+          final Proxy annotation = field.getAnnotation(Proxy.class);
+          final boolean virtual = annotation.virtual();
+
+//          if (virtual){
+//            value = createProxy(interfaceClazz, impleClazz, cdiBuilder);
+//          }
+
+//          ProxyBuilder.createBuilder(clazz, ).
+        } else {
+
+
+        }
+
         //check Scope ....
 //        Object value = scopes.getProperty(clazz, key);
-        T value = null;
-        if (value == null && !type.isPrimitive()) {
+        if (!type.isPrimitive()) {
           value = instantiate(type);
         }
-        if(value != null){
-          activateCDI(value); //rekursiver abstieg
+        if (value != null) {
+          activateDI(value); //rekursiver abstieg
         }
         if (value != null) {
           injectIntoField(field, instance, value);
@@ -76,95 +103,39 @@ public class DI {
 
 
   public <T> T instantiate(Class clazz) {
-  //check scope -> Singleton
-  //check scope -> Prototype
-  //check scope -> ???
+    //check scope -> Singleton
+    //check scope -> ???
 
-//    T newInstance = null;
-//    if(clazz.isInterface()){
-//      //  hole alle implementierungen
-//      //transient
-//      Reflections reflections = new Reflections(new ConfigurationBuilder()
-//          .setUrls(asList(ClasspathHelper.forClass(clazz)))
-////          .filterInputsBy(TestModelFilter)
-//          .setScanners(
-//              new SubTypesScanner(false),
-//              new TypeAnnotationsScanner(),
-//              new FieldAnnotationsScanner(),
-//              new MethodAnnotationsScanner(),
-//              new MethodParameterScanner(),
-//              new MethodParameterNamesScanner(),
-//              new MemberUsageScanner()));
-//      final Set<Class<T>> subTypesOf = reflections.getSubTypesOf(clazz);
-//      //Multiplizitaeten   -> Proxy gegen NPE ?
-//      System.out.println("subTypesOf = " + subTypesOf);
-//
-//      for (final Class<T> t : subTypesOf) {
-//        try {
-//          newInstance =  t.newInstance();
-//          return newInstance;
-//        } catch (InstantiationException | IllegalAccessException e) {
-//          e.printStackTrace();
-//        }
-//      }
-//
-//    } else{
-//      try {
-//        newInstance = (T) clazz.newInstance();
-//        return newInstance;
-//      } catch (InstantiationException | IllegalAccessException e) {
-//        e.printStackTrace();
-//      }
-//    }
-//    return null;
-//
-//    Object product = modelsAndServices.get(clazz);
-//    if (product == null) {
-//      Object instance = instanceSupplier.instantiate(clazz);
-//      product = instanceSupplier.isInjectionAware() ? instance : injectAndInitialize(instance);
-//      if (!instanceSupplier.isScopeAware()) {
-//        modelsAndServices.putIfAbsent(clazz, product);
-//      }
-//    }
-//    return product;
+    T newInstance = null;
+    if (clazz.isInterface()) {
+      final Set subTypesOf = ReflectionsSingleton.REFLECTIONS.getSubTypesOf(clazz);
+      if (subTypesOf.isEmpty()) {
+        throw new DDIModelException("could not find an implementation for " + clazz);
+      } else if(subTypesOf.size() == 1){
+        newInstance = createNewInstance((Class) subTypesOf.toArray()[0]);
+      } else {
+        throw new DDIModelException("interface with multiple implementations= " + clazz);
+      }
+    } else {
+      newInstance = createNewInstance(clazz);
+    }
 
-    //TODO first Test Implementation - must be removed
+
+    return newInstance;
+  }
+
+  @Nullable
+  private <T> T createNewInstance(final Class clazz) {
+    System.out.println("newInstance for clazz = " + clazz);
+    final T newInstance;
     try {
-      return (T) clazz.newInstance();
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
+      newInstance = (T) clazz.newInstance();
+      return newInstance;
+    } catch (InstantiationException | IllegalAccessException e) {
       e.printStackTrace();
     }
     return null;
   }
-
-//  private InstanceProvider getDefaultInstanceSupplier() {
-//    return (c) -> {
-//      if (c.isInterface()) {
-//        // For an interface default behavior is to delegate to standard JRE loading mechanism ServiceLoader
-//        Iterator itProviders = ServiceLoader.load(c).iterator();
-//        if (itProviders.hasNext()) {
-//          return itProviders.next();
-//        }
-//        throw new IllegalStateException("Cannot, via ServiceLoader, instanciate an object from interface: " + c);
-//      } else {
-//        try {
-//          // It's a class, let's try to instantiate it directly
-//          return c.newInstance();
-//        } catch (InstantiationException | IllegalAccessException ex) {
-//          throw new IllegalStateException("Cannot instantiate: " + c, ex);
-//        }
-//      }
-//    };
-//  }
-
-
-//  private <T> Supplier<T> createOrGetSupplier(){
-//    return () -> (T) new Object();
-//  }
-
-
 
   private static void injectIntoField(final Field field, final Object instance, final Object target) {
     AccessController.doPrivileged((PrivilegedAction) () -> {
@@ -187,17 +158,13 @@ public class DI {
     );
   }
 
-//  private static boolean isNotPrimitiveOrString(Class<?> type) {
-//    return !type.isPrimitive() && !type.isAssignableFrom(String.class);
-//  }
   private boolean isNotPrimitive(Class<?> type) {
     return !type.isPrimitive();
   }
 
 
-
-  static void invokeMethodWithAnnotation(Class clazz, final Object instance,
-                                         final Class<? extends Annotation> annotationClass) throws IllegalStateException, SecurityException {
+  private static void invokeMethodWithAnnotation(Class clazz, final Object instance,
+                                                 final Class<? extends Annotation> annotationClass) throws IllegalStateException, SecurityException {
     Method[] declaredMethods = clazz.getDeclaredMethods();
     for (final Method method : declaredMethods) {
       if (method.isAnnotationPresent(annotationClass)) {
