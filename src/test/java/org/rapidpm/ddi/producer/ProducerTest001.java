@@ -1,32 +1,34 @@
-package org.rapidpm.ddi.named;
+package org.rapidpm.ddi.producer;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.Proxy;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Produces;
 
 /**
- * Created by svenruppert on 14.07.15.
+ * Created by svenruppert on 27.07.15.
  */
-public class NamedTest003 {
+public class ProducerTest001 {
+
 
   @Test
-  public void testInjection001() throws Exception {
-    BusinessModule businessModule = new BusinessModule();
+  public void testProducer001() throws Exception {
 
+    final BusinessModule businessModule = new BusinessModule();
     DI.getInstance().activateDI(businessModule);
-    Assert.assertNotNull(businessModule.service);
-    Assert.assertTrue(businessModule.service.isPostconstructed());
 
-    Assert.assertNotNull(businessModule.service.getSubService());
-    Assert.assertTrue(businessModule.service.getSubService().postconstructed);
 
-    Assert.assertEquals("SubSubService test", businessModule.work("test"));
+
+
+
+
+
   }
+
+
+
+
 
 
 
@@ -57,7 +59,6 @@ public class NamedTest003 {
     }
 
     boolean postconstructed = false;
-
     public boolean isPostconstructed() {
       return postconstructed;
     }
@@ -68,29 +69,28 @@ public class NamedTest003 {
     }
   }
 
-//  public static class ServiceImplB implements Service {
-//    @Inject SubService subService;
-//
-//    public String work(String txt) {
-//      return subService.work(txt);
-//    }
-//
-//    @Override
-//    public SubService getSubService() {
-//      return subService;
-//    }
-//
-//    boolean postconstructed = false;
-//
-//    public boolean isPostconstructed() {
-//      return postconstructed;
-//    }
-//
-//    @PostConstruct
-//    public void postconstruct() {
-//      postconstructed = true;
-//    }
-//  }
+  public static class ServiceImplB implements Service {
+    @Inject SubService subService;
+
+    public String work(String txt) {
+      return subService.work(txt);
+    }
+
+    @Override
+    public SubService getSubService() {
+      return subService;
+    }
+
+    boolean postconstructed = false;
+    public boolean isPostconstructed() {
+      return postconstructed;
+    }
+
+    @PostConstruct
+    public void postconstruct() {
+      postconstructed = true;
+    }
+  }
 
   public static class SubService {
     @Inject SubSubService subSubService;
@@ -116,4 +116,6 @@ public class NamedTest003 {
       return "SubSubService " + txt;
     }
   }
+
+
 }

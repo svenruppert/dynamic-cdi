@@ -29,11 +29,11 @@ import javax.inject.Inject;
  */
 public class NamedTest001 {
 
-  @Test @Ignore
+  @Test
   public void testInjection001() throws Exception {
     BusinessModule businessModule = new BusinessModule();
 
-    new DI().activateDI(businessModule);
+    DI.getInstance().activateDI(businessModule);
     Assert.assertNotNull(businessModule.service);
     Assert.assertTrue(((ServiceImpl) businessModule.service).postconstructed);
 

@@ -16,9 +16,8 @@
 
 package org.rapidpm.ddi.named;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.rapidpm.ddi.DDIModelException;
+import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.DI;
 
 import javax.annotation.PostConstruct;
@@ -31,19 +30,14 @@ import javax.inject.Inject;
  */
 public class NamedTest002 {
 
-
-
   @Test(expected = DDIModelException.class)
   public void testInjection001() throws Exception {
     BusinessModule businessModule = new BusinessModule();
-    final DI di = new DI();
-    di.activateDI(businessModule);
+    DI.getInstance().activateDI(businessModule);
   }
 
   public static class BusinessModule {
-
     @Inject Service service;
-
     public String work(String txt) {
       return service.work(txt);
     }
@@ -52,9 +46,7 @@ public class NamedTest002 {
 
   public interface Service {
     String work(String txt);
-
     SubService getSubService();
-
     boolean isPostconstructed();
   }
 

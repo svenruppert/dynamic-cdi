@@ -14,21 +14,35 @@ import java.util.Map;
  */
 public class ProxyTest001 {
 
-
-
-  private final Map<String, String> infos = new HashMap<>();
-
   @Test
   public void testProxy001() throws Exception {
-    final DI di = new DI();
+    final BusinessModulVirtual instance = new BusinessModulVirtual();
+    Assert.assertNotNull(instance);
+    Assert.assertNull(instance.service);
+
+    DI.getInstance().activateDI(instance);
+
+    Assert.assertNotNull(instance.service);
+    Assert.assertTrue(java.lang.reflect.Proxy.isProxyClass(instance.service.getClass()));
+
+    final String hello = instance.service.doWork("Hello");
+    Assert.assertNotNull(hello);
+    Assert.assertEquals("ServiceA_Hello", hello);
+  }
+
+  @Test
+  public void testProxy002() throws Exception {
+
 
     final BusinessModul instance = new BusinessModul();
     Assert.assertNotNull(instance);
     Assert.assertNull(instance.service);
 
-    di.activateDI(instance);
+    DI.getInstance().activateDI(instance);
 
     Assert.assertNotNull(instance.service);
+    Assert.assertFalse(java.lang.reflect.Proxy.isProxyClass(instance.service.getClass()));
+
     final String hello = instance.service.doWork("Hello");
     Assert.assertNotNull(hello);
     Assert.assertEquals("ServiceA_Hello", hello);
@@ -38,13 +52,20 @@ public class ProxyTest001 {
 
 
 
-  public static class BusinessModul{
-    @Inject @Proxy() Service service;
-
+  public static class BusinessModulVirtual{
+    @Inject @Proxy(virtual = true) Service service;
     public String work(String str){
       return service.doWork(str);
     }
   }
+
+  public static class BusinessModul{
+    @Inject @Proxy(virtual = false) Service service;
+    public String work(String str){
+      return service.doWork(str);
+    }
+  }
+
 
 
   public interface Service {

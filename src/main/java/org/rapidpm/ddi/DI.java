@@ -18,7 +18,12 @@ package org.rapidpm.ddi;
 
 
 import org.jetbrains.annotations.Nullable;
-import org.rapidpm.proxybuilder.ProxyBuilder;
+import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
+import org.rapidpm.proxybuilder.VirtualProxyBuilder;
+import org.rapidpm.proxybuilder.type.virtual.Concurrency;
+import org.rapidpm.proxybuilder.type.virtual.ProxyGenerator;
+import org.rapidpm.proxybuilder.type.virtual.ProxyType;
+import org.rapidpm.proxybuilder.type.virtual.dynamic.ServiceStrategyFactoryNotThreadSafe;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -28,7 +33,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.Set;
 
 
 /**
@@ -36,86 +40,122 @@ import java.util.Set;
  */
 public class DI {
 
+  private static final DI instance = new DI();
+
+  public static DI getInstance() {
+    return instance;
+  }
 
   public static void bootstrap() {
     //hole alle Felder die mit einem @Inject versehen sind.
     //pruefe ob es sich um ein Interface handelt
     //pruefe ob es nur einen Producer / eine Implementierung  dazu gibt
     // -- liste Multiplizitäten
-
-
-
-
   }
 
+  private DI() {
+  }
 
-  public <T> void activateDI(T instance) {
-    injectAttributes(instance);
+  public synchronized <T> void activateDI(T instance) {
+    injectAttributes(instance);//ab hier proxy moeglich
     initialize(instance);
     //register at new Scope ?
   }
 
-  private <T> void injectAttributes(final T instance) throws SecurityException {
-    final Class<?> clazz = instance.getClass();
-    injectAttributesForClass(clazz, instance);
-    Class<? extends Object> superclass = clazz.getSuperclass();
-    if (superclass != null) {
-      injectAttributesForClass(superclass, instance);
-    }
+  private <T> void injectAttributes(final T rootInstance) throws SecurityException {
+    injectAttributesForClass(rootInstance.getClass(), rootInstance);
   }
 
 
-  private <T> void injectAttributesForClass(Class<?> clazz, T instance) {
-    Field[] fields = clazz.getDeclaredFields();
+  private <T> void injectAttributesForClass(Class targetClass, T rootInstance) {
+    Class<?> superclass = targetClass.getSuperclass();
+    if (superclass != null) {
+      injectAttributesForClass(superclass, rootInstance);
+    }
+
+    Field[] fields = targetClass.getDeclaredFields();
     for (final Field field : fields) {
       if (field.isAnnotationPresent(Inject.class)) {
-        Class<?> type = field.getType();
+        Class type = field.getType();
 
-        T value = null;
-        if (field.isAnnotationPresent(Proxy.class)){
+
+        //if produces present -> switch to producer
+        //TODO timestamp is to early
+        final Class realClass = new ImplementingClassResolver().resolve(type);
+
+
+
+
+        Object value; //Attribute Type for inject
+        if (field.isAnnotationPresent(Proxy.class)) {
           final Proxy annotation = field.getAnnotation(Proxy.class);
+
           final boolean virtual = annotation.virtual();
+          final boolean concurrent = annotation.concurrent();
+          final boolean metrics = annotation.metrics();
+          final boolean secure = annotation.secure(); //woher die Sec Rules?
+          final boolean logging = annotation.logging();
 
-//          if (virtual){
-//            value = createProxy(interfaceClazz, impleClazz, cdiBuilder);
-//          }
+          if (virtual) {
+            //interface , realclass
+            value = ProxyGenerator.newBuilder()
+                .withSubject(type).withRealClass(realClass)
+                .withType(ProxyType.DYNAMIC)
+                .withConcurrency(Concurrency.NONE)
+                .withServiceFactory(new DDIServiceFactory<>(realClass))
+                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
+                .build()
+                .make();
 
-//          ProxyBuilder.createBuilder(clazz, ).
+//            value = ProxyGenerator.make(type, realClass,
+//                Concurrency.NONE, ProxyType.DYNAMIC,
+//                new DDIServiceFactory<>(realClass));
+          } else {
+            value = instantiate(realClass);
+            activateDI(value); //rekursiver abstieg
+          }
+          if (concurrent || metrics || secure || logging){
+            final VirtualProxyBuilder virtualProxyBuilder = VirtualProxyBuilder.createBuilder(type, value);
+            if (metrics) {
+              virtualProxyBuilder.addMetrics();
+            }
+            if (concurrent) {
+              //virtualProxyBuilder.
+            }
+            if (secure) {
+//              virtualProxyBuilder.addSecurityRule(()->{});
+            }
+            if (logging) {
+              //virtualProxyBuilder.addLogging();
+            }
+            value = virtualProxyBuilder.build();
+          }
         } else {
-
-
-        }
-
-        //check Scope ....
-//        Object value = scopes.getProperty(clazz, key);
-        if (!type.isPrimitive()) {
-          value = instantiate(type);
-        }
-        if (value != null) {
+          value = instantiate(realClass);
           activateDI(value); //rekursiver abstieg
         }
+        //check Scope ....
+//        Object value = scopes.getProperty(clazz, key);
+//        if (!type.isPrimitive()) {
+//          value = instantiate(type);
+//        }
+
         if (value != null) {
-          injectIntoField(field, instance, value);
+          injectIntoField(field, rootInstance, value);
         }
       }
     }
   }
 
 
-  public <T> T instantiate(Class clazz) {
+  private <T> T instantiate(Class<T> clazz) {
     //check scope -> Singleton
     //check scope -> ???
 
-    T newInstance = null;
+    T newInstance;
     if (clazz.isInterface()) {
-      final Set subTypesOf = ReflectionsSingleton.REFLECTIONS.getSubTypesOf(clazz);
-      if (subTypesOf.isEmpty()) {
-        throw new DDIModelException("could not find an implementation for " + clazz);
-      } else if(subTypesOf.size() == 1){
-        newInstance = createNewInstance((Class) subTypesOf.toArray()[0]);
-      } else {
-        throw new DDIModelException("interface with multiple implementations= " + clazz);
-      }
+      final Class<T> resolve = new ImplementingClassResolver().resolve(clazz);
+      newInstance = createNewInstance(resolve);
     } else {
       newInstance = createNewInstance(clazz);
     }
@@ -126,7 +166,6 @@ public class DI {
 
   @Nullable
   private <T> T createNewInstance(final Class clazz) {
-    System.out.println("newInstance for clazz = " + clazz);
     final T newInstance;
     try {
       newInstance = (T) clazz.newInstance();
@@ -140,8 +179,8 @@ public class DI {
   private static void injectIntoField(final Field field, final Object instance, final Object target) {
     AccessController.doPrivileged((PrivilegedAction) () -> {
       boolean wasAccessible = field.isAccessible();
+      field.setAccessible(true);
       try {
-        field.setAccessible(true);
         field.set(instance, target);
         return null; // return nothing...
       } catch (IllegalArgumentException | IllegalAccessException ex) {
@@ -153,9 +192,8 @@ public class DI {
   }
 
   private void initialize(Object instance) {
-    Class<? extends Object> clazz = instance.getClass();
-    invokeMethodWithAnnotation(clazz, instance, PostConstruct.class
-    );
+    Class<?> clazz = instance.getClass();
+    invokeMethodWithAnnotation(clazz, instance, PostConstruct.class);
   }
 
   private boolean isNotPrimitive(Class<?> type) {
@@ -164,7 +202,9 @@ public class DI {
 
 
   private static void invokeMethodWithAnnotation(Class clazz, final Object instance,
-                                                 final Class<? extends Annotation> annotationClass) throws IllegalStateException, SecurityException {
+                                                 final Class<? extends Annotation> annotationClass)
+      throws IllegalStateException, SecurityException {
+
     Method[] declaredMethods = clazz.getDeclaredMethods();
     for (final Method method : declaredMethods) {
       if (method.isAnnotationPresent(annotationClass)) {

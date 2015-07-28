@@ -18,6 +18,7 @@ public @interface Proxy {
   boolean concurrent() default false;
   boolean metrics() default false;
   boolean secure() default false;
+  boolean logging() default false;
 
 
 

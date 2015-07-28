@@ -30,7 +30,7 @@ public class DITest001 {
   @Test
   public void testInjection001() throws Exception {
     Service service = new Service();
-    new DI().activateDI(service);
+    DI.getInstance().activateDI(service);
 
     Assert.assertNotNull(service.subService);
 
