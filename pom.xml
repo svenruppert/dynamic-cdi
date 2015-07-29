@@ -12,7 +12,7 @@
 
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
-  <artifactId>dynamic-cdi</artifactId>
+  <artifactId>rapidpm-dynamic-cdi</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
 
@@ -58,7 +58,7 @@
 
     <dependency>
       <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>builder</artifactId>
+      <artifactId>rapidpm-proxybuilder-modules-builder</artifactId>
       <version>0.0.2-SNAPSHOT</version>
     </dependency>
 

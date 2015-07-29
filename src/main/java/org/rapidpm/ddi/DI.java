@@ -40,10 +40,10 @@ import java.security.PrivilegedAction;
  */
 public class DI {
 
-  private static final DI instance = new DI();
+  private static final DI INSTANCE = new DI();
 
   public static DI getInstance() {
-    return instance;
+    return INSTANCE;
   }
 
   public static void bootstrap() {
@@ -57,7 +57,7 @@ public class DI {
   }
 
   public synchronized <T> void activateDI(T instance) {
-    injectAttributes(instance);//ab hier proxy moeglich
+    injectAttributes(instance);
     initialize(instance);
     //register at new Scope ?
   }
@@ -82,8 +82,6 @@ public class DI {
         //if produces present -> switch to producer
         //TODO timestamp is to early
         final Class realClass = new ImplementingClassResolver().resolve(type);
-
-
 
 
         Object value; //Attribute Type for inject
@@ -114,7 +112,7 @@ public class DI {
             value = instantiate(realClass);
             activateDI(value); //rekursiver abstieg
           }
-          if (concurrent || metrics || secure || logging){
+          if (concurrent || metrics || secure || logging) {
             final VirtualProxyBuilder virtualProxyBuilder = VirtualProxyBuilder.createBuilder(type, value);
             if (metrics) {
               virtualProxyBuilder.addMetrics();
