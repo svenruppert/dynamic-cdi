@@ -1,5 +1,7 @@
 # Welcome to the Project Dynamic CDI
 
+[![Join the chat at https://gitter.im/RapidPM/dynamic-cdi](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/RapidPM/dynamic-cdi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Here we will start with an more dynamic version of the default cdi implementations.
 This project is based on the project ***ProxyBuilder***.
 
