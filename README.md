@@ -5,6 +5,10 @@
 Here we will start with an more dynamic version of the default cdi implementations.
 This project is based on the project ***ProxyBuilder***.
 
+build:
++ master:
+[![Build Status](https://travis-ci.org/RapidPM/dynamic-cdi.svg?branch=master)](https://travis-ci.org/RapidPM/dynamic-cdi)
++ develop:
 [![Build Status](https://travis-ci.org/RapidPM/dynamic-cdi.svg?branch=develop)](https://travis-ci.org/RapidPM/dynamic-cdi)
 
 branch:

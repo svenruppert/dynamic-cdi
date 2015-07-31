@@ -81,6 +81,18 @@
 
   </dependencies>
 
+  <build>
+    <plugins>
+      <!-- Generate coveralls reports from Travis -->
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <configuration>
+          <repoToken>CIwFA46v0MNoqskhFsWj1zxq3XaZnpg1e</repoToken>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 
   <profiles>
