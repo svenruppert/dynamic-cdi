@@ -1,121 +1,68 @@
 package org.rapidpm.ddi.producer;
 
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Produces;
 
 /**
- * Created by svenruppert on 27.07.15.
+ * Created by svenruppert on 31.07.15.
  */
 public class ProducerTest001 {
 
 
-  @Test
+  @Test @Ignore
+  //keine Producer unterstuetzen !!
   public void testProducer001() throws Exception {
+    final BusinessModul businessModul = new BusinessModul();
+    DI.getInstance().activateDI(businessModul);
 
-    final BusinessModule businessModule = new BusinessModule();
-    DI.getInstance().activateDI(businessModule);
-
-
-
-
-
-
+    Assert.assertNotNull(businessModul);
+    Assert.assertNotNull(businessModul.service);
+    Assert.assertNotNull(businessModul.service.workOn("AEAE"));
+    Assert.assertEquals("AEAE_"+ServiceProducer.class.getSimpleName(), businessModul.service.workOn("AEAE"));
 
   }
 
 
+  public static class ServiceProducer {
+    @Produces
+    public Service create(){
+      return txt -> txt + "_" + ServiceProducer.class.getSimpleName();
+    }
+  }
 
 
-
-
-
-  public static class BusinessModule {
+  public static class BusinessModul{
     @Inject Service service;
-    public String work(String txt) {
-      return service.work(txt);
+
+    public String doIt(String txt){
+      return service.workOn(txt);
     }
   }
 
 
   public interface Service {
-    String work(String txt);
-    SubService getSubService();
-    boolean isPostconstructed();
+    String workOn(String txt);
   }
 
-  public static class ServiceImplA implements Service {
-    @Inject SubService subService;
+//  public static class ServiceImplA implements Service {
+//    @Override
+//    public String workOn(final String txt) {
+//      return txt + "_" + this.getClass().getSimpleName();
+//    }
+//  }
+//
+//  public static class ServiceImplB implements Service {
+//    @Override
+//    public String workOn(final String txt) {
+//      return txt + "_" + this.getClass().getSimpleName();
+//    }
+//  }
 
-    public String work(String txt) {
-      return subService.work(txt);
-    }
-
-    @Override
-    public SubService getSubService() {
-      return subService;
-    }
-
-    boolean postconstructed = false;
-    public boolean isPostconstructed() {
-      return postconstructed;
-    }
-
-    @PostConstruct
-    public void postconstruct() {
-      postconstructed = true;
-    }
-  }
-
-  public static class ServiceImplB implements Service {
-    @Inject SubService subService;
-
-    public String work(String txt) {
-      return subService.work(txt);
-    }
-
-    @Override
-    public SubService getSubService() {
-      return subService;
-    }
-
-    boolean postconstructed = false;
-    public boolean isPostconstructed() {
-      return postconstructed;
-    }
-
-    @PostConstruct
-    public void postconstruct() {
-      postconstructed = true;
-    }
-  }
-
-  public static class SubService {
-    @Inject SubSubService subSubService;
-
-    public String work(final String txt) {
-      return subSubService.work(txt);
-    }
-
-    boolean postconstructed = false;
-
-    public boolean isPostconstructed() {
-      return postconstructed;
-    }
-
-    @PostConstruct
-    public void postconstruct() {
-      postconstructed = true;
-    }
-  }
-
-  public static class SubSubService {
-    public String work(final String txt) {
-      return "SubSubService " + txt;
-    }
-  }
 
 
 }

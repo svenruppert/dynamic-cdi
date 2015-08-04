@@ -1,37 +1,47 @@
-package org.rapidpm.ddi.named;
+package org.rapidpm.ddi.classresolver;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.Proxy;
+import org.rapidpm.ddi.implresolver.ClassResolver;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Produces;
 
 /**
- * Created by svenruppert on 14.07.15.
+ * Created by svenruppert on 31.07.15.
  */
-public class NamedTest003 {
+public class ClassResolverTest003 {
+
 
   @Test
-  public void testInjection001() throws Exception {
-    BusinessModule businessModule = new BusinessModule();
+  public void testProducer001() throws Exception {
 
+    final BusinessModule businessModule = new BusinessModule();
     DI.getInstance().activateDI(businessModule);
+    Assert.assertNotNull(businessModule);
     Assert.assertNotNull(businessModule.service);
-    Assert.assertTrue(businessModule.service.isPostconstructed());
+    Assert.assertEquals(ServiceImplB.class, businessModule.service.getClass());
+  }
 
-    Assert.assertNotNull(businessModule.service.getSubService());
-    Assert.assertTrue(businessModule.service.getSubService().postconstructed);
+  public static class ServiceClassResolverA implements ClassResolver<Service> {
+    @Override
+    public Class<? extends Service> resolve(final Class<Service> interf) {
+      return ServiceImplA.class;
+    }
+  }
 
-    Assert.assertEquals("SubSubService test", businessModule.work("test"));
+  public static class ServiceClassResolverB implements ClassResolver<Service> {
+    @Override
+    public Class<? extends Service> resolve(final Class<Service> interf) {
+      return ServiceImplB.class;
+    }
   }
 
 
-
   public static class BusinessModule {
-    @Inject Service service;
+    @Inject ServiceImplB service; //Here the concrete Class
+
     public String work(String txt) {
       return service.work(txt);
     }
@@ -45,6 +55,30 @@ public class NamedTest003 {
   }
 
   public static class ServiceImplA implements Service {
+    @Inject SubService subService;
+
+    public String work(String txt) {
+      return subService.work(txt);
+    }
+
+    @Override
+    public SubService getSubService() {
+      return subService;
+    }
+
+    boolean postconstructed = false;
+
+    public boolean isPostconstructed() {
+      return postconstructed;
+    }
+
+    @PostConstruct
+    public void postconstruct() {
+      postconstructed = true;
+    }
+  }
+
+  public static class ServiceImplB implements Service {
     @Inject SubService subService;
 
     public String work(String txt) {
@@ -92,4 +126,6 @@ public class NamedTest003 {
       return "SubSubService " + txt;
     }
   }
+
+
 }
