@@ -77,12 +77,9 @@ public class DI {
     for (final Field field : fields) {
       if (field.isAnnotationPresent(Inject.class)) {
         Class type = field.getType();
-
-
         //if produces present -> switch to producer
         //TODO timestamp is to early
         final Class realClass = new ImplementingClassResolver().resolve(type);
-
 
         Object value; //Attribute Type for inject
         if (field.isAnnotationPresent(Proxy.class)) {
@@ -104,10 +101,6 @@ public class DI {
                 .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
                 .build()
                 .make();
-
-//            value = ProxyGenerator.make(type, realClass,
-//                Concurrency.NONE, ProxyType.DYNAMIC,
-//                new DDIServiceFactory<>(realClass));
           } else {
             value = instantiate(realClass);
             activateDI(value); //rekursiver abstieg

@@ -2,9 +2,6 @@ package org.rapidpm.ddi.implresolver;
 
 import org.rapidpm.ddi.ReflectionsSingleton;
 
-import javax.inject.Produces;
-import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -80,3 +77,4 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
 
 
 }
+
