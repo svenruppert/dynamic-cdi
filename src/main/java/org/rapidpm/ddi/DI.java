@@ -180,16 +180,16 @@ public class DI {
 
 //    if (interf.isInterface() && clazz.isInterface()) throw new DDIModelException("no producer found for the interface " + clazz);
 
-    if (typesAnnotatedWith.isEmpty()){
+    if (typesAnnotatedWith.isEmpty()) {
       final T newInstance;
       try {
         newInstance = (T) clazz.newInstance();
         return newInstance;
       } catch (InstantiationException | IllegalAccessException e) {
         e.printStackTrace();
-        throw  new DDIModelException(e);
+        throw new DDIModelException(e);
       }
-    } else if(typesAnnotatedWith.size() > 1) {
+    } else if (typesAnnotatedWith.size() > 1) {
       new DDIModelException(" to many producer methods found for " + interf + " - " + typesAnnotatedWith);
     } else {
 
@@ -201,10 +201,9 @@ public class DI {
         return newInstance.create();
       } catch (InstantiationException | IllegalAccessException e) {
         e.printStackTrace();
-        throw  new DDIModelException(e);
+        throw new DDIModelException(e);
       }
     }
-
 
 
     //sonst default constructor

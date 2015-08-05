@@ -15,7 +15,7 @@ import java.util.Set;
 public class ClassResolverCheck001 {
 
 
-  public void execute(){
+  public void execute() {
     final Set<Class<? extends ClassResolver>> subTypesOfClassResolver = ReflectionsSingleton.REFLECTIONS.getSubTypesOf(ClassResolver.class);
     final boolean remove = subTypesOfClassResolver.remove(ImplementingClassResolver.class);
 

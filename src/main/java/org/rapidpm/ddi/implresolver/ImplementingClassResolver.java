@@ -6,10 +6,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * one subtype -> will return this class
- * n subtypes -> will search for classresolver to decide what will be the right implementation
+ * one subtype - will return this class
+ * n subtypes - will search for classresolver to decide what will be the right implementation
  * <p>
- * no subtype -> will return the interface itself, maybe on the fly implementations are available
+ * no subtype - will return the interface itself, maybe on the fly implementations are available
  * <p>
  * Created by svenruppert on 23.07.15.
  */
