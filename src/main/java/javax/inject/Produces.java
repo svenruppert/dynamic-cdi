@@ -19,6 +19,9 @@ package javax.inject;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.*;
 
 /**
  *
@@ -30,9 +33,9 @@ import java.lang.annotation.RetentionPolicy;
  *
  * Created by Sven Ruppert on 06.12.2014.
  */
-@Qualifier
+@Target({TYPE})
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Produces {
-  String value() default "";
+  Class value() ;
 }

@@ -36,6 +36,7 @@ public class ProxyTest003 {
   @After
   public void tearDown() throws Exception {
     reporter.close();
+
   }
 
   String s1;
@@ -65,7 +66,7 @@ public class ProxyTest003 {
     final Histogram histogram = histograms.get(Service.class.getSimpleName());
     Assert.assertNotNull(histogram);
     Assert.assertNotNull(histogram.getSnapshot());
-
+    MetricsRegistry.getInstance().getMetrics().remove(Service.class.getSimpleName());
     System.out.println("s1 = " + s1);
 
   }

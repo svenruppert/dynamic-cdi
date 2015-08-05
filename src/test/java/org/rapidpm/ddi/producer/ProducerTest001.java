@@ -1,7 +1,6 @@
 package org.rapidpm.ddi.producer;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 
@@ -14,7 +13,7 @@ import javax.inject.Produces;
 public class ProducerTest001 {
 
 
-  @Test @Ignore
+  @Test
   //keine Producer unterstuetzen !!
   public void testProducer001() throws Exception {
     final BusinessModul businessModul = new BusinessModul();
@@ -28,8 +27,8 @@ public class ProducerTest001 {
   }
 
 
-  public static class ServiceProducer {
-    @Produces
+  @Produces(Service.class)
+  public static class ServiceProducer implements Producer<Service> {
     public Service create(){
       return txt -> txt + "_" + ServiceProducer.class.getSimpleName();
     }

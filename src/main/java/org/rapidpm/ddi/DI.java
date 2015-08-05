@@ -18,7 +18,10 @@ package org.rapidpm.ddi;
 
 
 import org.jetbrains.annotations.Nullable;
+import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
+import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
+import org.rapidpm.ddi.producer.Producer;
 import org.rapidpm.proxybuilder.VirtualProxyBuilder;
 import org.rapidpm.proxybuilder.type.virtual.Concurrency;
 import org.rapidpm.proxybuilder.type.virtual.ProxyGenerator;
@@ -27,12 +30,15 @@ import org.rapidpm.proxybuilder.type.virtual.dynamic.ServiceStrategyFactoryNotTh
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Produces;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**
@@ -51,6 +57,7 @@ public class DI {
     //pruefe ob es sich um ein Interface handelt
     //pruefe ob es nur einen Producer / eine Implementierung  dazu gibt
     // -- liste Multiplizitäten
+    new ClassResolverCheck001().execute();
   }
 
   private DI() {
@@ -77,8 +84,6 @@ public class DI {
     for (final Field field : fields) {
       if (field.isAnnotationPresent(Inject.class)) {
         Class type = field.getType();
-        //if produces present -> switch to producer
-        //TODO timestamp is to early
         final Class realClass = new ImplementingClassResolver().resolve(type);
 
         Object value; //Attribute Type for inject
@@ -146,24 +151,63 @@ public class DI {
     T newInstance;
     if (clazz.isInterface()) {
       final Class<T> resolve = new ImplementingClassResolver().resolve(clazz);
-      newInstance = createNewInstance(resolve);
+      newInstance = createNewInstance(clazz, resolve);
     } else {
-      newInstance = createNewInstance(clazz);
+      newInstance = createNewInstance(clazz, clazz);
     }
-
-
     return newInstance;
   }
 
   @Nullable
-  private <T> T createNewInstance(final Class clazz) {
-    final T newInstance;
-    try {
-      newInstance = (T) clazz.newInstance();
-      return newInstance;
-    } catch (InstantiationException | IllegalAccessException e) {
-      e.printStackTrace();
+  private <T> T createNewInstance(final Class interf, final Class clazz) {
+    //Producer vorhanden?
+
+    //kann ein Interface sein, oder eine Klasse von einem ClassResolver
+    final Set<Class<?>> typesAnnotatedWith = ReflectionsSingleton.REFLECTIONS.getTypesAnnotatedWith(Produces.class);
+
+    final Iterator<Class<?>> iterator = typesAnnotatedWith.iterator();
+    while (iterator.hasNext()) {
+      Class producerClass = iterator.next();
+      final Produces annotation = (Produces) producerClass.getAnnotation(Produces.class);
+      final Class value = annotation.value();
+      if (value == null) throw new DDIModelException("Producer without target Interface " + producerClass);
+      if (value.equals(interf)) {
+        //TODO logger
+      } else {
+        iterator.remove();
+      }
     }
+
+//    if (interf.isInterface() && clazz.isInterface()) throw new DDIModelException("no producer found for the interface " + clazz);
+
+    if (typesAnnotatedWith.isEmpty()){
+      final T newInstance;
+      try {
+        newInstance = (T) clazz.newInstance();
+        return newInstance;
+      } catch (InstantiationException | IllegalAccessException e) {
+        e.printStackTrace();
+        throw  new DDIModelException(e);
+      }
+    } else if(typesAnnotatedWith.size() > 1) {
+      new DDIModelException(" to many producer methods found for " + interf + " - " + typesAnnotatedWith);
+    } else {
+
+
+      final Class cls = (Class) typesAnnotatedWith.toArray()[0];
+      try {
+        Producer<T> newInstance = (Producer<T>) cls.newInstance();
+        activateDI(newInstance);
+        return newInstance.create();
+      } catch (InstantiationException | IllegalAccessException e) {
+        e.printStackTrace();
+        throw  new DDIModelException(e);
+      }
+    }
+
+
+
+    //sonst default constructor
     return null;
   }
 

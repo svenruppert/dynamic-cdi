@@ -1,17 +1,20 @@
-package javax.inject;
+package org.rapidpm.ddi.implresolver;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by sven on 02.05.15.
+ * Created by svenruppert on 05.08.15.
  */
-@Target(ANNOTATION_TYPE)
+
+
+@Target({TYPE})
 @Retention(RUNTIME)
 @Documented
-public @interface Qualifier {
+public @interface ResponsibleForInterface {
+  Class value();
 }
