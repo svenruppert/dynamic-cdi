@@ -13,7 +13,7 @@ import javax.inject.Inject;
  */
 public class ClassResolverTest006 {
 
-  @Test(expected = DDIModelException.class) @Ignore
+  @Test(expected = DDIModelException.class)
   public void testProducer001() throws Exception {
 
     final BusinessModule businessModule = new BusinessModule();
@@ -21,7 +21,8 @@ public class ClassResolverTest006 {
       DI.getInstance().activateDI(businessModule);
     } catch (DDIModelException e) {
       final String message = e.getMessage();
-      Assert.assertTrue(message.contains("could not find a subtype of interface"));
+      System.out.println("message = " + message);
+      Assert.assertTrue(message.contains("only interfaces found for interface"));
       throw e;
     }
     Assert.fail();
