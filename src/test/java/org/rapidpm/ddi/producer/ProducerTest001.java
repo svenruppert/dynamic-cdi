@@ -14,7 +14,6 @@ public class ProducerTest001 {
 
 
   @Test
-  //keine Producer unterstuetzen !!
   public void testProducer001() throws Exception {
     final BusinessModul businessModul = new BusinessModul();
     DI.getInstance().activateDI(businessModul);
