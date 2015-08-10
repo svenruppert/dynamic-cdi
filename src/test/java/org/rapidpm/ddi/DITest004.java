@@ -18,7 +18,6 @@ package org.rapidpm.ddi;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.rapidpm.ddi.DI;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;

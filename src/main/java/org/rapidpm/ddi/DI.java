@@ -63,6 +63,20 @@ public class DI {
   private DI() {
   }
 
+
+//  public static synchronized void addNewClassLoaderAndMerge(ClassLoader classLoader) {
+//    ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+//        .setUrls(ClasspathHelper.forPackage(""))
+//        .setScanners(
+//            new SubTypesScanner(),
+//            new TypeAnnotationsScanner(),
+//            new MethodAnnotationsScanner())
+//        .addClassLoader(classLoader);
+//    final Reflections reflectionToMerge = new Reflections(configurationBuilder);
+//    ReflectionsSingleton.REFLECTIONS.merge(reflectionToMerge);
+//  }
+
+
   public synchronized <T> void activateDI(T instance) {
     injectAttributes(instance);
     initialize(instance);
