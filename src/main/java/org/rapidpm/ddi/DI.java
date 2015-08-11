@@ -22,6 +22,7 @@ import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
 import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.Producer;
+import org.rapidpm.ddi.reflections.ReflectionsSingleton;
 import org.rapidpm.proxybuilder.VirtualProxyBuilder;
 import org.rapidpm.proxybuilder.type.virtual.Concurrency;
 import org.rapidpm.proxybuilder.type.virtual.ProxyGenerator;
@@ -62,7 +63,6 @@ public class DI {
 
   private DI() {
   }
-
 
 //  public static synchronized void addNewClassLoaderAndMerge(ClassLoader classLoader) {
 //    ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()

@@ -1,4 +1,4 @@
-package org.rapidpm.ddi;
+package org.rapidpm.ddi.reflections;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;

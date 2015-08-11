@@ -1,6 +1,6 @@
 package org.rapidpm.ddi.implresolver;
 
-import org.rapidpm.ddi.ReflectionsSingleton;
+import org.rapidpm.ddi.reflections.ReflectionsSingleton;
 
 import java.util.Iterator;
 import java.util.Set;

@@ -1,6 +1,6 @@
 package org.rapidpm.ddi.bootstrap;
 
-import org.rapidpm.ddi.ReflectionsSingleton;
+import org.rapidpm.ddi.reflections.ReflectionsSingleton;
 import org.rapidpm.ddi.implresolver.ClassResolver;
 import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
