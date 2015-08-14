@@ -27,3 +27,28 @@ https://github.com/RapidPM/proxybuilder (developer branch : clean install)
 https://github.com/RapidPM/dynamic-cdi (developer branch : clean install)
 https://github.com/RapidPM/rapidpm-microservice (developer branch : clean install)
 https://github.com/RapidPM/rapidpm-microservice-examples (master branch : clean install)
+
+## SNAPSHOTS
+If you are using maven you could add the following to your settings.xml to get the snapshots.
+
+```
+   <profile>
+      <id>allow-snapshots</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>snapshots-repo</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+```
