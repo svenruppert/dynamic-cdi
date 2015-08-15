@@ -1,5 +1,6 @@
-package org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
@@ -12,37 +13,32 @@ import javax.inject.Inject;
 /**
  * Created by svenruppert on 05.08.15.
  */
-public class ClassResolverTest005 {
+public class ClassResolverTest004 extends DDIBaseTest {
 
   @Test(expected = DDIModelException.class)
-  public void test001() throws Exception {
+  public void testProducer001() throws Exception {
+
+    final BusinessModule businessModule = new BusinessModule();
     try {
-      DI.checkActiveModel();
+      DI.activateDI(businessModule);
     } catch (DDIModelException e) {
       final String message = e.getMessage();
-      Assert.assertTrue(message.contains("Found ClassResolver without @ResponsibleForInterface annotation"));
+      Assert.assertTrue(message.contains("interface with multiple implementations and more as 1 ClassResolver"));
       throw e;
     }
+
     Assert.fail();
-  }
-
-  @Test
-  public void test002() throws Exception {
-    final BusinessModule businessModule = new BusinessModule();
-    DI.activateDI(businessModule);
-
-    Assert.assertEquals(ServiceImplA.class, businessModule.service.getClass());
-
   }
 
   @ResponsibleForInterface(Service.class)
   public static class ServiceClassResolverA implements ClassResolver<Service> {
     @Override
     public Class<? extends Service> resolve(final Class<Service> interf) {
-      return ServiceImplA.class;
+      return null;
     }
   }
 
+  @ResponsibleForInterface(Service.class)
   public static class ServiceClassResolverB implements ClassResolver<Service> {
     @Override
     public Class<? extends Service> resolve(final Class<Service> interf) {

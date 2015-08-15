@@ -39,6 +39,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -63,14 +64,12 @@ public class DI {
     new ClassResolverCheck001().execute();
   }
 
-
+  private static ReflectionsModel reflectionsModel = new ReflectionsModel();
   private static boolean bootstrapedNeeded = true;
-  private static ReflectionsModel reflectionsModel;
-
 
   public static void bootstrap() {
     reflectionsModel = new ReflectionsModel();
-    reflectionsModel.rescann(DI.class.getClassLoader(), "");
+    reflectionsModel.rescann("");
     bootstrapedNeeded = false;
   }
 
@@ -79,50 +78,51 @@ public class DI {
 
 
   public static synchronized void activatePackages(String pkg) {
-    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
-    reflectionsModel.rescann(DI.class.getClassLoader(), pkg);
+//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+    reflectionsModel.rescann(pkg);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, URL... urls) {
-    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
-    reflectionsModel.rescann(DI.class.getClassLoader(), pkg, urls);
+//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+    reflectionsModel.rescann(pkg, urls);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, Collection<URL> urls) {
-    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
-    reflectionsModel.rescann(DI.class.getClassLoader(), pkg, urls);
+//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+    reflectionsModel.rescann(pkg, urls);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg) {
-    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
     reflectionsModel.setParallelExecutors(parallelExecutors);
-    reflectionsModel.rescann(DI.class.getClassLoader(), pkg);
+    reflectionsModel.rescann(pkg);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, URL... urls) {
-    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
     reflectionsModel.setParallelExecutors(parallelExecutors);
-    reflectionsModel.rescann(DI.class.getClassLoader(), pkg, urls);
+    reflectionsModel.rescann(pkg, urls);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, Collection<URL> urls) {
-    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
     reflectionsModel.setParallelExecutors(parallelExecutors);
-    reflectionsModel.rescann(DI.class.getClassLoader(), pkg, urls);
+    reflectionsModel.rescann(pkg, urls);
     bootstrapedNeeded = false;
   }
 
 
-  public static synchronized <T> void activateDI(T instance) {
+  public static synchronized <T> T activateDI(T instance) {
     if (bootstrapedNeeded) bootstrap();
     injectAttributes(instance);
     initialize(instance);
     //register at new Scope ?
+    return instance;
   }
 
   private static <T> void injectAttributes(final T rootInstance) throws SecurityException {
@@ -321,6 +321,14 @@ public class DI {
 
   //delegator
 
+
+  public static boolean isPkgPrefixActivated(final String pkgPrefix) {
+    return reflectionsModel.isPkgPrefixActivated(pkgPrefix);
+  }
+
+  public static LocalDateTime getPkgPrefixActivatedTimestamp(final String pkgPrefix) {
+    return reflectionsModel.getPkgPrefixActivatedTimestamp(pkgPrefix);
+  }
 
   public static <T> Set<Class<? extends T>> getSubTypesOf(final Class<T> type) {
     return reflectionsModel.getSubTypesOf(type);

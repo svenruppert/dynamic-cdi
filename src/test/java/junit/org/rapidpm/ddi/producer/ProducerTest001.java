@@ -1,8 +1,10 @@
-package org.rapidpm.ddi.producer;
+package junit.org.rapidpm.ddi.producer;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
+import org.rapidpm.ddi.producer.Producer;
 
 import javax.inject.Inject;
 import javax.inject.Produces;
@@ -10,7 +12,7 @@ import javax.inject.Produces;
 /**
  * Created by svenruppert on 31.07.15.
  */
-public class ProducerTest001 {
+public class ProducerTest001 extends DDIBaseTest {
 
 
   @Test

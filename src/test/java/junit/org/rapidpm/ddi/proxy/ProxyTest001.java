@@ -1,18 +1,17 @@
-package org.rapidpm.ddi.proxy;
+package junit.org.rapidpm.ddi.proxy;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Proxy;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by svenruppert on 17.07.15.
  */
-public class ProxyTest001 {
+public class ProxyTest001 extends DDIBaseTest {
 
   @Test
   public void testProxy001() throws Exception {

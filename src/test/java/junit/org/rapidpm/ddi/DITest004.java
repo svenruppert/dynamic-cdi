@@ -14,10 +14,9 @@
  *    limitations under the License.
  */
 
-package org.rapidpm.ddi.named;
+package junit.org.rapidpm.ddi;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 
@@ -27,34 +26,24 @@ import javax.inject.Inject;
 /**
  * Created by Sven Ruppert on 06.12.2014.
  */
-public class NamedTest001 {
+public class DITest004 extends DDIBaseTest {
 
   @Test
   public void testInjection001() throws Exception {
-    BusinessModule businessModule = new BusinessModule();
+    Service service = new Service();
 
-    DI.activateDI(businessModule);
-    Assert.assertNotNull(businessModule.service);
-    Assert.assertTrue(((ServiceImpl) businessModule.service).postconstructed);
+    Assert.assertFalse(service.postconstructed);
+    DI.activateDI(service);
+    Assert.assertTrue(service.postconstructed);
 
-    Assert.assertNotNull(((ServiceImpl) businessModule.service).subService);
-    Assert.assertTrue(((ServiceImpl) businessModule.service).subService.postconstructed);
+    Assert.assertNotNull(service.subService);
+    Assert.assertTrue(service.subService.postconstructed);
 
-    Assert.assertEquals("SubSubService test", businessModule.work("test"));
+    Assert.assertNotNull(service.subService.subSubService);
+    Assert.assertEquals("SubSubService test", service.work("test"));
   }
 
-  public static class BusinessModule{
-    @Inject Service service;
-    public String work(String txt){
-      return service.work(txt);
-    }
-  }
-
-  public interface Service{
-    String work(String txt);
-  }
-
-  public static class ServiceImpl implements Service {
+  public static class Service{
     @Inject SubService subService;
     public String work(String txt){
       return subService.work(txt);
@@ -82,5 +71,4 @@ public class NamedTest001 {
       return "SubSubService " + txt;
     }
   }
-
 }

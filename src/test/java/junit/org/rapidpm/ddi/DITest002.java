@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package org.rapidpm.ddi;
+package junit.org.rapidpm.ddi;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +25,9 @@ import javax.inject.Inject;
 /**
  * Created by Sven Ruppert on 06.12.2014.
  */
-public class DITest002 {
+public class DITest002 extends DDIBaseTest{
+
+
 
   @Test
   public void testInjection001() throws Exception {

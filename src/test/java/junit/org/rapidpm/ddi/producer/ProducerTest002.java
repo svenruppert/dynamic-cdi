@@ -1,9 +1,11 @@
-package org.rapidpm.ddi.producer;
+package junit.org.rapidpm.ddi.producer;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.implresolver.DDIModelException;
+import org.rapidpm.ddi.producer.Producer;
 
 import javax.inject.Inject;
 import javax.inject.Produces;
@@ -11,7 +13,8 @@ import javax.inject.Produces;
 /**
  * Created by svenruppert on 07.08.15.
  */
-public class ProducerTest002 {
+public class ProducerTest002 extends DDIBaseTest {
+
 
   @Test(expected = DDIModelException.class)
   public void testProducer001() throws Exception {

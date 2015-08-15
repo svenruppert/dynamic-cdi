@@ -1,5 +1,6 @@
-package org.rapidpm.ddi.proxy;
+package junit.org.rapidpm.ddi.proxy;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
@@ -10,8 +11,7 @@ import javax.inject.Inject;
 /**
  * Created by svenruppert on 23.07.15.
  */
-public class ProxyTest002 {
-
+public class ProxyTest002 extends DDIBaseTest {
 
 
   @Test
@@ -21,10 +21,6 @@ public class ProxyTest002 {
 
     Assert.assertNotNull(businessModul);
     Assert.assertNotNull(businessModul.service);
-
-
-
-
   }
 
   public static class BusinessModulSecure{

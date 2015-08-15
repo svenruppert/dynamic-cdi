@@ -14,36 +14,43 @@
  *    limitations under the License.
  */
 
-package org.rapidpm.ddi;
+package junit.org.rapidpm.ddi;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 /**
  * Created by Sven Ruppert on 06.12.2014.
  */
-public class DITest001 {
+public class DITest003 extends DDIBaseTest {
 
   @Test
   public void testInjection001() throws Exception {
     Service service = new Service();
+
+    Assert.assertFalse(service.postconstructed);
     DI.activateDI(service);
+    Assert.assertTrue(service.postconstructed);
 
     Assert.assertNotNull(service.subService);
-
     Assert.assertEquals("SubService test", service.work("test"));
 
   }
-
-
 
   public static class Service{
     @Inject SubService subService;
     public String work(String txt){
       return subService.work(txt);
+    }
+
+    boolean postconstructed = false;
+    @PostConstruct
+    public void postconstruct(){
+      postconstructed = true;
     }
   }
 

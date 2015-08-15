@@ -1,5 +1,6 @@
-package org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
@@ -10,9 +11,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 /**
- * Created by svenruppert on 27.07.15.
+ * Created by svenruppert on 31.07.15.
  */
-public class ClassResolverTest001 {
+public class ClassResolverTest003 extends DDIBaseTest {
 
 
   @Test
@@ -25,9 +26,16 @@ public class ClassResolverTest001 {
     Assert.assertEquals(ServiceImplB.class, businessModule.service.getClass());
   }
 
+  @ResponsibleForInterface(Service.class)
+  public static class ServiceClassResolverA implements ClassResolver<Service> {
+    @Override
+    public Class<? extends Service> resolve(final Class<Service> interf) {
+      return ServiceImplA.class;
+    }
+  }
 
   @ResponsibleForInterface(Service.class)
-  public static class ServiceClassResolver implements ClassResolver<Service> {
+  public static class ServiceClassResolverB implements ClassResolver<Service> {
     @Override
     public Class<? extends Service> resolve(final Class<Service> interf) {
       return ServiceImplB.class;
@@ -36,7 +44,7 @@ public class ClassResolverTest001 {
 
 
   public static class BusinessModule {
-    @Inject Service service;
+    @Inject ServiceImplB service; //Here the concrete Class
 
     public String work(String txt) {
       return service.work(txt);
@@ -46,9 +54,7 @@ public class ClassResolverTest001 {
 
   public interface Service {
     String work(String txt);
-
     SubService getSubService();
-
     boolean isPostconstructed();
   }
 

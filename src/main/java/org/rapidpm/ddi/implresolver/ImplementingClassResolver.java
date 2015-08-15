@@ -1,7 +1,6 @@
 package org.rapidpm.ddi.implresolver;
 
 import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.reflections.ReflectionsModel;
 
 import java.util.Iterator;
 import java.util.Set;

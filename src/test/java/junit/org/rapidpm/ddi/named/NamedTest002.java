@@ -14,11 +14,12 @@
  *    limitations under the License.
  */
 
-package org.rapidpm.ddi.named;
+package junit.org.rapidpm.ddi.named;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Test;
-import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.DI;
+import org.rapidpm.ddi.implresolver.DDIModelException;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -28,7 +29,8 @@ import javax.inject.Inject;
  *
  * Created by Sven Ruppert on 07.12.2014.
  */
-public class NamedTest002 {
+public class NamedTest002 extends DDIBaseTest {
+
 
   @Test(expected = DDIModelException.class)
   public void testInjection001() throws Exception {

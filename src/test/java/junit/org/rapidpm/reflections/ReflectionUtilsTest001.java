@@ -1,7 +1,8 @@
-package org.rapidpm.ddi.reflections;
+package junit.org.rapidpm.reflections;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.rapidpm.ddi.reflections.ReflectionUtils;
 
 
 /**

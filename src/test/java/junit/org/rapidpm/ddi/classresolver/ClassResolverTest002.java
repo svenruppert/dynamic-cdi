@@ -1,9 +1,11 @@
-package org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.implresolver.ClassResolver;
+import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.implresolver.ResponsibleForInterface;
 
 import javax.annotation.PostConstruct;
@@ -12,17 +14,23 @@ import javax.inject.Inject;
 /**
  * Created by svenruppert on 31.07.15.
  */
-public class ClassResolverTest003 {
+public class ClassResolverTest002 extends DDIBaseTest {
 
-
-  @Test
+  @Test(expected = DDIModelException.class)
   public void testProducer001() throws Exception {
-
     final BusinessModule businessModule = new BusinessModule();
-    DI.activateDI(businessModule);
-    Assert.assertNotNull(businessModule);
-    Assert.assertNotNull(businessModule.service);
-    Assert.assertEquals(ServiceImplB.class, businessModule.service.getClass());
+
+    try {
+      DI.activateDI(businessModule);
+    } catch (Exception e) {
+      final Class<? extends Exception> aClass = e.getClass();
+      Assert.assertEquals(DDIModelException.class, aClass);
+      final String message = e.getMessage();
+      Assert.assertTrue(message.startsWith("interface with multiple implementations"));
+      Assert.assertTrue(message.contains("more as 1 ClassResolver"));
+      Assert.assertTrue(message.contains("ClassResolverTest002$Service"));
+      throw e;
+    }
   }
 
   @ResponsibleForInterface(Service.class)
@@ -43,7 +51,7 @@ public class ClassResolverTest003 {
 
 
   public static class BusinessModule {
-    @Inject ServiceImplB service; //Here the concrete Class
+    @Inject Service service;
 
     public String work(String txt) {
       return service.work(txt);
