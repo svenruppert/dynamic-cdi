@@ -12,8 +12,11 @@ import org.reflections.util.FilterBuilder;
 
 import java.lang.annotation.Annotation;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by svenruppert on 14.07.15.
@@ -24,13 +27,13 @@ public class ReflectionsModel {
   //TODO refactoring to pessimistic write / concurrent read
 
   private boolean parallelExecutors = false;
+  private Map<String, LocalDateTime> activatedPackagesMap = new ConcurrentHashMap<>();
 
-  private Reflections reflections = new Reflections(new ConfigurationBuilder()
-      .setUrls(ClasspathHelper.forPackage("org.rapidpm"))
-      .addClassLoader(ClassLoader.getSystemClassLoader())
-      .addClassLoader(ReflectionsModel.class.getClassLoader())
-      .setScanners(createScanners())
-  );;
+  private Reflections reflections = new Reflections(
+      createConfigurationBuilder()
+          .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix("org.rapidpm")))
+          .setScanners(createScanners())
+  );
 
   private Object obj = new Object();
 
@@ -42,7 +45,7 @@ public class ReflectionsModel {
     this.parallelExecutors = parallelExecutors;
   }
 
-  private Scanner[] createScanners(){
+  private Scanner[] createScanners() {
     Scanner[] sccannerArray = new Scanner[3];
     sccannerArray[0] = new SubTypesScanner();
     sccannerArray[1] = new TypeAnnotationsScanner();
@@ -50,67 +53,76 @@ public class ReflectionsModel {
     return sccannerArray;
   }
 
-  public void rescann(ClassLoader classLoader) {
+  public void rescann() {
     synchronized (obj) {
       reflections.merge(new Reflections(createConfigurationBuilder()
-          .addClassLoader(classLoader)
           .setScanners(createScanners())));
     }
   }
 
   @NotNull
   private ConfigurationBuilder createConfigurationBuilder() {
-    if (parallelExecutors)
-      return new ConfigurationBuilder().useParallelExecutor();
-    return new ConfigurationBuilder();
+    final ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+    configurationBuilder.setUrls(ClasspathHelper.forJavaClassPath());
+    if (parallelExecutors) return configurationBuilder.useParallelExecutor();
+    else return configurationBuilder;
   }
 
-  public void rescann(ClassLoader classLoader, URL... urls) {
+  public void rescann(URL... urls) {
     synchronized (obj) {
       reflections.merge(new Reflections(createConfigurationBuilder()
           .setUrls(urls)
-          .addClassLoader(classLoader)
           .setScanners(createScanners())));
+      activatedPackagesMap.put("", LocalDateTime.now());
     }
   }
 
-  public void rescann(ClassLoader classLoader, Collection<URL> urls) {
+  public void rescann(Collection<URL> urls) {
     synchronized (obj) {
       reflections.merge(new Reflections(createConfigurationBuilder()
           .setUrls(urls)
-          .addClassLoader(classLoader)
           .setScanners(createScanners())));
+      activatedPackagesMap.put("", LocalDateTime.now());
     }
   }
-  public void rescann(ClassLoader classLoader, String pkgPrefix) {
+
+  public void rescann(String pkgPrefix) {
     synchronized (obj) {
       reflections.merge(new Reflections(createConfigurationBuilder()
           .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(pkgPrefix)))
-          .addClassLoader(classLoader)
           .setScanners(createScanners())));
+      activatedPackagesMap.put(pkgPrefix, LocalDateTime.now());
     }
   }
 
-  public void rescann(ClassLoader classLoader, String pkgPrefix, URL... urls ) {
-    synchronized (obj) {
-      reflections.merge(new Reflections(createConfigurationBuilder()
-          .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(pkgPrefix)))
-          .setUrls(urls)
-          .addClassLoader(classLoader)
-          .setScanners(createScanners())));
-    }
-  }
-
-  public void rescann(ClassLoader classLoader, String pkgPrefix, Collection<URL> urls) {
+  public void rescann(String pkgPrefix, URL... urls) {
     synchronized (obj) {
       reflections.merge(new Reflections(createConfigurationBuilder()
           .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(pkgPrefix)))
           .setUrls(urls)
-          .addClassLoader(classLoader)
           .setScanners(createScanners())));
+      activatedPackagesMap.put(pkgPrefix, LocalDateTime.now());
     }
   }
 
+  public void rescann(String pkgPrefix, Collection<URL> urls) {
+    synchronized (obj) {
+      reflections.merge(new Reflections(createConfigurationBuilder()
+          .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(pkgPrefix)))
+          .setUrls(urls)
+          .setScanners(createScanners())));
+      activatedPackagesMap.put(pkgPrefix, LocalDateTime.now());
+    }
+  }
+
+
+  public boolean isPkgPrefixActivated(String pkgPrefix) {
+    return activatedPackagesMap.containsKey(pkgPrefix);
+  }
+
+  public LocalDateTime getPkgPrefixActivatedTimestamp(String pkgPrefix) {
+    return activatedPackagesMap.getOrDefault(pkgPrefix, LocalDateTime.MIN);
+  }
 
 
   //delegated methods
