@@ -33,7 +33,7 @@ public class NamedTest001 {
   public void testInjection001() throws Exception {
     BusinessModule businessModule = new BusinessModule();
 
-    DI.getInstance().activateDI(businessModule);
+    DI.activateDI(businessModule);
     Assert.assertNotNull(businessModule.service);
     Assert.assertTrue(((ServiceImpl) businessModule.service).postconstructed);
 

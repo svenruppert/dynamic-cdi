@@ -1,6 +1,6 @@
 package org.rapidpm.ddi.bootstrap;
 
-import org.rapidpm.ddi.reflections.ReflectionsSingleton;
+import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.implresolver.ClassResolver;
 import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
@@ -16,7 +16,7 @@ public class ClassResolverCheck001 {
 
 
   public void execute() {
-    final Set<Class<? extends ClassResolver>> subTypesOfClassResolver = ReflectionsSingleton.REFLECTIONS.getSubTypesOf(ClassResolver.class);
+    final Set<Class<? extends ClassResolver>> subTypesOfClassResolver = DI.getSubTypesOf(ClassResolver.class);
     final boolean remove = subTypesOfClassResolver.remove(ImplementingClassResolver.class);
 
 //        ClassResolver responsible for interface

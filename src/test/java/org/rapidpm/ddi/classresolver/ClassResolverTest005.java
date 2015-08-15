@@ -17,7 +17,7 @@ public class ClassResolverTest005 {
   @Test(expected = DDIModelException.class)
   public void test001() throws Exception {
     try {
-      DI.bootstrap();
+      DI.checkActiveModel();
     } catch (DDIModelException e) {
       final String message = e.getMessage();
       Assert.assertTrue(message.contains("Found ClassResolver without @ResponsibleForInterface annotation"));
@@ -29,7 +29,7 @@ public class ClassResolverTest005 {
   @Test
   public void test002() throws Exception {
     final BusinessModule businessModule = new BusinessModule();
-    DI.getInstance().activateDI(businessModule);
+    DI.activateDI(businessModule);
 
     Assert.assertEquals(ServiceImplA.class, businessModule.service.getClass());
 

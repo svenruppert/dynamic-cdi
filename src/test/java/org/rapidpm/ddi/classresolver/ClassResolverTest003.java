@@ -19,7 +19,7 @@ public class ClassResolverTest003 {
   public void testProducer001() throws Exception {
 
     final BusinessModule businessModule = new BusinessModule();
-    DI.getInstance().activateDI(businessModule);
+    DI.activateDI(businessModule);
     Assert.assertNotNull(businessModule);
     Assert.assertNotNull(businessModule.service);
     Assert.assertEquals(ServiceImplB.class, businessModule.service.getClass());

@@ -31,7 +31,7 @@ public class DITest004 {
     Service service = new Service();
 
     Assert.assertFalse(service.postconstructed);
-    DI.getInstance().activateDI(service);
+    DI.activateDI(service);
     Assert.assertTrue(service.postconstructed);
 
     Assert.assertNotNull(service.subService);

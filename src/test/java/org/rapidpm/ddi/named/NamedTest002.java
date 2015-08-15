@@ -33,7 +33,7 @@ public class NamedTest002 {
   @Test(expected = DDIModelException.class)
   public void testInjection001() throws Exception {
     BusinessModule businessModule = new BusinessModule();
-    DI.getInstance().activateDI(businessModule);
+    DI.activateDI(businessModule);
   }
 
   public static class BusinessModule {

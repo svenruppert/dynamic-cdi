@@ -22,7 +22,7 @@ import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
 import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.Producer;
-import org.rapidpm.ddi.reflections.ReflectionsSingleton;
+import org.rapidpm.ddi.reflections.ReflectionsModel;
 import org.rapidpm.proxybuilder.VirtualProxyBuilder;
 import org.rapidpm.proxybuilder.type.virtual.Concurrency;
 import org.rapidpm.proxybuilder.type.virtual.ProxyGenerator;
@@ -36,8 +36,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -47,13 +49,13 @@ import java.util.Set;
  */
 public class DI {
 
-  private static final DI INSTANCE = new DI();
+//  private static final DI INSTANCE = new DI();
 
-  public static DI getInstance() {
-    return INSTANCE;
-  }
+//  public static DI getInstance() {
+//    return INSTANCE;
+//  }
 
-  public static void bootstrap() {
+  public static void checkActiveModel() {
     //hole alle Felder die mit einem @Inject versehen sind.
     //pruefe ob es sich um ein Interface handelt
     //pruefe ob es nur einen Producer / eine Implementierung  dazu gibt
@@ -61,34 +63,74 @@ public class DI {
     new ClassResolverCheck001().execute();
   }
 
+
+  private static boolean bootstrapedNeeded = true;
+  private static ReflectionsModel reflectionsModel;
+
+
+  public static void bootstrap() {
+    reflectionsModel = new ReflectionsModel();
+    reflectionsModel.rescann(DI.class.getClassLoader(), "");
+    bootstrapedNeeded = false;
+  }
+
   private DI() {
   }
 
-//  public static synchronized void addNewClassLoaderAndMerge(ClassLoader classLoader) {
-//    ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-//        .setUrls(ClasspathHelper.forPackage(""))
-//        .setScanners(
-//            new SubTypesScanner(),
-//            new TypeAnnotationsScanner(),
-//            new MethodAnnotationsScanner())
-//        .addClassLoader(classLoader);
-//    final Reflections reflectionToMerge = new Reflections(configurationBuilder);
-//    ReflectionsSingleton.REFLECTIONS.merge(reflectionToMerge);
-//  }
+
+  public static synchronized void activatePackages(String pkg) {
+    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+    reflectionsModel.rescann(DI.class.getClassLoader(), pkg);
+    bootstrapedNeeded = false;
+  }
+
+  public static synchronized void activatePackages(String pkg, URL... urls) {
+    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+    reflectionsModel.rescann(DI.class.getClassLoader(), pkg, urls);
+    bootstrapedNeeded = false;
+  }
+
+  public static synchronized void activatePackages(String pkg, Collection<URL> urls) {
+    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+    reflectionsModel.rescann(DI.class.getClassLoader(), pkg, urls);
+    bootstrapedNeeded = false;
+  }
+
+  public static synchronized void activatePackages(boolean parallelExecutors, String pkg) {
+    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+    reflectionsModel.setParallelExecutors(parallelExecutors);
+    reflectionsModel.rescann(DI.class.getClassLoader(), pkg);
+    bootstrapedNeeded = false;
+  }
+
+  public static synchronized void activatePackages(boolean parallelExecutors, String pkg, URL... urls) {
+    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+    reflectionsModel.setParallelExecutors(parallelExecutors);
+    reflectionsModel.rescann(DI.class.getClassLoader(), pkg, urls);
+    bootstrapedNeeded = false;
+  }
+
+  public static synchronized void activatePackages(boolean parallelExecutors, String pkg, Collection<URL> urls) {
+    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
+    reflectionsModel.setParallelExecutors(parallelExecutors);
+    reflectionsModel.rescann(DI.class.getClassLoader(), pkg, urls);
+    bootstrapedNeeded = false;
+  }
 
 
-  public synchronized <T> void activateDI(T instance) {
+  public static synchronized <T> void activateDI(T instance) {
+    if (bootstrapedNeeded) bootstrap();
     injectAttributes(instance);
     initialize(instance);
     //register at new Scope ?
   }
 
-  private <T> void injectAttributes(final T rootInstance) throws SecurityException {
+  private static <T> void injectAttributes(final T rootInstance) throws SecurityException {
     injectAttributesForClass(rootInstance.getClass(), rootInstance);
   }
 
 
-  private <T> void injectAttributesForClass(Class targetClass, T rootInstance) {
+  private static <T> void injectAttributesForClass(Class targetClass, T rootInstance) {
     Class<?> superclass = targetClass.getSuperclass();
     if (superclass != null) {
       injectAttributesForClass(superclass, rootInstance);
@@ -158,7 +200,7 @@ public class DI {
   }
 
 
-  private <T> T instantiate(Class<T> clazz) {
+  private static <T> T instantiate(Class<T> clazz) {
     //check scope -> Singleton
     //check scope -> ???
 
@@ -173,11 +215,11 @@ public class DI {
   }
 
   @Nullable
-  private <T> T createNewInstance(final Class interf, final Class clazz) {
+  private static <T> T createNewInstance(final Class interf, final Class clazz) {
     //Producer vorhanden?
 
     //kann ein Interface sein, oder eine Klasse von einem ClassResolver
-    final Set<Class<?>> typesAnnotatedWith = ReflectionsSingleton.REFLECTIONS.getTypesAnnotatedWith(Produces.class);
+    final Set<Class<?>> typesAnnotatedWith = reflectionsModel.getTypesAnnotatedWith(Produces.class);
 
     final Iterator<Class<?>> iterator = typesAnnotatedWith.iterator();
     while (iterator.hasNext()) {
@@ -240,14 +282,14 @@ public class DI {
     });
   }
 
-  private void initialize(Object instance) {
+  private static void initialize(Object instance) {
     Class<?> clazz = instance.getClass();
     invokeMethodWithAnnotation(clazz, instance, PostConstruct.class);
   }
 
-  private boolean isNotPrimitive(Class<?> type) {
-    return !type.isPrimitive();
-  }
+//  private boolean isNotPrimitive(Class<?> type) {
+//    return !type.isPrimitive();
+//  }
 
 
   private static void invokeMethodWithAnnotation(Class clazz, final Object instance,
@@ -274,5 +316,29 @@ public class DI {
     if (superclass != null) {
       invokeMethodWithAnnotation(superclass, instance, annotationClass);
     }
+  }
+
+
+  //delegator
+
+
+  public static <T> Set<Class<? extends T>> getSubTypesOf(final Class<T> type) {
+    return reflectionsModel.getSubTypesOf(type);
+  }
+
+  public static Set<Class<?>> getTypesAnnotatedWith(final Class<? extends Annotation> annotation) {
+    return reflectionsModel.getTypesAnnotatedWith(annotation);
+  }
+
+  public static Set<Class<?>> getTypesAnnotatedWith(final Class<? extends Annotation> annotation, final boolean honorInherited) {
+    return reflectionsModel.getTypesAnnotatedWith(annotation, honorInherited);
+  }
+
+  public static Set<Class<?>> getTypesAnnotatedWith(final Annotation annotation) {
+    return reflectionsModel.getTypesAnnotatedWith(annotation);
+  }
+
+  public static Set<Class<?>> getTypesAnnotatedWith(final Annotation annotation, final boolean honorInherited) {
+    return reflectionsModel.getTypesAnnotatedWith(annotation, honorInherited);
   }
 }

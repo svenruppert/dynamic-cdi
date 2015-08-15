@@ -20,7 +20,7 @@ public class ProxyTest001 {
     Assert.assertNotNull(instance);
     Assert.assertNull(instance.service);
 
-    DI.getInstance().activateDI(instance);
+    DI.activateDI(instance);
 
     Assert.assertNotNull(instance.service);
     Assert.assertTrue(java.lang.reflect.Proxy.isProxyClass(instance.service.getClass()));
@@ -38,7 +38,7 @@ public class ProxyTest001 {
     Assert.assertNotNull(instance);
     Assert.assertNull(instance.service);
 
-    DI.getInstance().activateDI(instance);
+    DI.activateDI(instance);
 
     Assert.assertNotNull(instance.service);
     Assert.assertFalse(java.lang.reflect.Proxy.isProxyClass(instance.service.getClass()));

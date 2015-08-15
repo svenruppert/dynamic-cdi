@@ -21,7 +21,7 @@ public class DDIServiceFactory<C> implements VirtualDynamicProxyInvocationHandle
       //TODO warum nicht hhier erst entscheiden welche impl es werden soll. ?
       newInstance = realClass.newInstance();
       //activate DDI
-      DI.getInstance().activateDI(newInstance);
+      DI.activateDI(newInstance);
     } catch (InstantiationException | IllegalAccessException e) {
       e.printStackTrace();
     }

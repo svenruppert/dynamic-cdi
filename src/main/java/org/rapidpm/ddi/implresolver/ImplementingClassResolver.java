@@ -1,6 +1,7 @@
 package org.rapidpm.ddi.implresolver;
 
-import org.rapidpm.ddi.reflections.ReflectionsSingleton;
+import org.rapidpm.ddi.DI;
+import org.rapidpm.ddi.reflections.ReflectionsModel;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -17,7 +18,7 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
 
   public Class<I> resolve(Class<I> interf) {
     if (interf.isInterface()) {
-      final Set<Class<? extends I>> subTypesOf = ReflectionsSingleton.REFLECTIONS.getSubTypesOf(interf);
+      final Set<Class<? extends I>> subTypesOf = DI.getSubTypesOf(interf);
       if (subTypesOf.isEmpty()) {
         //TODO scann for producer....
 //        throw new DDIModelException("could not find a subtype of " + interf);
@@ -25,7 +26,7 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
       } else if (subTypesOf.size() == 1) {
         return (Class<I>) subTypesOf.toArray()[0];
       } else {
-        final Set<Class<? extends ClassResolver>> subTypesOfClassResolver = ReflectionsSingleton.REFLECTIONS.getSubTypesOf(ClassResolver.class);
+        final Set<Class<? extends ClassResolver>> subTypesOfClassResolver = DI.getSubTypesOf(ClassResolver.class);
         final boolean remove = subTypesOfClassResolver.remove(ImplementingClassResolver.class);
 
 //        ClassResolver responsible for interface

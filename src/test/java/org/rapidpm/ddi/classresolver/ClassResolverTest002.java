@@ -20,7 +20,7 @@ public class ClassResolverTest002 {
     final BusinessModule businessModule = new BusinessModule();
 
     try {
-      DI.getInstance().activateDI(businessModule);
+      DI.activateDI(businessModule);
     } catch (Exception e) {
       final Class<? extends Exception> aClass = e.getClass();
       Assert.assertEquals(DDIModelException.class, aClass);

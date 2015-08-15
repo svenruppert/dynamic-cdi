@@ -51,7 +51,7 @@ public class ProxyTest003 {
   @Test
   public void test001() throws Exception {
     final BusinessModulMetrics demoLogic = new BusinessModulMetrics();
-    DI.getInstance().activateDI(demoLogic);
+    DI.activateDI(demoLogic);
 
     IntStream.range(0, 10_000_000).forEach(i -> {
       final String s = demoLogic.service.doWork(i+"");
@@ -74,7 +74,7 @@ public class ProxyTest003 {
   @Test
   public void test002() throws Exception {
     final BusinessModul demoLogic = new BusinessModul();
-    DI.getInstance().activateDI(demoLogic);
+    DI.activateDI(demoLogic);
 
     IntStream.range(0, 10_000_000).forEach(i -> {
       final String s = demoLogic.service.doWork(i+"");

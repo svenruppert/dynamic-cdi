@@ -17,7 +17,7 @@ public class ProducerTest002 {
   public void testProducer001() throws Exception {
     final BusinessModul businessModul = new BusinessModul();
     try {
-      DI.getInstance().activateDI(businessModul);
+      DI.activateDI(businessModul);
     } catch (Exception e) {
       final String msg = e.getMessage();
       Assert.assertTrue(msg.contains("to many producer methods found for interface"));

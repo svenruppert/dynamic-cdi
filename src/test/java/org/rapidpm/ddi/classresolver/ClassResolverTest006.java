@@ -18,7 +18,7 @@ public class ClassResolverTest006 {
 
     final BusinessModule businessModule = new BusinessModule();
     try {
-      DI.getInstance().activateDI(businessModule);
+      DI.activateDI(businessModule);
     } catch (DDIModelException e) {
       final String message = e.getMessage();
       System.out.println("message = " + message);

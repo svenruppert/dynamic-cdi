@@ -17,7 +17,7 @@ public class ProxyTest002 {
   @Test
   public void test001() throws Exception {
     final BusinessModul businessModul = new BusinessModul();
-    DI.getInstance().activateDI(businessModul);
+    DI.activateDI(businessModul);
 
     Assert.assertNotNull(businessModul);
     Assert.assertNotNull(businessModul.service);

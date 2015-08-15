@@ -16,7 +16,7 @@ public class ProducerTest001 {
   @Test
   public void testProducer001() throws Exception {
     final BusinessModul businessModul = new BusinessModul();
-    DI.getInstance().activateDI(businessModul);
+    DI.activateDI(businessModul);
 
     Assert.assertNotNull(businessModul);
     Assert.assertNotNull(businessModul.service);

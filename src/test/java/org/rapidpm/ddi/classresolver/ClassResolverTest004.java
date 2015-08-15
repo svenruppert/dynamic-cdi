@@ -19,7 +19,7 @@ public class ClassResolverTest004 {
 
     final BusinessModule businessModule = new BusinessModule();
     try {
-      DI.getInstance().activateDI(businessModule);
+      DI.activateDI(businessModule);
     } catch (DDIModelException e) {
       final String message = e.getMessage();
       Assert.assertTrue(message.contains("interface with multiple implementations and more as 1 ClassResolver"));
