@@ -17,14 +17,9 @@
 package org.rapidpm.ddi;
 
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
-import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.InstanceCreator;
-import org.rapidpm.ddi.producer.Producer;
-import org.rapidpm.ddi.producer.ProducerLocator;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
 import org.rapidpm.proxybuilder.VirtualProxyBuilder;
 import org.rapidpm.proxybuilder.type.virtual.Concurrency;
@@ -34,7 +29,6 @@ import org.rapidpm.proxybuilder.type.virtual.dynamic.ServiceStrategyFactoryNotTh
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Produces;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +38,6 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
 
 
