@@ -60,7 +60,16 @@
       <groupId>org.rapidpm.proxybuilder</groupId>
       <artifactId>rapidpm-proxybuilder-modules-builder</artifactId>
     </dependency>
-
+      <!--using Annotation Processing-->
+      <dependency>
+        <groupId>org.rapidpm.proxybuilder</groupId>
+        <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-processors</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm.proxybuilder</groupId>
+        <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-annotations</artifactId>
+      </dependency>
+      <!--using Annotation Processing-->
     <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>

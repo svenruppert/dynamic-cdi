@@ -17,11 +17,14 @@
 package org.rapidpm.ddi;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
 import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
+import org.rapidpm.ddi.producer.InstanceCreator;
 import org.rapidpm.ddi.producer.Producer;
+import org.rapidpm.ddi.producer.ProducerLocator;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
 import org.rapidpm.proxybuilder.VirtualProxyBuilder;
 import org.rapidpm.proxybuilder.type.virtual.Concurrency;
@@ -163,7 +166,7 @@ public class DI {
                 .build()
                 .make();
           } else {
-            value = instantiate(realClass);
+            value = new InstanceCreator().instantiate(realClass);
             activateDI(value); //rekursiver abstieg
           }
           if (concurrent || metrics || secure || logging) {
@@ -183,7 +186,7 @@ public class DI {
             value = virtualProxyBuilder.build();
           }
         } else {
-          value = instantiate(realClass);
+          value = new InstanceCreator().instantiate(realClass);
           activateDI(value); //rekursiver abstieg
         }
         //check Scope ....
@@ -200,72 +203,8 @@ public class DI {
   }
 
 
-  private static <T> T instantiate(Class<T> clazz) {
-    //check scope -> Singleton
-    //check scope -> ???
-
-    T newInstance;
-    if (clazz.isInterface()) {
-      final Class<T> resolve = new ImplementingClassResolver().resolve(clazz);
-      newInstance = createNewInstance(clazz, resolve);
-    } else {
-      newInstance = createNewInstance(clazz, clazz);
-    }
-    return newInstance;
-  }
-
-  @Nullable
-  private static <T> T createNewInstance(final Class interf, final Class clazz) {
-    //Producer vorhanden?
-
-    //kann ein Interface sein, oder eine Klasse von einem ClassResolver
-    final Set<Class<?>> typesAnnotatedWith = reflectionsModel.getTypesAnnotatedWith(Produces.class);
-
-    final Iterator<Class<?>> iterator = typesAnnotatedWith.iterator();
-    while (iterator.hasNext()) {
-      Class producerClass = iterator.next();
-      final Produces annotation = (Produces) producerClass.getAnnotation(Produces.class);
-      final Class value = annotation.value();
-      if (value == null) throw new DDIModelException("Producer without target Interface " + producerClass);
-      if (value.equals(interf)) {
-        //TODO logger
-      } else {
-        iterator.remove();
-      }
-    }
-
-//    if (interf.isInterface() && clazz.isInterface()) throw new DDIModelException("no producer found for the interface " + clazz);
-
-    if (typesAnnotatedWith.isEmpty()) {
-
-      if (clazz.isInterface()) {
-        throw new DDIModelException(" only interfaces found for " + interf);
-      } else {
-        final T newInstance;
-        try {
-          newInstance = (T) clazz.newInstance();
-          return newInstance;
-        } catch (InstantiationException | IllegalAccessException e) {
-          e.printStackTrace();
-          throw new DDIModelException(e);
-        }
-      }
-    } else if (typesAnnotatedWith.size() > 1) {
-      throw new DDIModelException(" to many producer methods found for " + interf + " - " + typesAnnotatedWith);
-    } else {
 
 
-      final Class cls = (Class) typesAnnotatedWith.toArray()[0];
-      try {
-        Producer<T> newInstance = (Producer<T>) cls.newInstance();
-        activateDI(newInstance);
-        return newInstance.create();
-      } catch (InstantiationException | IllegalAccessException e) {
-        e.printStackTrace();
-        throw new DDIModelException(e);
-      }
-    }
-  }
 
   private static void injectIntoField(final Field field, final Object instance, final Object target) {
     AccessController.doPrivileged((PrivilegedAction) () -> {

@@ -1,5 +1,6 @@
 package org.rapidpm.ddi;
 
+import org.rapidpm.ddi.producer.InstanceCreator;
 import org.rapidpm.proxybuilder.type.virtual.dynamic.VirtualDynamicProxyInvocationHandler;
 
 /**
@@ -15,17 +16,7 @@ public class DDIServiceFactory<C> implements VirtualDynamicProxyInvocationHandle
 
   @Override
   public C createInstance() {
-    C newInstance = null;
-    try {
-
-      //TODO warum nicht hhier erst entscheiden welche impl es werden soll. ?
-      newInstance = realClass.newInstance();
-      //activate DDI
-      DI.activateDI(newInstance);
-    } catch (InstantiationException | IllegalAccessException e) {
-      e.printStackTrace();
-    }
-    return newInstance;
+    return new InstanceCreator().instantiate(realClass);
   }
 }
 
