@@ -73,7 +73,7 @@ public class ProxyTest004Metrics {
     Assert.assertNotNull(histograms);
     Assert.assertFalse(histograms.isEmpty());
 
-    final Histogram histogram = histograms.get(Service.class.getSimpleName());
+    final Histogram histogram = histograms.get(Service.class.getSimpleName()+".doWork");
     final long count = histogram.getCount();
     Assert.assertTrue(count >= 1);
 

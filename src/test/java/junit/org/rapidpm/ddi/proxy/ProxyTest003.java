@@ -62,12 +62,12 @@ public class ProxyTest003 extends DDIBaseTest {
     final SortedMap<String, Histogram> histograms = MetricsRegistry.getInstance().getMetrics().getHistograms();
     Assert.assertNotNull(histograms);
     Assert.assertFalse(histograms.isEmpty());
-    Assert.assertTrue(histograms.containsKey(Service.class.getSimpleName()));
+    Assert.assertTrue(histograms.containsKey(Service.class.getSimpleName()+".doWork"));
 
-    final Histogram histogram = histograms.get(Service.class.getSimpleName());
+    final Histogram histogram = histograms.get(Service.class.getSimpleName()+".doWork");
     Assert.assertNotNull(histogram);
     Assert.assertNotNull(histogram.getSnapshot());
-    MetricsRegistry.getInstance().getMetrics().remove(Service.class.getSimpleName());
+    MetricsRegistry.getInstance().getMetrics().remove(Service.class.getSimpleName()+".doWork");
     System.out.println("s1 = " + s1);
 
   }

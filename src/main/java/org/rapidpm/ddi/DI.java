@@ -46,11 +46,6 @@ import java.util.Set;
  */
 public class DI {
 
-//  private static final DI INSTANCE = new DI();
-
-//  public static DI getInstance() {
-//    return INSTANCE;
-//  }
 
   public static void checkActiveModel() {
     //hole alle Felder die mit einem @Inject versehen sind.
