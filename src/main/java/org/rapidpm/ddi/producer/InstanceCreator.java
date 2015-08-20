@@ -1,6 +1,5 @@
 package org.rapidpm.ddi.producer;
 
-import org.jetbrains.annotations.Nullable;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.implresolver.DDIModelException;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
@@ -26,7 +25,6 @@ public class InstanceCreator {
     return newInstance;
   }
 
-  @Nullable
   private <T> T createNewInstance(final Class interf, final Class clazz) {
     //kann ein Interface sein, oder eine Klasse von einem ClassResolver
     final Set<Class<?>> typesAnnotatedWith = new ProducerLocator().findProducersForInterface(interf);

@@ -1,6 +1,5 @@
 package org.rapidpm.ddi.reflections;
 
-import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.Scanner;
@@ -60,7 +59,6 @@ public class ReflectionsModel {
     }
   }
 
-  @NotNull
   private ConfigurationBuilder createConfigurationBuilder() {
     final ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
     configurationBuilder.setUrls(ClasspathHelper.forJavaClassPath());

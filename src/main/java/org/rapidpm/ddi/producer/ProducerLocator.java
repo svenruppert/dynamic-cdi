@@ -1,6 +1,5 @@
 package org.rapidpm.ddi.producer;
 
-import org.jetbrains.annotations.NotNull;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.implresolver.DDIModelException;
 
@@ -13,7 +12,6 @@ import java.util.Set;
  */
 public class ProducerLocator {
 
-  @NotNull
   public Set<Class<?>> findProducersForInterface(final Class interf) {
     final Set<Class<?>> typesAnnotatedWith = DI.getTypesAnnotatedWith(Produces.class);
 

@@ -1,6 +1,5 @@
 package junit.org.rapidpm.ddi.proxy.v004;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
@@ -106,7 +105,6 @@ public class ProxyTest004Virtual {
 
   }
 
-  @NotNull
   private Optional<Service> checkinternalrealService(final Service service) throws NoSuchFieldException, IllegalAccessException {
     Assert.assertTrue(java.lang.reflect.Proxy.isProxyClass(service.getClass()));
 
