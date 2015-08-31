@@ -58,9 +58,11 @@ public class DI {
   private static ReflectionsModel reflectionsModel = new ReflectionsModel();
   private static boolean bootstrapedNeeded = true;
 
-  public static void bootstrap() {
-    reflectionsModel = new ReflectionsModel();
-    reflectionsModel.rescann("");
+  public static synchronized void bootstrap() {
+//    reflectionsModel = new ReflectionsModel();
+    if (bootstrapedNeeded) {
+      reflectionsModel.rescann("");
+    }
     bootstrapedNeeded = false;
   }
 
@@ -69,39 +71,33 @@ public class DI {
 
 
   public static synchronized void activatePackages(String pkg) {
-//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
     reflectionsModel.rescann(pkg);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, URL... urls) {
-//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
     reflectionsModel.rescann(pkg, urls);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, Collection<URL> urls) {
-//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
     reflectionsModel.rescann(pkg, urls);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg) {
-//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, URL... urls) {
-//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, Collection<URL> urls) {
-//    if (bootstrapedNeeded) reflectionsModel = new ReflectionsModel();
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
     bootstrapedNeeded = false;
@@ -189,9 +185,6 @@ public class DI {
       }
     }
   }
-
-
-
 
 
   private static void injectIntoField(final Field field, final Object instance, final Object target) {
