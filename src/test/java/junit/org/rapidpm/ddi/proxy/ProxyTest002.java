@@ -16,7 +16,18 @@ public class ProxyTest002 extends DDIBaseTest {
 
   @Test
   public void test001() throws Exception {
+    DI.activatePackages("junit.org.rapidpm");
     final BusinessModul businessModul = new BusinessModul();
+    DI.activateDI(businessModul);
+
+    Assert.assertNotNull(businessModul);
+    Assert.assertNotNull(businessModul.service);
+  }
+
+  @Test
+  public void test002() throws Exception {
+    DI.activatePackages("junit.org.rapidpm");
+    final BusinessModulSecure businessModul = new BusinessModulSecure();
     DI.activateDI(businessModul);
 
     Assert.assertNotNull(businessModul);

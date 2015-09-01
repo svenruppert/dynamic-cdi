@@ -70,6 +70,11 @@ public class DI {
   }
 
 
+  public static synchronized void clearReflectionModel(){
+    reflectionsModel = new ReflectionsModel();
+    bootstrapedNeeded = true;
+  }
+
   public static synchronized void activatePackages(String pkg) {
     reflectionsModel.rescann(pkg);
     bootstrapedNeeded = false;
@@ -128,6 +133,7 @@ public class DI {
       if (field.isAnnotationPresent(Inject.class)) {
         Class type = field.getType();
         final Class realClass = new ImplementingClassResolver().resolve(type);
+//class or producer or producer for interface ??
 
         Object value; //Attribute Type for inject
         if (field.isAnnotationPresent(Proxy.class)) {

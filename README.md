@@ -52,3 +52,51 @@ If you are using maven you could add the following to your settings.xml to get t
       </repositories>
     </profile>
 ```
+
+## How DDI will resolve the coresponding Implementation?
+
+if you write ``@Inject Interface``
+
+1 ClassResolver means: 1 ClassResolver responsible for the given Interface. You can have n ClassResolver inside your classpath.
+But for every Interface only one that is responsible for it.
+
+* Interface , no Impl. -> Exception
+* Interface , no Impl., 1 Producer for the Interface  -> Producer for the Interface will be used
+
+* Interface , 1 Impl. -> will use the Impl.
+* Interface , 1 Impl., 1 Producer for Impl. -> Producer for the Impl will be used
+* Interface , 1 Impl., n Producer for Impl. -> Exception
+* Interface , 1 Impl., 1 Producer for Interface -> Producer for the Interface will be used
+* Interface , 1 Impl., n Producer for Interface -> Exception
+
+* Interface , 1 Impl., 1 Producer for Interface , 1 Producer for Impl. -> Exception
+
+* Interface , n Impl. -> Exception
+* Interface , n Impl., 1 responsible ClassResolver -> result of the ClassResolver will be used
+* Interface , n Impl., 1 Producer for Interface -> Producer for the Interface will be used
+* Interface , n Impl., 1-n Producer for Impl. -> Exception
+
+* Interface , n Impl., 1 responsible ClassResolver, 1 Producer for Interface -> Producer for the Interface will be used
+* Interface , n Impl., 1 responsible ClassResolver, 1-n Producer for Impl. -> will use the resolved Class or corresponding Producer if available
+* Interface , n Impl., n responsible ClassResolver -> Exception
+
+
+if you write ``@Inject Impl.``
+
+* Impl. -> will use the Impl.
+* Impl., 1 Producer -> will use the Producer for the Impl.
+
+You can combine all with a ``@Proxy(virtual=true)`` and it will use the same solution, but only as VirtualProxy.
+
+
+
+
+## How to write Mocks for Interfaces ?
+If you want to write a Mock for an jUnitTest, use the DynamicObjectAdapterBuilder for the Interface and **null** for the realSubject.
+
+```java
+
+
+```
+
+

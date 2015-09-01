@@ -33,7 +33,9 @@ public class ProxyTest004Virtual {
 
   @Test(expected = DDIModelException.class)
   public void test001() throws Exception {
+    DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
+//    DI.activatePackages("junit.org.rapidpm"); //expliziet deactivierte pkgs
     try {
       final BusinessModule001 businessModule001 = DI.activateDI(new BusinessModule001());
     } catch (Exception e) {
@@ -50,8 +52,7 @@ public class ProxyTest004Virtual {
 
   @Test
   public void test002() throws Exception {
-    DI.activatePackages("org.rapidpm");
-    DI.activatePackages("junit.org.rapidpm");
+    DI.activatePackages("junit.org.rapidpm"); //expliziet activierte pkgs
     final BusinessModule001 businessModule001 = DI.activateDI(new BusinessModule001());
     Assert.assertNotNull(businessModule001);
     Assert.assertNotNull(businessModule001.service);

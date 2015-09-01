@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class ProducerLocator {
 
-  public Set<Class<?>> findProducersForInterface(final Class interf) {
+  public Set<Class<?>> findProducersForInterface(final Class clazzOrInterf) {
     final Set<Class<?>> typesAnnotatedWith = DI.getTypesAnnotatedWith(Produces.class);
 
     final Iterator<Class<?>> iterator = typesAnnotatedWith.iterator();
@@ -21,7 +21,7 @@ public class ProducerLocator {
       final Produces annotation = (Produces) producerClass.getAnnotation(Produces.class);
       final Class value = annotation.value();
       if (value == null) throw new DDIModelException("Producer without target Interface " + producerClass);
-      if (value.equals(interf)) {
+      if (value.equals(clazzOrInterf)) {
         //TODO logger
       } else {
         iterator.remove();

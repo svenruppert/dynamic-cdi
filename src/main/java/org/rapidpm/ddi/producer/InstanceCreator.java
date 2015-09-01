@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class InstanceCreator {
 
-  public  <T> T instantiate(Class<T> clazz) {
+  public <T> T instantiate(Class<T> clazz) {
     //check scope -> Singleton
     //check scope -> ???
 
@@ -25,10 +25,22 @@ public class InstanceCreator {
     return newInstance;
   }
 
-  private <T> T createNewInstance(final Class interf, final Class clazz) {
+  private <T> T createNewInstance(final Class classOrInterf, final Class clazz) {
     //kann ein Interface sein, oder eine Klasse von einem ClassResolver
-    final Set<Class<?>> typesAnnotatedWith = new ProducerLocator().findProducersForInterface(interf);
-//    if (interf.isInterface() && clazz.isInterface()) throw new DDIModelException("no producer found for the interface " + clazz);
+    final Set<Class<?>> typesAnnotatedWith;
+
+    //explicite all combinations
+    if (classOrInterf.isInterface() && !clazz.isInterface()) {
+      typesAnnotatedWith = new ProducerLocator().findProducersForInterface(clazz);
+    } else if( ! classOrInterf.isInterface() && clazz.isInterface()) {
+      typesAnnotatedWith = new ProducerLocator().findProducersForInterface(classOrInterf);
+    } else if(! classOrInterf.isInterface() && ! clazz.isInterface() ){
+      typesAnnotatedWith = new ProducerLocator().findProducersForInterface(classOrInterf);
+    } else { // classOrInterf.isInterface() &&  clazz.isInterface()
+      typesAnnotatedWith = new ProducerLocator().findProducersForInterface(classOrInterf);
+    }
+
+//    if (classOrInterf.isInterface() && clazz.isInterface()) throw new DDIModelException("no producer found for the interface " + clazz);
 
     if (typesAnnotatedWith.size() == 1) {
       final Class cls = (Class) typesAnnotatedWith.toArray()[0];
@@ -41,11 +53,11 @@ public class InstanceCreator {
         throw new DDIModelException(e);
       }
     } else if (typesAnnotatedWith.size() > 1) {
-      throw new DDIModelException(" to many producer methods found for " + interf + " - " + typesAnnotatedWith);
+      throw new DDIModelException(" to many producer methods found for " + classOrInterf + " - " + typesAnnotatedWith);
     } else if (typesAnnotatedWith.isEmpty()) {
 
       if (clazz.isInterface()) {
-        throw new DDIModelException(" only interfaces found for " + interf);
+        throw new DDIModelException(" only interfaces found for " + classOrInterf);
       } else {
         final T newInstance;
         try {

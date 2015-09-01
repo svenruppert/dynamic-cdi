@@ -14,6 +14,7 @@ public class ReflectionModelTest001 {
 
   @Test(expected = DDIModelException.class)
   public void test001() throws Exception {
+    DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
     try {
       DI.activateDI(new BusinessModule());
