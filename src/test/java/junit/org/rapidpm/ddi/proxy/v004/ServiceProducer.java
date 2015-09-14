@@ -10,10 +10,10 @@ import javax.inject.Produces;
 @Produces(Service.class)
 public class ServiceProducer implements Producer<Service> {
 
-  public Service create(){
+  public Service create() {
     return ServiceAdapterBuilder.newBuilder()
         .setOriginal(null)
-        .withDoWork(txt -> "mocked-"+txt)
+        .withDoWork(txt -> "mocked-" + txt)
         .buildForTarget(Service.class);
   }
 }

@@ -23,30 +23,28 @@ public class ProducerTest001 extends DDIBaseTest {
     Assert.assertNotNull(businessModul);
     Assert.assertNotNull(businessModul.service);
     Assert.assertNotNull(businessModul.service.workOn("AEAE"));
-    Assert.assertEquals("AEAE_"+ServiceProducer.class.getSimpleName(), businessModul.service.workOn("AEAE"));
+    Assert.assertEquals("AEAE_" + ServiceProducer.class.getSimpleName(), businessModul.service.workOn("AEAE"));
 
-  }
-
-
-  @Produces(Service.class)
-  public static class ServiceProducer implements Producer<Service> {
-    public Service create(){
-      return txt -> txt + "_" + ServiceProducer.class.getSimpleName();
-    }
-  }
-
-
-  public static class BusinessModul{
-    @Inject Service service;
-
-    public String doIt(String txt){
-      return service.workOn(txt);
-    }
   }
 
 
   public interface Service {
     String workOn(String txt);
+  }
+
+  @Produces(Service.class)
+  public static class ServiceProducer implements Producer<Service> {
+    public Service create() {
+      return txt -> txt + "_" + ServiceProducer.class.getSimpleName();
+    }
+  }
+
+  public static class BusinessModul {
+    @Inject Service service;
+
+    public String doIt(String txt) {
+      return service.workOn(txt);
+    }
   }
 
 //  public static class ServiceImplA implements Service {
@@ -62,7 +60,6 @@ public class ProducerTest001 extends DDIBaseTest {
 //      return txt + "_" + this.getClass().getSimpleName();
 //    }
 //  }
-
 
 
 }

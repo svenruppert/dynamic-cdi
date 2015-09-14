@@ -37,17 +37,16 @@ public class ClassResolverTest008 {
   }
 
 
+  public interface Service {
+    String doWork(String str);
+  }
+
   public static class BusinessModulVirtual {
     @Inject @Proxy(virtual = true) Service service;
 
     public String work(String str) {
       return service.doWork(str);
     }
-  }
-
-
-  public interface Service {
-    String doWork(String str);
   }
 
   public static class ServiceA implements Service {

@@ -19,18 +19,6 @@ import java.util.Optional;
  */
 public class ProxyTest004Virtual {
 
-  public static class BusinessModule001 {
-    @Inject Service service;
-
-    boolean post = false;
-
-    @PostConstruct
-    public void postconstruct() {
-      post = true;
-    }
-  }
-
-
   @Test(expected = DDIModelException.class)
   public void test001() throws Exception {
     DI.clearReflectionModel();
@@ -49,7 +37,6 @@ public class ProxyTest004Virtual {
     }
   }
 
-
   @Test
   public void test002() throws Exception {
     DI.activatePackages("junit.org.rapidpm"); //expliziet activierte pkgs
@@ -58,19 +45,6 @@ public class ProxyTest004Virtual {
     Assert.assertNotNull(businessModule001.service);
     Assert.assertTrue(businessModule001.post);
   }
-
-
-  public static class BusinessModule002 {
-    @Inject @Proxy(virtual = true) Service service;
-
-    boolean post = false;
-
-    @PostConstruct
-    public void postconstruct() {
-      post = true;
-    }
-  }
-
 
   @Test
   public void test003() throws Exception {
@@ -85,7 +59,6 @@ public class ProxyTest004Virtual {
     Assert.assertNotNull(service);
     Assert.assertTrue(java.lang.reflect.Proxy.isProxyClass(service.getClass()));
   }
-
 
   @Test
   public void test004() throws Exception {
@@ -127,6 +100,28 @@ public class ProxyTest004Virtual {
     final Optional result = Optional.ofNullable(realServiceField.get(realServiceStrategieFactory));
     realServiceField.setAccessible(accessible1);
     return result;
+  }
+
+  public static class BusinessModule001 {
+    @Inject Service service;
+
+    boolean post = false;
+
+    @PostConstruct
+    public void postconstruct() {
+      post = true;
+    }
+  }
+
+  public static class BusinessModule002 {
+    @Inject @Proxy(virtual = true) Service service;
+
+    boolean post = false;
+
+    @PostConstruct
+    public void postconstruct() {
+      post = true;
+    }
   }
 
 

@@ -43,31 +43,36 @@ public class DITest004 extends DDIBaseTest {
     Assert.assertEquals("SubSubService test", service.work("test"));
   }
 
-  public static class Service{
+  public static class Service {
     @Inject SubService subService;
-    public String work(String txt){
+    boolean postconstructed = false;
+
+    public String work(String txt) {
       return subService.work(txt);
     }
-    boolean postconstructed = false;
+
     @PostConstruct
-    public void postconstruct(){
+    public void postconstruct() {
       postconstructed = true;
     }
   }
 
-  public static class SubService{
+  public static class SubService {
     @Inject SubSubService subSubService;
-    public String work(final String txt){
+    boolean postconstructed = false;
+
+    public String work(final String txt) {
       return subSubService.work(txt);
     }
-    boolean postconstructed = false;
+
     @PostConstruct
-    public void postconstruct(){
+    public void postconstruct() {
       postconstructed = true;
     }
   }
-  public static class SubSubService{
-    public String work(final String txt){
+
+  public static class SubSubService {
+    public String work(final String txt) {
       return "SubSubService " + txt;
     }
   }

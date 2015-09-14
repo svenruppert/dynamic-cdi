@@ -53,7 +53,7 @@ If you are using maven you could add the following to your settings.xml to get t
     </profile>
 ```
 
-## How DDI will resolve the coresponding Implementation?
+## How DDI will resolve the corresponding Implementation?
 
 if you write ``@Inject Interface``
 

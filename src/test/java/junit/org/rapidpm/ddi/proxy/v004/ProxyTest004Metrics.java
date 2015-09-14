@@ -23,6 +23,7 @@ import java.util.stream.IntStream;
 public class ProxyTest004Metrics {
 
 
+  String s1;
   private ConsoleReporter reporter;
 
   @Before
@@ -41,19 +42,6 @@ public class ProxyTest004Metrics {
 
   }
 
-
-  public static class BusinessModule003 {
-    @Inject @Proxy(metrics = true) Service service;
-
-    boolean post = false;
-
-    @PostConstruct
-    public void postconstruct() {
-      post = true;
-    }
-  }
-
-
   @Test
   public void test004() throws Exception {
     DI.activatePackages("org.rapidpm");
@@ -65,7 +53,7 @@ public class ProxyTest004Metrics {
     Assert.assertTrue(businessModule001.post);
 
     IntStream.range(0, 10_000_000).forEach(i -> {
-      final String s = service.doWork(i+"");
+      final String s = service.doWork(i + "");
       workingHole(s.toUpperCase());
     });
 
@@ -73,7 +61,7 @@ public class ProxyTest004Metrics {
     Assert.assertNotNull(histograms);
     Assert.assertFalse(histograms.isEmpty());
 
-    final Histogram histogram = histograms.get(Service.class.getSimpleName()+".doWork");
+    final Histogram histogram = histograms.get(Service.class.getSimpleName() + ".doWork");
     final long count = histogram.getCount();
     Assert.assertTrue(count >= 1);
 
@@ -82,9 +70,20 @@ public class ProxyTest004Metrics {
 
 
   }
-  String s1;
+
   private void workingHole(String s) {
     s1 = s;
+  }
+
+  public static class BusinessModule003 {
+    @Inject @Proxy(metrics = true) Service service;
+
+    boolean post = false;
+
+    @PostConstruct
+    public void postconstruct() {
+      post = true;
+    }
   }
 
 

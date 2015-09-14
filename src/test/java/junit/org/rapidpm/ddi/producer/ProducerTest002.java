@@ -24,38 +24,36 @@ public class ProducerTest002 extends DDIBaseTest {
     } catch (Exception e) {
       final String msg = e.getMessage();
       Assert.assertTrue(msg.contains("to many producer methods found for interface"));
-       throw e;
+      throw e;
     }
 
   }
 
 
+  public interface Service {
+    String workOn(String txt);
+  }
+
   @Produces(Service.class)
   public static class ServiceProducer01 implements Producer<Service> {
-    public Service create(){
+    public Service create() {
       return txt -> txt + "_" + ServiceProducer01.class.getSimpleName();
     }
   }
 
   @Produces(Service.class)
   public static class ServiceProducer02 implements Producer<Service> {
-    public Service create(){
+    public Service create() {
       return txt -> txt + "_" + ServiceProducer01.class.getSimpleName();
     }
   }
 
-
-  public static class BusinessModul{
+  public static class BusinessModul {
     @Inject Service service;
 
-    public String doIt(String txt){
+    public String doIt(String txt) {
       return service.workOn(txt);
     }
-  }
-
-
-  public interface Service {
-    String workOn(String txt);
   }
 
 }

@@ -37,6 +37,10 @@ public class ClassResolverTest005 extends DDIBaseTest {
 
   }
 
+  public interface Service {
+    String work(String txt);
+  }
+
   @ResponsibleForInterface(Service.class)
   public static class ServiceClassResolverA implements ClassResolver<Service> {
     @Override
@@ -52,7 +56,6 @@ public class ClassResolverTest005 extends DDIBaseTest {
     }
   }
 
-
   public static class BusinessModule {
     @Inject Service service;
 
@@ -60,12 +63,6 @@ public class ClassResolverTest005 extends DDIBaseTest {
       return service.work(txt);
     }
   }
-
-
-  public interface Service {
-    String work(String txt);
-  }
-
 
   public static class ServiceImplA implements Service {
     public String work(String txt) {

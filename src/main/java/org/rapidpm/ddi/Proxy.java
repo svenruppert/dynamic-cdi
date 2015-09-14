@@ -13,11 +13,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Proxy {
 
   boolean virtual() default false;
-  boolean concurrent() default false;
-  boolean metrics() default false;
-  boolean secure() default false;
-  boolean logging() default false;
 
+  boolean concurrent() default false;
+
+  boolean metrics() default false;
+
+  boolean secure() default false;
+
+  boolean logging() default false;
 
 
 }

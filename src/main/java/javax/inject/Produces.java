@@ -21,10 +21,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.TYPE;
 
 /**
- *
  * Used to identify that a Producer will be used.
  *
  * Only one for each interface is allowed with the combination
@@ -37,5 +36,5 @@ import static java.lang.annotation.ElementType.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Produces {
-  Class value() ;
+  Class value();
 }

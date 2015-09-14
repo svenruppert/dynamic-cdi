@@ -33,6 +33,14 @@ public class ClassResolverTest002 extends DDIBaseTest {
     }
   }
 
+  public interface Service {
+    String work(String txt);
+
+    SubService getSubService();
+
+    boolean isPostconstructed();
+  }
+
   @ResponsibleForInterface(Service.class)
   public static class ServiceClassResolverA implements ClassResolver<Service> {
     @Override
@@ -49,7 +57,6 @@ public class ClassResolverTest002 extends DDIBaseTest {
     }
   }
 
-
   public static class BusinessModule {
     @Inject Service service;
 
@@ -58,69 +65,59 @@ public class ClassResolverTest002 extends DDIBaseTest {
     }
   }
 
-
-  public interface Service {
-    String work(String txt);
-    SubService getSubService();
-    boolean isPostconstructed();
-  }
-
   public static class ServiceImplA implements Service {
     @Inject SubService subService;
+    boolean postconstructed = false;
 
     public String work(String txt) {
       return subService.work(txt);
-    }
-
-    @Override
+    }    @Override
     public SubService getSubService() {
       return subService;
-    }
-
-    boolean postconstructed = false;
-
-    public boolean isPostconstructed() {
-      return postconstructed;
     }
 
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
     }
+
+    public boolean isPostconstructed() {
+      return postconstructed;
+    }
+
+
   }
 
   public static class ServiceImplB implements Service {
     @Inject SubService subService;
-
-    public String work(String txt) {
+    boolean postconstructed = false;    public String work(String txt) {
       return subService.work(txt);
-    }
-
-    @Override
-    public SubService getSubService() {
-      return subService;
-    }
-
-    boolean postconstructed = false;
-
-    public boolean isPostconstructed() {
-      return postconstructed;
     }
 
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
+    }    @Override
+    public SubService getSubService() {
+      return subService;
     }
+
+
+
+    public boolean isPostconstructed() {
+      return postconstructed;
+    }
+
+
   }
 
   public static class SubService {
     @Inject SubSubService subSubService;
+    boolean postconstructed = false;
 
     public String work(final String txt) {
       return subSubService.work(txt);
     }
-
-    boolean postconstructed = false;
 
     public boolean isPostconstructed() {
       return postconstructed;

@@ -22,12 +22,13 @@ import java.util.stream.IntStream;
  */
 public class ProxyTest003 extends DDIBaseTest {
 
+  String s1;
   private ConsoleReporter reporter;
 
   @Before
   public void setUp() throws Exception {
     final MetricRegistry metrics = MetricsRegistry.getInstance().getMetrics();
-     reporter = ConsoleReporter.forRegistry(metrics)
+    reporter = ConsoleReporter.forRegistry(metrics)
         .convertRatesTo(TimeUnit.NANOSECONDS)
         .convertDurationsTo(TimeUnit.MILLISECONDS)
         .build();
@@ -40,36 +41,34 @@ public class ProxyTest003 extends DDIBaseTest {
 
   }
 
-  String s1;
-  private void workingHole(String s) {
-    s1 = s;
-  }
-
-
-  // tests
-
-
   @Test
   public void test001() throws Exception {
     final BusinessModulMetrics demoLogic = new BusinessModulMetrics();
     DI.activateDI(demoLogic);
 
     IntStream.range(0, 10_000_000).forEach(i -> {
-      final String s = demoLogic.service.doWork(i+"");
+      final String s = demoLogic.service.doWork(i + "");
       workingHole(s.toUpperCase());
     });
 
     final SortedMap<String, Histogram> histograms = MetricsRegistry.getInstance().getMetrics().getHistograms();
     Assert.assertNotNull(histograms);
     Assert.assertFalse(histograms.isEmpty());
-    Assert.assertTrue(histograms.containsKey(Service.class.getSimpleName()+".doWork"));
+    Assert.assertTrue(histograms.containsKey(Service.class.getSimpleName() + ".doWork"));
 
-    final Histogram histogram = histograms.get(Service.class.getSimpleName()+".doWork");
+    final Histogram histogram = histograms.get(Service.class.getSimpleName() + ".doWork");
     Assert.assertNotNull(histogram);
     Assert.assertNotNull(histogram.getSnapshot());
-    MetricsRegistry.getInstance().getMetrics().remove(Service.class.getSimpleName()+".doWork");
+    MetricsRegistry.getInstance().getMetrics().remove(Service.class.getSimpleName() + ".doWork");
     System.out.println("s1 = " + s1);
 
+  }
+
+
+  // tests
+
+  private void workingHole(String s) {
+    s1 = s;
   }
 
   @Test
@@ -78,7 +77,7 @@ public class ProxyTest003 extends DDIBaseTest {
     DI.activateDI(demoLogic);
 
     IntStream.range(0, 10_000_000).forEach(i -> {
-      final String s = demoLogic.service.doWork(i+"");
+      final String s = demoLogic.service.doWork(i + "");
       workingHole(s.toUpperCase());
     });
 
@@ -90,22 +89,24 @@ public class ProxyTest003 extends DDIBaseTest {
 
   }
 
-  public static class BusinessModulMetrics{
-    @Inject @Proxy(metrics = true) Service service;
-    public String work(String str){
-      return service.doWork(str);
-    }
-  }
-
-  public static class BusinessModul{
-    @Inject @Proxy(metrics = false) Service service;
-    public String work(String str){
-      return service.doWork(str);
-    }
-  }
-
   public interface Service {
     String doWork(String str);
+  }
+
+  public static class BusinessModulMetrics {
+    @Inject @Proxy(metrics = true) Service service;
+
+    public String work(String str) {
+      return service.doWork(str);
+    }
+  }
+
+  public static class BusinessModul {
+    @Inject @Proxy(metrics = false) Service service;
+
+    public String work(String str) {
+      return service.doWork(str);
+    }
   }
 
   public static class ServiceA implements Service {

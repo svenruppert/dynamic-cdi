@@ -44,14 +44,6 @@ public class ReflectionsModel {
     this.parallelExecutors = parallelExecutors;
   }
 
-  private Scanner[] createScanners() {
-    Scanner[] sccannerArray = new Scanner[3];
-    sccannerArray[0] = new SubTypesScanner();
-    sccannerArray[1] = new TypeAnnotationsScanner();
-    sccannerArray[2] = new MethodAnnotationsScanner();
-    return sccannerArray;
-  }
-
   public void rescann() {
     synchronized (obj) {
       reflections.merge(new Reflections(createConfigurationBuilder()
@@ -64,6 +56,14 @@ public class ReflectionsModel {
     configurationBuilder.setUrls(ClasspathHelper.forJavaClassPath());
     if (parallelExecutors) return configurationBuilder.useParallelExecutor();
     else return configurationBuilder;
+  }
+
+  private Scanner[] createScanners() {
+    Scanner[] sccannerArray = new Scanner[3];
+    sccannerArray[0] = new SubTypesScanner();
+    sccannerArray[1] = new TypeAnnotationsScanner();
+    sccannerArray[2] = new MethodAnnotationsScanner();
+    return sccannerArray;
   }
 
   public void rescann(URL... urls) {

@@ -16,7 +16,8 @@ public class DDIServiceFactory<C> implements VirtualDynamicProxyInvocationHandle
 
   @Override
   public C createInstance() {
-    return new InstanceCreator().instantiate(realClass);
+    final C instantiate = new InstanceCreator().instantiate(realClass);
+    return instantiate;
   }
 }
 

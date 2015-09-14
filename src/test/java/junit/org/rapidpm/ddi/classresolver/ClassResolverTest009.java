@@ -49,22 +49,24 @@ public class ClassResolverTest009 {
   }
 
 
-  public static class BusinessModul {
-    @Inject  Service service;
-    public String work(String str) {
-      return service.doWork(str);
-    }
-  }
-  public static class BusinessModulVirtual {
-    @Inject  @Proxy(virtual = true) Service service;
-    public String work(String str) {
-      return service.doWork(str);
-    }
-  }
-
-
   public interface Service {
     String doWork(String str);
+  }
+
+  public static class BusinessModul {
+    @Inject Service service;
+
+    public String work(String str) {
+      return service.doWork(str);
+    }
+  }
+
+  public static class BusinessModulVirtual {
+    @Inject @Proxy(virtual = true) Service service;
+
+    public String work(String str) {
+      return service.doWork(str);
+    }
   }
 
   public static class ServiceA implements Service {
@@ -81,7 +83,7 @@ public class ClassResolverTest009 {
 
 
   @Produces(Service.class)
-  public static class ServiceProducer implements Producer<Service>{
+  public static class ServiceProducer implements Producer<Service> {
     @Override
     public Service create() {
       return new Service() { //this is a implementation of the Interface...

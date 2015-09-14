@@ -32,16 +32,13 @@ public class InstanceCreator {
     //explicite all combinations
     if (classOrInterf.isInterface() && !clazz.isInterface()) {
       typesAnnotatedWith = new ProducerLocator().findProducersForInterface(clazz);
-    } else if( ! classOrInterf.isInterface() && clazz.isInterface()) {
+    } else if (!classOrInterf.isInterface() && clazz.isInterface()) {
       typesAnnotatedWith = new ProducerLocator().findProducersForInterface(classOrInterf);
-    } else if(! classOrInterf.isInterface() && ! clazz.isInterface() ){
+    } else if (!classOrInterf.isInterface() && !clazz.isInterface()) {
       typesAnnotatedWith = new ProducerLocator().findProducersForInterface(classOrInterf);
     } else { // classOrInterf.isInterface() &&  clazz.isInterface()
       typesAnnotatedWith = new ProducerLocator().findProducersForInterface(classOrInterf);
     }
-
-//    if (classOrInterf.isInterface() && clazz.isInterface()) throw new DDIModelException("no producer found for the interface " + clazz);
-
     if (typesAnnotatedWith.size() == 1) {
       final Class cls = (Class) typesAnnotatedWith.toArray()[0];
       try {
@@ -62,6 +59,7 @@ public class InstanceCreator {
         final T newInstance;
         try {
           newInstance = (T) clazz.newInstance();
+          DI.activateDI(newInstance);
           return newInstance;
         } catch (InstantiationException | IllegalAccessException e) {
           e.printStackTrace();

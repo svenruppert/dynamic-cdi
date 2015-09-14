@@ -40,22 +40,44 @@ public class ReflectionUtilsTest001 {
   }
 
 
-  public interface Service { }
+  public interface Service {
+  }
 
-  public interface ServiceA extends Service { }
-  public interface ServiceB extends ServiceA { }
-  public static class ServiceImplA implements Service { }
-  public static class ServiceImplB implements ServiceA { }
-  public static class ServiceImplAB extends ServiceImplA { }
-  public static class ServiceImplBB extends ServiceImplB { }
+  public interface ServiceA extends Service {
+  }
 
-  public static class A{}
-  public static class B extends A implements Service{}
-  public static class C extends B {}
-  public static class D extends A implements ServiceA{}
-  public static class E extends A implements ServiceB{}
+  public interface ServiceB extends ServiceA {
+  }
 
-  public static class F extends ServiceImplAB{}
+  public static class ServiceImplA implements Service {
+  }
+
+  public static class ServiceImplB implements ServiceA {
+  }
+
+  public static class ServiceImplAB extends ServiceImplA {
+  }
+
+  public static class ServiceImplBB extends ServiceImplB {
+  }
+
+  public static class A {
+  }
+
+  public static class B extends A implements Service {
+  }
+
+  public static class C extends B {
+  }
+
+  public static class D extends A implements ServiceA {
+  }
+
+  public static class E extends A implements ServiceB {
+  }
+
+  public static class F extends ServiceImplAB {
+  }
 
 
 }

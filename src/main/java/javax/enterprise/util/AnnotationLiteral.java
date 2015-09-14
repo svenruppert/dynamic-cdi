@@ -27,17 +27,6 @@ public abstract class AnnotationLiteral<T extends Annotation> implements Annotat
     }
   }
 
-  private Method[] getMembers() {
-    if (members == null) {
-      members = annotationType().getDeclaredMethods();
-      if (members.length > 0 && !annotationType().isAssignableFrom(this.getClass())) {
-        throw new RuntimeException(getClass() + " does not implement the annotation type with members "
-            + annotationType().getName());
-      }
-    }
-    return members;
-  }
-
   private static Class<?> getAnnotationLiteralSubclass(Class<?> clazz) {
     Class<?> superclass = clazz.getSuperclass();
     if (superclass.equals(AnnotationLiteral.class)) {
@@ -61,6 +50,43 @@ public abstract class AnnotationLiteral<T extends Annotation> implements Annotat
     return null;
   }
 
+  private static Object getMemberValue(Method member, Annotation instance) {
+    Object value = invoke(member, instance);
+    if (value == null) {
+      throw new IllegalArgumentException("Annotation member value " + instance.getClass().getName() + "."
+          + member.getName() + " must not be null");
+    }
+    return value;
+  }
+
+  private static Object invoke(Method method, Object instance) {
+    try {
+      if (!method.isAccessible())
+        method.setAccessible(true);
+      return method.invoke(instance);
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException("Error checking value of member method " + method.getName() + " on "
+          + method.getDeclaringClass(), e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException("Error checking value of member method " + method.getName() + " on "
+          + method.getDeclaringClass(), e);
+    } catch (InvocationTargetException e) {
+      throw new RuntimeException("Error checking value of member method " + method.getName() + " on "
+          + method.getDeclaringClass(), e);
+    }
+  }
+
+  private Method[] getMembers() {
+    if (members == null) {
+      members = annotationType().getDeclaredMethods();
+      if (members.length > 0 && !annotationType().isAssignableFrom(this.getClass())) {
+        throw new RuntimeException(getClass() + " does not implement the annotation type with members "
+            + annotationType().getName());
+      }
+    }
+    return members;
+  }
+
   public Class<? extends Annotation> annotationType() {
     if (annotationType == null) {
       Class<?> annotationLiteralSubclass = getAnnotationLiteralSubclass(this.getClass());
@@ -75,61 +101,45 @@ public abstract class AnnotationLiteral<T extends Annotation> implements Annotat
     return annotationType;
   }
 
-  @Override
-  public String toString() {
-    StringBuilder string = new StringBuilder();
-    string.append('@').append(annotationType().getName()).append('(');
-    for (int i = 0; i < getMembers().length; i++) {
-      string.append(getMembers()[i].getName()).append('=');
-      Object value = getMemberValue(getMembers()[i], this);
-      if (value instanceof boolean[]) {
-        appendInBraces(string, Arrays.toString((boolean[]) value));
-      } else if (value instanceof byte[]) {
-        appendInBraces(string, Arrays.toString((byte[]) value));
-      } else if (value instanceof short[]) {
-        appendInBraces(string, Arrays.toString((short[]) value));
-      } else if (value instanceof int[]) {
-        appendInBraces(string, Arrays.toString((int[]) value));
-      } else if (value instanceof long[]) {
-        appendInBraces(string, Arrays.toString((long[]) value));
-      } else if (value instanceof float[]) {
-        appendInBraces(string, Arrays.toString((float[]) value));
-      } else if (value instanceof double[]) {
-        appendInBraces(string, Arrays.toString((double[]) value));
-      } else if (value instanceof char[]) {
-        appendInBraces(string, Arrays.toString((char[]) value));
-      } else if (value instanceof String[]) {
-        String[] strings = (String[]) value;
-        String[] quoted = new String[strings.length];
-        for (int j = 0; j < strings.length; j++) {
-          quoted[j] = "\"" + strings[j] + "\"";
-        }
-        appendInBraces(string, Arrays.toString(quoted));
-      } else if (value instanceof Class<?>[]) {
-        Class<?>[] classes = (Class<?>[]) value;
-        String[] names = new String[classes.length];
-        for (int j = 0; j < classes.length; j++) {
-          names[j] = classes[j].getName() + ".class";
-        }
-        appendInBraces(string, Arrays.toString(names));
-      } else if (value instanceof Object[]) {
-        appendInBraces(string, Arrays.toString((Object[]) value));
-      } else if (value instanceof String) {
-        string.append('"').append(value).append('"');
-      } else if (value instanceof Class<?>) {
-        string.append(((Class<?>) value).getName()).append(".class");
-      } else {
-        string.append(value);
-      }
-      if (i < getMembers().length - 1) {
-        string.append(", ");
-      }
-    }
-    return string.append(')').toString();
-  }
-
   private void appendInBraces(StringBuilder buf, String s) {
     buf.append('{').append(s.substring(1, s.length() - 1)).append('}');
+  }
+
+  @Override
+  public int hashCode() {
+    if (cachedHashCode != null) {
+      return cachedHashCode;
+    } else {
+      int hashCode = 0;
+      for (Method member : getMembers()) {
+        int memberNameHashCode = 127 * member.getName().hashCode();
+        Object value = getMemberValue(member, this);
+        int memberValueHashCode;
+        if (value instanceof boolean[]) {
+          memberValueHashCode = Arrays.hashCode((boolean[]) value);
+        } else if (value instanceof short[]) {
+          memberValueHashCode = Arrays.hashCode((short[]) value);
+        } else if (value instanceof int[]) {
+          memberValueHashCode = Arrays.hashCode((int[]) value);
+        } else if (value instanceof long[]) {
+          memberValueHashCode = Arrays.hashCode((long[]) value);
+        } else if (value instanceof float[]) {
+          memberValueHashCode = Arrays.hashCode((float[]) value);
+        } else if (value instanceof double[]) {
+          memberValueHashCode = Arrays.hashCode((double[]) value);
+        } else if (value instanceof byte[]) {
+          memberValueHashCode = Arrays.hashCode((byte[]) value);
+        } else if (value instanceof char[]) {
+          memberValueHashCode = Arrays.hashCode((char[]) value);
+        } else if (value instanceof Object[]) {
+          memberValueHashCode = Arrays.hashCode((Object[]) value);
+        } else {
+          memberValueHashCode = value.hashCode();
+        }
+        hashCode += memberNameHashCode ^ memberValueHashCode;
+      }
+      return hashCode;
+    }
   }
 
   @Override
@@ -185,66 +195,56 @@ public abstract class AnnotationLiteral<T extends Annotation> implements Annotat
   }
 
   @Override
-  public int hashCode() {
-    if (cachedHashCode != null) {
-      return cachedHashCode;
-    } else {
-      int hashCode = 0;
-      for (Method member : getMembers()) {
-        int memberNameHashCode = 127 * member.getName().hashCode();
-        Object value = getMemberValue(member, this);
-        int memberValueHashCode;
-        if (value instanceof boolean[]) {
-          memberValueHashCode = Arrays.hashCode((boolean[]) value);
-        } else if (value instanceof short[]) {
-          memberValueHashCode = Arrays.hashCode((short[]) value);
-        } else if (value instanceof int[]) {
-          memberValueHashCode = Arrays.hashCode((int[]) value);
-        } else if (value instanceof long[]) {
-          memberValueHashCode = Arrays.hashCode((long[]) value);
-        } else if (value instanceof float[]) {
-          memberValueHashCode = Arrays.hashCode((float[]) value);
-        } else if (value instanceof double[]) {
-          memberValueHashCode = Arrays.hashCode((double[]) value);
-        } else if (value instanceof byte[]) {
-          memberValueHashCode = Arrays.hashCode((byte[]) value);
-        } else if (value instanceof char[]) {
-          memberValueHashCode = Arrays.hashCode((char[]) value);
-        } else if (value instanceof Object[]) {
-          memberValueHashCode = Arrays.hashCode((Object[]) value);
-        } else {
-          memberValueHashCode = value.hashCode();
+  public String toString() {
+    StringBuilder string = new StringBuilder();
+    string.append('@').append(annotationType().getName()).append('(');
+    for (int i = 0; i < getMembers().length; i++) {
+      string.append(getMembers()[i].getName()).append('=');
+      Object value = getMemberValue(getMembers()[i], this);
+      if (value instanceof boolean[]) {
+        appendInBraces(string, Arrays.toString((boolean[]) value));
+      } else if (value instanceof byte[]) {
+        appendInBraces(string, Arrays.toString((byte[]) value));
+      } else if (value instanceof short[]) {
+        appendInBraces(string, Arrays.toString((short[]) value));
+      } else if (value instanceof int[]) {
+        appendInBraces(string, Arrays.toString((int[]) value));
+      } else if (value instanceof long[]) {
+        appendInBraces(string, Arrays.toString((long[]) value));
+      } else if (value instanceof float[]) {
+        appendInBraces(string, Arrays.toString((float[]) value));
+      } else if (value instanceof double[]) {
+        appendInBraces(string, Arrays.toString((double[]) value));
+      } else if (value instanceof char[]) {
+        appendInBraces(string, Arrays.toString((char[]) value));
+      } else if (value instanceof String[]) {
+        String[] strings = (String[]) value;
+        String[] quoted = new String[strings.length];
+        for (int j = 0; j < strings.length; j++) {
+          quoted[j] = "\"" + strings[j] + "\"";
         }
-        hashCode += memberNameHashCode ^ memberValueHashCode;
+        appendInBraces(string, Arrays.toString(quoted));
+      } else if (value instanceof Class<?>[]) {
+        Class<?>[] classes = (Class<?>[]) value;
+        String[] names = new String[classes.length];
+        for (int j = 0; j < classes.length; j++) {
+          names[j] = classes[j].getName() + ".class";
+        }
+        appendInBraces(string, Arrays.toString(names));
+      } else if (value instanceof Object[]) {
+        appendInBraces(string, Arrays.toString((Object[]) value));
+      } else if (value instanceof String) {
+        string.append('"').append(value).append('"');
+      } else if (value instanceof Class<?>) {
+        string.append(((Class<?>) value).getName()).append(".class");
+      } else {
+        string.append(value);
       }
-      return hashCode;
+      if (i < getMembers().length - 1) {
+        string.append(", ");
+      }
     }
-  }
-
-  private static Object getMemberValue(Method member, Annotation instance) {
-    Object value = invoke(member, instance);
-    if (value == null) {
-      throw new IllegalArgumentException("Annotation member value " + instance.getClass().getName() + "."
-          + member.getName() + " must not be null");
-    }
-    return value;
-  }
-
-  private static Object invoke(Method method, Object instance) {
-    try {
-      if (!method.isAccessible())
-        method.setAccessible(true);
-      return method.invoke(instance);
-    } catch (IllegalArgumentException e) {
-      throw new RuntimeException("Error checking value of member method " + method.getName() + " on "
-          + method.getDeclaringClass(), e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException("Error checking value of member method " + method.getName() + " on "
-          + method.getDeclaringClass(), e);
-    } catch (InvocationTargetException e) {
-      throw new RuntimeException("Error checking value of member method " + method.getName() + " on "
-          + method.getDeclaringClass(), e);
-    }
+    return string.append(')').toString();
   }
 
 }

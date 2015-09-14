@@ -38,18 +38,20 @@ public class NamedTest002 extends DDIBaseTest {
     DI.activateDI(businessModule);
   }
 
+  public interface Service {
+    String work(String txt);
+
+    SubService getSubService();
+
+    boolean isPostconstructed();
+  }
+
   public static class BusinessModule {
     @Inject Service service;
+
     public String work(String txt) {
       return service.work(txt);
     }
-  }
-
-
-  public interface Service {
-    String work(String txt);
-    SubService getSubService();
-    boolean isPostconstructed();
   }
 
   public static class ServiceImplA implements Service {
@@ -60,7 +62,9 @@ public class NamedTest002 extends DDIBaseTest {
       return null;
     }
 
-    @Override
+    @PostConstruct
+    public void postconstruct() {
+    }    @Override
     public SubService getSubService() {
       return null;
     }
@@ -70,32 +74,30 @@ public class NamedTest002 extends DDIBaseTest {
       return false;
     }
 
-    @PostConstruct
-    public void postconstruct() {
-    }
+
   }
 
   public static class ServiceImplB implements Service {
 
-    public String work(String txt) {
+    boolean postconstructed = false;    public String work(String txt) {
       return null;
-    }
-
-    @Override
-    public SubService getSubService() {
-      return null;
-    }
-
-    boolean postconstructed = false;
-
-    public boolean isPostconstructed() {
-      return postconstructed;
     }
 
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
+    }    @Override
+    public SubService getSubService() {
+      return null;
     }
+
+
+
+    public boolean isPostconstructed() {
+      return postconstructed;
+    }
+
+
   }
 
   public static class SubService {

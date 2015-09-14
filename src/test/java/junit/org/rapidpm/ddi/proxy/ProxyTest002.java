@@ -34,22 +34,24 @@ public class ProxyTest002 extends DDIBaseTest {
     Assert.assertNotNull(businessModul.service);
   }
 
-  public static class BusinessModulSecure{
-    @Inject @Proxy(secure = true) Service service;
-    public String work(String str){
-      return service.doWork(str);
-    }
-  }
-
-  public static class BusinessModul{
-    @Inject @Proxy(secure = false) Service service;
-    public String work(String str){
-      return service.doWork(str);
-    }
-  }
-
   public interface Service {
     String doWork(String str);
+  }
+
+  public static class BusinessModulSecure {
+    @Inject @Proxy(secure = true) Service service;
+
+    public String work(String str) {
+      return service.doWork(str);
+    }
+  }
+
+  public static class BusinessModul {
+    @Inject @Proxy(secure = false) Service service;
+
+    public String work(String str) {
+      return service.doWork(str);
+    }
   }
 
   public static class ServiceA implements Service {

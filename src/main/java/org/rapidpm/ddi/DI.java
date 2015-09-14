@@ -47,6 +47,11 @@ import java.util.Set;
 public class DI {
 
 
+  private static ReflectionsModel reflectionsModel = new ReflectionsModel();
+  private static boolean bootstrapedNeeded = true;
+  private DI() {
+  }
+
   public static void checkActiveModel() {
     //hole alle Felder die mit einem @Inject versehen sind.
     //pruefe ob es sich um ein Interface handelt
@@ -54,9 +59,6 @@ public class DI {
     // -- liste Multiplizitäten
     new ClassResolverCheck001().execute();
   }
-
-  private static ReflectionsModel reflectionsModel = new ReflectionsModel();
-  private static boolean bootstrapedNeeded = true;
 
   public static synchronized void bootstrap() {
 //    reflectionsModel = new ReflectionsModel();
@@ -66,11 +68,7 @@ public class DI {
     bootstrapedNeeded = false;
   }
 
-  private DI() {
-  }
-
-
-  public static synchronized void clearReflectionModel(){
+  public static synchronized void clearReflectionModel() {
     reflectionsModel = new ReflectionsModel();
     bootstrapedNeeded = true;
   }

@@ -33,10 +33,10 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
 
         final Set<Class<?>> producersForInterface = new ProducerLocator().findProducersForInterface(interf);
         final Set<Class<?>> producersForImpl = new ProducerLocator().findProducersForInterface(implClass);
-        if ( ! producersForInterface.isEmpty() && ! producersForImpl.isEmpty())
+        if (!producersForInterface.isEmpty() && !producersForImpl.isEmpty())
           throw new DDIModelException("interface and impl. with Producer => interface = " + interf + " impl.  = " + implClass);
 
-        if ( producersForInterface.isEmpty() && producersForImpl.isEmpty())
+        if (producersForInterface.isEmpty() && producersForImpl.isEmpty())
           return implClass;
 
         if (producersForImpl.isEmpty()) return interf;
@@ -82,8 +82,8 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
           //TODO check if Producer for Interface available
           //yes -> return interface
           final Set<Class<?>> producersForInterface = new ProducerLocator().findProducersForInterface(interf);
-          if(producersForInterface.isEmpty()) throw new DDIModelException("interface with multiple implementations and no ClassResolver= " + interf);
-          if(producersForInterface.size() == 1) return interf;
+          if (producersForInterface.isEmpty()) throw new DDIModelException("interface with multiple implementations and no ClassResolver= " + interf);
+          if (producersForInterface.size() == 1) return interf;
           throw new DDIModelException("interface with multiple implementations and no ClassResolver and n Producers f the interface = " + interf);
         }
       }

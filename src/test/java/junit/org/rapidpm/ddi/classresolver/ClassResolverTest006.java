@@ -29,15 +29,16 @@ public class ClassResolverTest006 extends DDIBaseTest {
     Assert.fail();
   }
 
+  public interface Service {
+    String work(String txt);
+  }
+
   public static class BusinessModule {
     @Inject Service service;
+
     public String work(String txt) {
       return service.work(txt);
     }
-  }
-
-  public interface Service {
-    String work(String txt);
   }
 
 }

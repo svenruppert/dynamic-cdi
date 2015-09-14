@@ -25,7 +25,7 @@ import javax.inject.Inject;
 /**
  * Created by Sven Ruppert on 06.12.2014.
  */
-public class DITest001 extends DDIBaseTest{
+public class DITest001 extends DDIBaseTest {
 
 
   @Test
@@ -40,16 +40,16 @@ public class DITest001 extends DDIBaseTest{
   }
 
 
-
-  public static class Service{
+  public static class Service {
     @Inject SubService subService;
-    public String work(String txt){
+
+    public String work(String txt) {
       return subService.work(txt);
     }
   }
 
-  public static class SubService{
-    public String work(final String txt){
+  public static class SubService {
+    public String work(final String txt) {
       return "SubService " + txt;
     }
   }

@@ -31,28 +31,29 @@ public class ClassResolverTest007 {
   }
 
 
-  public static class BusinessModulVirtual{
+  public interface Service {
+    String doWork(String str);
+  }
+
+  public static class BusinessModulVirtual {
     @Inject @Proxy(virtual = true) Service service;
-    public String work(String str){
+
+    public String work(String str) {
       return service.doWork(str);
     }
   }
 
-  public static class BusinessModul{
+  public static class BusinessModul {
     private Service service = new Service() { //this is a implementation of the Interface...
       @Override
       public String doWork(final String str) {
         return "created by Anonymous";
       }
     };
-    public String work(String str){
+
+    public String work(String str) {
       return service.doWork(str);
     }
-  }
-
-
-  public interface Service {
-    String doWork(String str);
   }
 
   public static class ServiceA implements Service {
