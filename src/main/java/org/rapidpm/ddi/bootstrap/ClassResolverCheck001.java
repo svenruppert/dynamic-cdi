@@ -2,9 +2,9 @@ package org.rapidpm.ddi.bootstrap;
 
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.implresolver.ClassResolver;
-import org.rapidpm.ddi.implresolver.DDIModelException;
+import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
-import org.rapidpm.ddi.implresolver.ResponsibleForInterface;
+import org.rapidpm.ddi.ResponsibleFor;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -23,7 +23,7 @@ public class ClassResolverCheck001 {
     final Iterator<Class<? extends ClassResolver>> iterator = subTypesOfClassResolver.iterator();
     while (iterator.hasNext()) {
       Class<? extends ClassResolver> aClassResolver = iterator.next();
-      if (aClassResolver.isAnnotationPresent(ResponsibleForInterface.class)) {
+      if (aClassResolver.isAnnotationPresent(ResponsibleFor.class)) {
         //ok
       } else {
         throw new DDIModelException("Found ClassResolver without @ResponsibleForInterface annotation= " + aClassResolver);

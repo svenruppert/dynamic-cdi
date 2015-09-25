@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.implresolver.ClassResolver;
-import org.rapidpm.ddi.implresolver.ResponsibleForInterface;
+import org.rapidpm.ddi.ResponsibleFor;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -34,7 +34,7 @@ public class ClassResolverTest003 extends DDIBaseTest {
     boolean isPostconstructed();
   }
 
-  @ResponsibleForInterface(Service.class)
+  @ResponsibleFor(Service.class)
   public static class ServiceClassResolverA implements ClassResolver<Service> {
     @Override
     public Class<? extends Service> resolve(final Class<Service> interf) {
@@ -42,7 +42,7 @@ public class ClassResolverTest003 extends DDIBaseTest {
     }
   }
 
-  @ResponsibleForInterface(Service.class)
+  @ResponsibleFor(Service.class)
   public static class ServiceClassResolverB implements ClassResolver<Service> {
     @Override
     public Class<? extends Service> resolve(final Class<Service> interf) {

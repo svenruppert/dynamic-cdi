@@ -1,4 +1,4 @@
-package org.rapidpm.ddi.implresolver;
+package org.rapidpm.ddi;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -15,6 +15,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({TYPE})
 @Retention(RUNTIME)
 @Documented
-public @interface ResponsibleForInterface {
+public @interface ResponsibleFor {
   Class value();
 }

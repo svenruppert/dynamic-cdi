@@ -1,4 +1,4 @@
-package org.rapidpm.ddi.implresolver;
+package org.rapidpm.ddi;
 
 /**
  * Created by svenruppert on 14.07.15.

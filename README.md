@@ -80,6 +80,11 @@ But for every Interface only one that is responsible for it.
 * Interface , n Impl., 1 responsible ClassResolver, 1-n Producer for Impl. -> will use the resolved Class or corresponding Producer if available
 * Interface , n Impl., n responsible ClassResolver -> Exception
 
+* Interface, 1 Impl., n Producer for Impl, 1 ProducerResolver for Impl -> selected Producer from ProducerResolver
+* Interface, n Impl., 1 responsible ClassResolver, 0-n Producer for every Impl, 1 ProducerResolver for every Impl -> selected Producer from ProducerResolver, for selected Impl from ClassResolver
+
+
+
 
 if you write ``@Inject Impl.``
 

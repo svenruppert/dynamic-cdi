@@ -1,6 +1,8 @@
 package org.rapidpm.ddi.implresolver;
 
+import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
+import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.producer.ProducerLocator;
 
 import java.util.Iterator;
@@ -31,8 +33,8 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
         //
         final Class<I> implClass = (Class<I>) subTypesOf.toArray()[0];
 
-        final Set<Class<?>> producersForInterface = new ProducerLocator().findProducersForInterface(interf);
-        final Set<Class<?>> producersForImpl = new ProducerLocator().findProducersForInterface(implClass);
+        final Set<Class<?>> producersForInterface = new ProducerLocator().findProducersFor(interf);
+        final Set<Class<?>> producersForImpl = new ProducerLocator().findProducersFor(implClass);
         if (!producersForInterface.isEmpty() && !producersForImpl.isEmpty())
           throw new DDIModelException("interface and impl. with Producer => interface = " + interf + " impl.  = " + implClass);
 
@@ -51,9 +53,9 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
         while (iterator.hasNext()) {
           Class<? extends ClassResolver> aClassResolver = iterator.next();
 
-          if (aClassResolver.isAnnotationPresent(ResponsibleForInterface.class)) {
-            final ResponsibleForInterface responsibleForInterface = aClassResolver.getAnnotation(ResponsibleForInterface.class);
-            final Class value = responsibleForInterface.value();
+          if (aClassResolver.isAnnotationPresent(ResponsibleFor.class)) {
+            final ResponsibleFor responsibleFor = aClassResolver.getAnnotation(ResponsibleFor.class);
+            final Class value = responsibleFor.value();
             if (interf.equals(value)) {
               //ok
             } else {
@@ -81,7 +83,7 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
         } else if (subTypesOfClassResolver.isEmpty()) {
           //TODO check if Producer for Interface available
           //yes -> return interface
-          final Set<Class<?>> producersForInterface = new ProducerLocator().findProducersForInterface(interf);
+          final Set<Class<?>> producersForInterface = new ProducerLocator().findProducersFor(interf);
           if (producersForInterface.isEmpty()) throw new DDIModelException("interface with multiple implementations and no ClassResolver= " + interf);
           if (producersForInterface.size() == 1) return interf;
           throw new DDIModelException("interface with multiple implementations and no ClassResolver and n Producers f the interface = " + interf);

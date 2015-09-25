@@ -4,7 +4,7 @@ import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.implresolver.DDIModelException;
+import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.producer.Producer;
 
 import javax.inject.Inject;
@@ -23,7 +23,7 @@ public class ProducerTest002 extends DDIBaseTest {
       DI.activateDI(businessModul);
     } catch (Exception e) {
       final String msg = e.getMessage();
-      Assert.assertTrue(msg.contains("to many producer methods found for interface"));
+      Assert.assertTrue(msg.contains("to many Producer and no ProducerResolver found for interface"));
       throw e;
     }
 

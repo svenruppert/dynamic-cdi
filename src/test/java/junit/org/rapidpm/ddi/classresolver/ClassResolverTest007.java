@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Proxy;
-import org.rapidpm.ddi.implresolver.DDIModelException;
+import org.rapidpm.ddi.DDIModelException;
 
 import javax.inject.Inject;
 

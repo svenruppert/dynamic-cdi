@@ -5,8 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.implresolver.ClassResolver;
-import org.rapidpm.ddi.implresolver.DDIModelException;
-import org.rapidpm.ddi.implresolver.ResponsibleForInterface;
+import org.rapidpm.ddi.DDIModelException;
+import org.rapidpm.ddi.ResponsibleFor;
 
 import javax.inject.Inject;
 
@@ -41,7 +41,7 @@ public class ClassResolverTest005 extends DDIBaseTest {
     String work(String txt);
   }
 
-  @ResponsibleForInterface(Service.class)
+  @ResponsibleFor(Service.class)
   public static class ServiceClassResolverA implements ClassResolver<Service> {
     @Override
     public Class<? extends Service> resolve(final Class<Service> interf) {
