@@ -227,7 +227,7 @@ public class DI {
           boolean wasAccessible = method.isAccessible();
           try {
             method.setAccessible(true);
-            return method.invoke(instance, new Object[]{}); //TODO Dynamic ObjectAdapter ?
+            return method.invoke(instance); //TODO Dynamic ObjectAdapter ?
           } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw new IllegalStateException("Problem invoking " + annotationClass + " : " + method, ex);
           } finally {

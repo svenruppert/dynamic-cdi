@@ -7,13 +7,13 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
   </parent>
 
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.2</version>
 
 
   <inceptionYear>2013</inceptionYear>
@@ -21,6 +21,10 @@
     <name>RapidPM</name>
     <url>http://www.rapidpm.org</url>
   </organization>
+  <url>https://github.com/RapidPM/dynamic-cdi</url>
+  <name>RapidPM Dynamic Dependency Injection</name>
+  <description>Dynamic Dependency Injection with different ways to manage the resolver-strategy</description>
+
   <scm>
     <url>https://github.com/RapidPM/dynamic-cdi</url>
     <connection>scm:git:https://github.com/RapidPM/dynamic-cdi.git</connection>
