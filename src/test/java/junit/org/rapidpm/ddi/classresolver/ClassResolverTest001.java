@@ -56,15 +56,17 @@ public class ClassResolverTest001 extends DDIBaseTest {
 
     public String work(String txt) {
       return subService.work(txt);
-    }    @Override
-    public SubService getSubService() {
-      return subService;
     }
 
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
+    }    @Override
+    public SubService getSubService() {
+      return subService;
     }
+
+
 
     public boolean isPostconstructed() {
       return postconstructed;
@@ -75,18 +77,21 @@ public class ClassResolverTest001 extends DDIBaseTest {
 
   public static class ServiceImplB implements Service {
     @Inject SubService subService;
-    boolean postconstructed = false;    public String work(String txt) {
-      return subService.work(txt);
-    }
+    boolean postconstructed = false;
 
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
-    }    @Override
+    }    public String work(String txt) {
+      return subService.work(txt);
+    }
+
+
+
+    @Override
     public SubService getSubService() {
       return subService;
     }
-
 
 
     public boolean isPostconstructed() {

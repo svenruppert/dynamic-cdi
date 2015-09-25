@@ -64,7 +64,9 @@ public class NamedTest002 extends DDIBaseTest {
 
     @PostConstruct
     public void postconstruct() {
-    }    @Override
+    }
+
+    @Override
     public SubService getSubService() {
       return null;
     }
@@ -79,18 +81,21 @@ public class NamedTest002 extends DDIBaseTest {
 
   public static class ServiceImplB implements Service {
 
-    boolean postconstructed = false;    public String work(String txt) {
-      return null;
-    }
+    boolean postconstructed = false;
 
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
-    }    @Override
-    public SubService getSubService() {
+    }    public String work(String txt) {
       return null;
     }
 
+
+
+    @Override
+    public SubService getSubService() {
+      return null;
+    }
 
 
     public boolean isPostconstructed() {

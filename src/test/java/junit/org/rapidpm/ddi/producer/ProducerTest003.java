@@ -43,7 +43,7 @@ public class ProducerTest003 extends DDIBaseTest {
     @Inject Service service;
 
     public String doIt(String txt) {
-      return (String)service.workOn(txt);
+      return (String) service.workOn(txt);
     }
   }
 

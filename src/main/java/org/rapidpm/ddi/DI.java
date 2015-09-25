@@ -49,6 +49,7 @@ public class DI {
 
   private static ReflectionsModel reflectionsModel = new ReflectionsModel();
   private static boolean bootstrapedNeeded = true;
+
   private DI() {
   }
 

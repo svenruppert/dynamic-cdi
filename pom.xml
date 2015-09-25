@@ -7,13 +7,13 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
   </parent>
 
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3-SNAPSHOT</version>
 
 
   <inceptionYear>2013</inceptionYear>
@@ -64,16 +64,16 @@
       <groupId>org.rapidpm.proxybuilder</groupId>
       <artifactId>rapidpm-proxybuilder-modules-builder</artifactId>
     </dependency>
-      <!--using Annotation Processing-->
-      <dependency>
-        <groupId>org.rapidpm.proxybuilder</groupId>
-        <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-processors</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>org.rapidpm.proxybuilder</groupId>
-        <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-annotations</artifactId>
-      </dependency>
-      <!--using Annotation Processing-->
+    <!--using Annotation Processing-->
+    <dependency>
+      <groupId>org.rapidpm.proxybuilder</groupId>
+      <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-processors</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.rapidpm.proxybuilder</groupId>
+      <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-annotations</artifactId>
+    </dependency>
+    <!--using Annotation Processing-->
     <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
@@ -117,9 +117,9 @@
             <configuration>
               <dependencyReducedPomLocation>${project.build.directory}/reduced-pom.xml</dependencyReducedPomLocation>
               <!--<transformers>-->
-                <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-                  <!--<mainClass>org.rapidpm.microservice.Main</mainClass>-->
-                <!--</transformer>-->
+              <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+              <!--<mainClass>org.rapidpm.microservice.Main</mainClass>-->
+              <!--</transformer>-->
               <!--</transformers>-->
               <minimizeJar>false</minimizeJar>
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
