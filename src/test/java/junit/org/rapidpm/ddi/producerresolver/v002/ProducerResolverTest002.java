@@ -11,7 +11,7 @@ import org.rapidpm.ddi.producer.Producer;
 import org.rapidpm.ddi.producerresolver.ProducerResolver;
 
 import javax.inject.Inject;
-import javax.inject.Produces;
+import org.rapidpm.ddi.Produces;
 
 /**
  * Created by svenruppert on 25.09.15.

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package javax.inject;
+package org.rapidpm.ddi;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

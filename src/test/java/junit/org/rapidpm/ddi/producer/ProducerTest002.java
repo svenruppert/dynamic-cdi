@@ -8,7 +8,7 @@ import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.producer.Producer;
 
 import javax.inject.Inject;
-import javax.inject.Produces;
+import org.rapidpm.ddi.Produces;
 
 /**
  * Created by svenruppert on 07.08.15.

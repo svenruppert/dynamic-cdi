@@ -3,7 +3,7 @@ package org.rapidpm.ddi.producer;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.DDIModelException;
 
-import javax.inject.Produces;
+import org.rapidpm.ddi.Produces;
 import java.util.Iterator;
 import java.util.Set;
 

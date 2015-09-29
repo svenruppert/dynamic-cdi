@@ -7,7 +7,7 @@ import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.producer.Producer;
 
 import javax.inject.Inject;
-import javax.inject.Produces;
+import org.rapidpm.ddi.Produces;
 
 /**
  * Created by svenruppert on 14.09.15.

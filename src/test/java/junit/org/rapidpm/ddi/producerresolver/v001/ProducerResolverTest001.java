@@ -6,12 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
-import org.rapidpm.ddi.implresolver.ClassResolver;
 import org.rapidpm.ddi.producer.Producer;
 import org.rapidpm.ddi.producerresolver.ProducerResolver;
 
 import javax.inject.Inject;
-import javax.inject.Produces;
+import org.rapidpm.ddi.Produces;
 
 /**
  * Created by svenruppert on 25.09.15.
