@@ -39,7 +39,7 @@ public class ProxyTest002 extends DDIBaseTest {
   }
 
   public static class BusinessModulSecure {
-    @Inject @Proxy(secure = true) Service service;
+    @Inject @Proxy(virtual = true, metrics = true) Service service;
 
     public String work(String str) {
       return service.doWork(str);
