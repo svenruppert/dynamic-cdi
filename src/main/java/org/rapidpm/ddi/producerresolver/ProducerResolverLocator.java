@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class ProducerResolverLocator {
 
-  public Set<Class<? extends ProducerResolver>> findProducersResolverFor(final Class clazzOrInterf){
+  public Set<Class<? extends ProducerResolver>> findProducersResolverFor(final Class clazzOrInterf) {
 
     final Set<Class<? extends ProducerResolver>> producerResolverClasses = DI.getSubTypesOf(ProducerResolver.class);
     final Iterator<Class<? extends ProducerResolver>> iterator = producerResolverClasses.iterator();

@@ -49,7 +49,7 @@ public class InstanceCreator {
     } else if (producerClassses.size() > 1) {
       final Set<Class<? extends ProducerResolver>> producerResolverClasses
           = new ProducerResolverLocator().findProducersResolverFor(resolverTarget);
-      if (producerResolverClasses.size() == 1){
+      if (producerResolverClasses.size() == 1) {
         final Class<? extends ProducerResolver> producerResolverClass
             = (Class<? extends ProducerResolver>) producerResolverClasses.toArray()[0];
         try {
@@ -59,7 +59,7 @@ public class InstanceCreator {
         } catch (InstantiationException | IllegalAccessException e) {
           throw new DDIModelException(e);
         }
-      } else if(producerResolverClasses.size() > 1){
+      } else if (producerResolverClasses.size() > 1) {
         throw new DDIModelException("toooo many ProducerResolver for interface/class " + resolverTarget + " - " + producerResolverClasses);
       } else { // empty
         throw new DDIModelException(" to many Producer and no ProducerResolver found for " + classOrInterf + " - " + producerClassses);
