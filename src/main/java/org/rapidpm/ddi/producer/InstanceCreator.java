@@ -87,7 +87,8 @@ public class InstanceCreator {
     try {
       Producer<T> newInstance = (Producer<T>) cls.newInstance();
       DI.activateDI(newInstance);
-      return DI.activateDI(newInstance.create());
+      final T instance = newInstance.create();
+      return DI.activateDI(instance);
     } catch (InstantiationException | IllegalAccessException e) {
       e.printStackTrace();
       throw new DDIModelException(e);

@@ -38,7 +38,8 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
         if (!producersForInterface.isEmpty() && !producersForImpl.isEmpty())
 
           //TODO Exception or interface producer ??
-          throw new DDIModelException("interface and impl. with Producer => interface = " + interf + " impl.  = " + implClass);
+          //throw new DDIModelException("interface and impl. with Producer => interface = " + interf + " impl.  = " + implClass);
+        return interf;
 
         if (producersForInterface.isEmpty() && producersForImpl.isEmpty())
           return implClass;

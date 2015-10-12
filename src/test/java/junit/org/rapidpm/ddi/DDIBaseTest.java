@@ -11,6 +11,7 @@ public class DDIBaseTest {
 
   @BeforeClass
   public static void setUpClass() throws Exception {
+    DI.activatePackages("org.rapidpm");
     DI.activatePackages("junit.org.rapidpm");
   }
 
