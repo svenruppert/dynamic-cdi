@@ -15,7 +15,6 @@ import org.rapidpm.ddi.Produces;
  */
 public class ProducerTest002 extends DDIBaseTest {
 
-
   @Test(expected = DDIModelException.class)
   public void testProducer001() throws Exception {
     final BusinessModul businessModul = new BusinessModul();
@@ -23,6 +22,7 @@ public class ProducerTest002 extends DDIBaseTest {
       DI.activateDI(businessModul);
     } catch (Exception e) {
       final String msg = e.getMessage();
+      System.out.println("msg = " + msg);
       Assert.assertTrue(msg.contains("to many Producer and no ProducerResolver found for interface"));
       throw e;
     }

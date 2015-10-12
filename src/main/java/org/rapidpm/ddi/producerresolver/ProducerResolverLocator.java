@@ -21,11 +21,11 @@ public class ProducerResolverLocator {
       if (nextProducerResolverClass.isAnnotationPresent(ResponsibleFor.class)) {
         final ResponsibleFor responsibleFor = nextProducerResolverClass.getAnnotation(ResponsibleFor.class);
         final Class<? extends ResponsibleFor> responsibleForClass = responsibleFor.value();
-        if (responsibleForClass == null)
-          throw new DDIModelException("ProducerResolver without ResponsibleFor " + nextProducerResolverClass.getName());
+//        if (responsibleForClass == null)
+//          throw new DDIModelException("ProducerResolver without ResponsibleFor " + nextProducerResolverClass.getName());
         if (!responsibleForClass.equals(clazzOrInterf)) iterator.remove();
       } else {
-        throw new DDIModelException("ProducerResolver without ResponsibleFor Annotation" + nextProducerResolverClass.getName());
+        throw new DDIModelException("ProducerResolver without ResponsibleFor Annotation " + nextProducerResolverClass.getName());
       }
     }
     return producerResolverClasses;

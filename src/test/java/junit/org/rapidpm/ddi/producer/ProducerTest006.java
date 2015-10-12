@@ -1,5 +1,6 @@
 package junit.org.rapidpm.ddi.producer;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DDIModelException;
@@ -12,7 +13,7 @@ import javax.inject.Inject;
 /**
  * Created by svenruppert on 12.10.15.
  */
-public class ProducerTest006 {
+public class ProducerTest006 extends DDIBaseTest {
 
 
 

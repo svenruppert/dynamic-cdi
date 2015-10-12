@@ -1,5 +1,6 @@
 package junit.org.rapidpm.ddi.producerresolver.v001;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,18 +16,7 @@ import org.rapidpm.ddi.Produces;
 /**
  * Created by svenruppert on 25.09.15.
  */
-public class ProducerResolverTest001 {
-
-  @Before
-  public void setUp() throws Exception {
-    DI.activatePackages("org.rapidpm");
-    DI.activatePackages(this.getClass().getPackage().getName());
-  }
-
-  @After
-  public void tearDown() throws Exception {
-    DI.clearReflectionModel();
-  }
+public class ProducerResolverTest001 extends DDIBaseTest{
 
   public interface MyService {
     String doWork(String txt);

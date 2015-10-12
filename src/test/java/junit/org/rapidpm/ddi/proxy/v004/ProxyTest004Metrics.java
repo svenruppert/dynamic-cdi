@@ -3,6 +3,7 @@ package junit.org.rapidpm.ddi.proxy.v004;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.MetricRegistry;
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,7 +21,7 @@ import java.util.stream.IntStream;
 /**
  * Created by svenruppert on 17.08.15.
  */
-public class ProxyTest004Metrics {
+public class ProxyTest004Metrics extends DDIBaseTest {
 
 
   String s1;

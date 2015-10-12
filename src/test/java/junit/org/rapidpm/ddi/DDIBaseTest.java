@@ -1,5 +1,7 @@
 package junit.org.rapidpm.ddi;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.rapidpm.ddi.DI;
 
@@ -9,10 +11,17 @@ import org.rapidpm.ddi.DI;
 public class DDIBaseTest {
 
 
-  @BeforeClass
-  public static void setUpClass() throws Exception {
+  @Before
+  public void setUpDDI() throws Exception {
+    DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
-    DI.activatePackages("junit.org.rapidpm");
+    final String name = this.getClass().getPackage().getName();
+    System.out.println("name = " + name);
+    DI.activatePackages(name);
   }
 
+  @After
+  public void tearDownDDI() throws Exception {
+    DI.clearReflectionModel();
+  }
 }

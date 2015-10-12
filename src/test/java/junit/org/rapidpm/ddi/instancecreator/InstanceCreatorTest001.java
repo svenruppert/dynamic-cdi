@@ -1,5 +1,6 @@
 package junit.org.rapidpm.ddi.instancecreator;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
@@ -8,7 +9,7 @@ import org.rapidpm.ddi.producer.InstanceCreator;
 /**
  * Created by svenruppert on 12.10.15.
  */
-public class InstanceCreatorTest001 {
+public class InstanceCreatorTest001 extends DDIBaseTest {
 
 
   @Test
