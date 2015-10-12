@@ -26,7 +26,7 @@ public class ClassResolverCheck001 {
       if (aClassResolver.isAnnotationPresent(ResponsibleFor.class)) {
         //ok
       } else {
-        throw new DDIModelException("Found ClassResolver without @ResponsibleForInterface annotation= " + aClassResolver);
+        throw new DDIModelException("Found ClassResolver without @ResponsibleFor annotation= " + aClassResolver);
       }
     }
   }

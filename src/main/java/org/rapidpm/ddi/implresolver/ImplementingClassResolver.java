@@ -41,8 +41,7 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
           //throw new DDIModelException("interface and impl. with Producer => interface = " + interf + " impl.  = " + implClass);
         return interf;
 
-        if (producersForInterface.isEmpty() && producersForImpl.isEmpty())
-          return implClass;
+        if (producersForInterface.isEmpty() && producersForImpl.isEmpty()) return implClass;
 
         if (producersForImpl.isEmpty()) return interf;
         if (producersForInterface.isEmpty()) return implClass;

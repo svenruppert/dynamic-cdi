@@ -47,19 +47,4 @@ public class ProducerTest001 extends DDIBaseTest {
     }
   }
 
-//  public static class ServiceImplA implements Service {
-//    @Override
-//    public String workOn(final String txt) {
-//      return txt + "_" + this.getClass().getSimpleName();
-//    }
-//  }
-//
-//  public static class ServiceImplB implements Service {
-//    @Override
-//    public String workOn(final String txt) {
-//      return txt + "_" + this.getClass().getSimpleName();
-//    }
-//  }
-
-
 }

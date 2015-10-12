@@ -17,7 +17,7 @@ public class ProducerTest003 extends DDIBaseTest {
 
   @Test
   public void testProducer001() throws Exception {
-    final BusinessModul<String> businessModul = new BusinessModul<>();
+    final BusinessModul businessModul = new BusinessModul();
     DI.activateDI(businessModul);
 
     Assert.assertNotNull(businessModul);
@@ -39,7 +39,7 @@ public class ProducerTest003 extends DDIBaseTest {
     }
   }
 
-  public static class BusinessModul<String> {
+  public static class BusinessModul {
     @Inject Service service;
 
     public String doIt(String txt) {

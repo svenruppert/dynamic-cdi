@@ -1,7 +1,6 @@
 package org.rapidpm.ddi.producer;
 
 import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.DDIModelException;
 
 import org.rapidpm.ddi.Produces;
 import java.util.Iterator;
@@ -20,7 +19,7 @@ public class ProducerLocator {
       Class producerClass = iterator.next();
       final Produces annotation = (Produces) producerClass.getAnnotation(Produces.class);
       final Class value = annotation.value();
-      if (value == null) throw new DDIModelException("Producer without target Interface " + producerClass);
+//      if (value == null) throw new DDIModelException("Producer without target Interface " + producerClass);
       if (value.equals(clazzOrInterf)) {
         //TODO logger
       } else {

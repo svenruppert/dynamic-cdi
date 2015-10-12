@@ -44,13 +44,6 @@ public class ReflectionsModel {
     this.parallelExecutors = parallelExecutors;
   }
 
-  public void rescann() {
-    synchronized (obj) {
-      reflections.merge(new Reflections(createConfigurationBuilder()
-          .setScanners(createScanners())));
-    }
-  }
-
   private ConfigurationBuilder createConfigurationBuilder() {
     final ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
     configurationBuilder.setUrls(ClasspathHelper.forJavaClassPath());
@@ -66,23 +59,6 @@ public class ReflectionsModel {
     return sccannerArray;
   }
 
-  public void rescann(URL... urls) {
-    synchronized (obj) {
-      reflections.merge(new Reflections(createConfigurationBuilder()
-          .setUrls(urls)
-          .setScanners(createScanners())));
-      activatedPackagesMap.put("", LocalDateTime.now());
-    }
-  }
-
-  public void rescann(Collection<URL> urls) {
-    synchronized (obj) {
-      reflections.merge(new Reflections(createConfigurationBuilder()
-          .setUrls(urls)
-          .setScanners(createScanners())));
-      activatedPackagesMap.put("", LocalDateTime.now());
-    }
-  }
 
   public void rescann(String pkgPrefix) {
     synchronized (obj) {

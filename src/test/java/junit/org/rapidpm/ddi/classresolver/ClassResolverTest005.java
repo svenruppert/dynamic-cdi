@@ -22,7 +22,7 @@ public class ClassResolverTest005 extends DDIBaseTest {
       DI.checkActiveModel();
     } catch (DDIModelException e) {
       final String message = e.getMessage();
-      Assert.assertTrue(message.contains("Found ClassResolver without @ResponsibleForInterface annotation"));
+      Assert.assertTrue(message.contains("Found ClassResolver without @ResponsibleFor annotation"));
       throw e;
     }
     Assert.fail();
