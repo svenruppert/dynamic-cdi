@@ -6,7 +6,9 @@ import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.producer.ProducerLocator;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * one subtype - will return this class
@@ -22,7 +24,12 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
     if (interf.isInterface()) {
       final Set<Class<? extends I>> subTypesOf = DI.getSubTypesOf(interf);
 
-
+      //remove subtypes that are interfaces
+      final Iterator<Class<? extends I>> iteratorOfSubTypes = subTypesOf.iterator();
+      while (iteratorOfSubTypes.hasNext()) {
+        Class<? extends I> next = iteratorOfSubTypes.next();
+        if (next.isInterface()) iteratorOfSubTypes.remove();
+      }
       if (subTypesOf.isEmpty()) {
         //TODO scann for producer....
 //        throw new DDIModelException("could not find a subtype of " + interf);
@@ -39,7 +46,7 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
 
           //TODO Exception or interface producer ??
           //throw new DDIModelException("interface and impl. with Producer => interface = " + interf + " impl.  = " + implClass);
-        return interf;
+          return interf;
 
         if (producersForInterface.isEmpty() && producersForImpl.isEmpty()) return implClass;
 
@@ -88,9 +95,23 @@ public class ImplementingClassResolver<I> implements ClassResolver<I> {
           //TODO check if Producer for Interface available
           //yes -> return interface
           final Set<Class<?>> producersForInterface = new ProducerLocator().findProducersFor(interf);
-          if (producersForInterface.isEmpty()) throw new DDIModelException("interface with multiple implementations and no ClassResolver= " + interf);
+          if (producersForInterface.isEmpty()) {
+            final StringBuilder stringBuilder = new StringBuilder("interface with multiple implementations and no ClassResolver= " + interf);
+            final List<String> implList = subTypesOf.stream().map(c -> "impl. : " + c.getName()).collect(Collectors.toList());
+            stringBuilder.append(implList);
+
+            throw new DDIModelException(stringBuilder.toString());
+          }
           if (producersForInterface.size() == 1) return interf;
-          throw new DDIModelException("interface with multiple implementations and no ClassResolver and n Producers f the interface = " + interf);
+
+          final StringBuilder stringBuilder = new StringBuilder("interface with multiple implementations and no ClassResolver and n Producers f the interface = " + interf);
+
+          final List<String> implList = subTypesOf.stream().map(c -> "impl. : " + c.getName()).collect(Collectors.toList());
+          final List<String> prodList = producersForInterface.stream().map(c -> "producer. : " + c.getName()).collect(Collectors.toList());
+
+          stringBuilder.append(implList).append(prodList);
+
+          throw new DDIModelException(stringBuilder.toString());
         }
       }
     } else {
