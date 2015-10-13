@@ -1,6 +1,7 @@
-package junit.org.rapidpm.ddi.producer;
+package junit.org.rapidpm.ddi.producer.v004;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
+import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
@@ -17,11 +18,13 @@ public class ProducerTest004 extends DDIBaseTest {
   @Inject Service service;
 
 
+  private static boolean producerUssed = false;
+
   @Test
   public void test001() throws Exception {
     DI.activateDI(this);
-
-
+    Assert.assertEquals(service.getClass(), ServiceImpl.class);
+    Assert.assertEquals(true, producerUssed);
   }
 
   public interface Service{}
@@ -32,6 +35,7 @@ public class ProducerTest004 extends DDIBaseTest {
   public static class ServiceProducer implements Producer<Service>{
     @Override
     public Service create() {
+      ProducerTest004.producerUssed = true;
       return new ServiceImpl();
     }
   }

@@ -1,4 +1,4 @@
-package junit.org.rapidpm.ddi.producer;
+package junit.org.rapidpm.ddi.producer.v007;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;

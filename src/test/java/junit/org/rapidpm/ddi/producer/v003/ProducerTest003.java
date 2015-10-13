@@ -1,4 +1,4 @@
-package junit.org.rapidpm.ddi.producer;
+package junit.org.rapidpm.ddi.producer.v003;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
@@ -10,9 +10,9 @@ import javax.inject.Inject;
 import org.rapidpm.ddi.Produces;
 
 /**
- * Created by svenruppert on 31.07.15.
+ * Created by svenruppert on 14.09.15.
  */
-public class ProducerTest001 extends DDIBaseTest {
+public class ProducerTest003 extends DDIBaseTest {
 
 
   @Test
@@ -28,13 +28,13 @@ public class ProducerTest001 extends DDIBaseTest {
   }
 
 
-  public interface Service {
-    String workOn(String txt);
+  public interface Service<T> {
+    T workOn(T txt);
   }
 
   @Produces(Service.class)
-  public static class ServiceProducer implements Producer<Service> {
-    public Service create() {
+  public static class ServiceProducer implements Producer<Service<String>> {
+    public Service<String> create() {
       return txt -> txt + "_" + ServiceProducer.class.getSimpleName();
     }
   }
@@ -43,7 +43,7 @@ public class ProducerTest001 extends DDIBaseTest {
     @Inject Service service;
 
     public String doIt(String txt) {
-      return service.workOn(txt);
+      return (String) service.workOn(txt);
     }
   }
 
