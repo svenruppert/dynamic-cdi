@@ -46,7 +46,7 @@ import java.util.Set;
  */
 public class DI {
 
-
+  private static ImplementingClassResolver implementingClassResolver = new ImplementingClassResolver();
   private static ReflectionsModel reflectionsModel = new ReflectionsModel();
   private static boolean bootstrapedNeeded = true;
 
@@ -63,6 +63,7 @@ public class DI {
 
   public static synchronized void bootstrap() {
 //    reflectionsModel = new ReflectionsModel();
+    implementingClassResolver.clearCache();
     if (bootstrapedNeeded) {
       reflectionsModel.rescann("");
     }
@@ -71,39 +72,46 @@ public class DI {
 
   public static synchronized void clearReflectionModel() {
     reflectionsModel = new ReflectionsModel();
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = true;
   }
 
   public static synchronized void activatePackages(String pkg) {
     reflectionsModel.rescann(pkg);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, URL... urls) {
     reflectionsModel.rescann(pkg, urls);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, Collection<URL> urls) {
     reflectionsModel.rescann(pkg, urls);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, URL... urls) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, Collection<URL> urls) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
@@ -131,9 +139,7 @@ public class DI {
     for (final Field field : fields) {
       if (field.isAnnotationPresent(Inject.class)) {
         Class type = field.getType();
-        final Class realClass = new ImplementingClassResolver().resolve(type);
-//class or producer or producer for interface ??
-
+        final Class realClass = implementingClassResolver.resolve(type);
         Object value; //Attribute Type for inject
         if (field.isAnnotationPresent(Proxy.class)) {
           final Proxy annotation = field.getAnnotation(Proxy.class);
@@ -146,6 +152,9 @@ public class DI {
 
           if (virtual) {
             //interface , realclass
+            if (concurrent) {
+              //virtualProxyBuilder.
+            }
             value = ProxyGenerator.newBuilder()
                 .withSubject(type).withRealClass(realClass)
                 .withType(ProxyType.DYNAMIC)
@@ -162,9 +171,6 @@ public class DI {
             final VirtualProxyBuilder virtualProxyBuilder = VirtualProxyBuilder.createBuilder(type, value);
             if (metrics) {
               virtualProxyBuilder.addMetrics();
-            }
-            if (concurrent) {
-              //virtualProxyBuilder.
             }
             if (secure) {
 //              virtualProxyBuilder.addSecurityRule(()->{});
@@ -246,6 +252,10 @@ public class DI {
 
   //delegator
 
+
+  public static <T> Class<? extends T> resolveImplementingClass(final Class<T> interf) {
+    return (Class<? extends T>) implementingClassResolver.resolve(interf);
+  }
 
   public static boolean isPkgPrefixActivated(final String pkgPrefix) {
     return reflectionsModel.isPkgPrefixActivated(pkgPrefix);

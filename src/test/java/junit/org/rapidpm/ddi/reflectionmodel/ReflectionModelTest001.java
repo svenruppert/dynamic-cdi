@@ -32,6 +32,7 @@ public class ReflectionModelTest001 {
 
   @Test
   public void test002() throws Exception {
+    DI.clearReflectionModel();
     DI.activatePackages("junit.org.rapidpm");
     final BusinessModule businessModule = DI.activateDI(new BusinessModule());
   }

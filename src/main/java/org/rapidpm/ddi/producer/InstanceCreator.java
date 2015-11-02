@@ -2,7 +2,6 @@ package org.rapidpm.ddi.producer;
 
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producerresolver.ProducerResolver;
 import org.rapidpm.ddi.producerresolver.ProducerResolverLocator;
 
@@ -13,13 +12,14 @@ import java.util.Set;
  */
 public class InstanceCreator {
 
+
   public <T> T instantiate(Class<T> clazz) {
     //check scope -> Singleton
     //check scope -> ???
 
     T newInstance;
     if (clazz.isInterface()) {
-      final Class<T> resolve = new ImplementingClassResolver().resolve(clazz);
+      final Class<? extends T> resolve = DI.resolveImplementingClass(clazz);
       newInstance = createNewInstance(clazz, resolve);
     } else {
       newInstance = createNewInstance(clazz, clazz);
