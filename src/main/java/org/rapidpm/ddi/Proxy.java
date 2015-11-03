@@ -22,6 +22,11 @@ public @interface Proxy {
 
   boolean logging() default false;
 
+  ProxyType proxyType() default ProxyType.DYNAMIC;
 
+  enum ProxyType {
+    DYNAMIC,
+    STATIC
+  }
 
 }

@@ -30,12 +30,13 @@ public class ImplementingClassResolver {
   }
 
 
-  public synchronized <I> Class<? extends I> resolve(Class<I> interf){
-    if ( ! resolverCache.containsKey(interf)) {
+  public synchronized <I> Class<? extends I> resolve(Class<I> interf) {
+    if (!resolverCache.containsKey(interf)) {
       resolverCache.put(interf, resolveNewForClass(interf));
     }
     return resolverCache.get(interf);
   }
+
   private <I> Class<? extends I> resolveNewForClass(Class<I> interf) {
     if (interf.isInterface()) {
       final Set<Class<? extends I>> subTypesOf = DI.getSubTypesOf(interf);
