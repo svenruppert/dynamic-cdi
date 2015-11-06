@@ -22,10 +22,9 @@ import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.InstanceCreator;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
 import org.rapidpm.proxybuilder.VirtualProxyBuilder;
-import org.rapidpm.proxybuilder.type.virtual.Concurrency;
+import org.rapidpm.proxybuilder.type.virtual.CreationStrategy;
 import org.rapidpm.proxybuilder.type.virtual.ProxyGenerator;
 import org.rapidpm.proxybuilder.type.virtual.ProxyType;
-import org.rapidpm.proxybuilder.type.virtual.dynamic.ServiceStrategyFactoryNotThreadSafe;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -145,29 +144,31 @@ public class DI {
           final Proxy annotation = field.getAnnotation(Proxy.class);
 
           final boolean virtual = annotation.virtual();
-          final boolean concurrent = annotation.concurrent();
+          final CreationStrategy creationStrategy = annotation.concurrent();
           final boolean metrics = annotation.metrics();
           final boolean secure = annotation.secure(); //woher die Sec Rules?
           final boolean logging = annotation.logging();
 
+          final Proxy.ProxyType proxyType = annotation.proxyType();
+
           if (virtual) {
             //interface , realclass
-            if (concurrent) {
-              //virtualProxyBuilder.
-            }
+
             value = ProxyGenerator.newBuilder()
-                .withSubject(type).withRealClass(realClass)
+                .withSubject(type)
                 .withType(ProxyType.DYNAMIC)
-                .withConcurrency(Concurrency.NONE)
+//                .withRealClass(realClass)
+//                .withCreationStrategy(Concurrency.NONE)
                 .withServiceFactory(new DDIServiceFactory<>(realClass))
-                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
+                .withCreationStrategy(creationStrategy)
+//                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
                 .build()
                 .make();
           } else {
             value = new InstanceCreator().instantiate(realClass);
             activateDI(value); //rekursiver abstieg
           }
-          if (concurrent || metrics || secure || logging) {
+          if (metrics || secure || logging) {
             final VirtualProxyBuilder virtualProxyBuilder = VirtualProxyBuilder.createBuilder(type, value);
             if (metrics) {
               virtualProxyBuilder.addMetrics();
