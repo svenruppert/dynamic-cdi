@@ -21,6 +21,7 @@ import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.InstanceCreator;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
+import org.rapidpm.proxybuilder.type.dymamic.DynamicProxyBuilder;
 import org.rapidpm.proxybuilder.type.dymamic.virtual.CreationStrategy;
 import org.rapidpm.proxybuilder.type.dymamic.virtual.DynamicProxyGenerator;
 

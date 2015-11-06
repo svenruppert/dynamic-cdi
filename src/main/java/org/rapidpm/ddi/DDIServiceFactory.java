@@ -1,7 +1,7 @@
 package org.rapidpm.ddi;
 
 import org.rapidpm.ddi.producer.InstanceCreator;
-import org.rapidpm.proxybuilder.type.dymamic.virtual.dynamic.VirtualDynamicProxyInvocationHandler;
+import org.rapidpm.proxybuilder.type.dymamic.virtual.VirtualDynamicProxyInvocationHandler;
 
 /**
  * Created by svenruppert on 23.07.15.
