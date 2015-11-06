@@ -1,6 +1,6 @@
 package org.rapidpm.ddi;
 
-import org.rapidpm.proxybuilder.type.virtual.CreationStrategy;
+import org.rapidpm.proxybuilder.type.dymamic.virtual.CreationStrategy;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

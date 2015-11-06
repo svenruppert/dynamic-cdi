@@ -21,10 +21,8 @@ import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.InstanceCreator;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
-import org.rapidpm.proxybuilder.VirtualProxyBuilder;
-import org.rapidpm.proxybuilder.type.virtual.CreationStrategy;
-import org.rapidpm.proxybuilder.type.virtual.ProxyGenerator;
-import org.rapidpm.proxybuilder.type.virtual.ProxyType;
+import org.rapidpm.proxybuilder.type.dymamic.virtual.CreationStrategy;
+import org.rapidpm.proxybuilder.type.dymamic.virtual.DynamicProxyGenerator;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -150,15 +148,11 @@ public class DI {
           final boolean logging = annotation.logging();
 
           final Proxy.ProxyType proxyType = annotation.proxyType();
-
+          //just now, only dynamic version is created..
           if (virtual) {
-            //interface , realclass
-
-            value = ProxyGenerator.newBuilder()
+            value = DynamicProxyGenerator.newBuilder()
                 .withSubject(type)
-                .withType(ProxyType.DYNAMIC)
-//                .withRealClass(realClass)
-//                .withCreationStrategy(Concurrency.NONE)
+                .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
                 .withServiceFactory(new DDIServiceFactory<>(realClass))
                 .withCreationStrategy(creationStrategy)
 //                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
@@ -169,9 +163,9 @@ public class DI {
             activateDI(value); //rekursiver abstieg
           }
           if (metrics || secure || logging) {
-            final VirtualProxyBuilder virtualProxyBuilder = VirtualProxyBuilder.createBuilder(type, value);
+            final DynamicProxyBuilder dynamicProxyBuilder = DynamicProxyBuilder.createBuilder(type, value);
             if (metrics) {
-              virtualProxyBuilder.addMetrics();
+              dynamicProxyBuilder.addMetrics();
             }
             if (secure) {
 //              virtualProxyBuilder.addSecurityRule(()->{});
@@ -179,7 +173,7 @@ public class DI {
             if (logging) {
               //virtualProxyBuilder.addLogging();
             }
-            value = virtualProxyBuilder.build();
+            value = dynamicProxyBuilder.build();
           }
         } else {
           value = new InstanceCreator().instantiate(realClass);
