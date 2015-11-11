@@ -8,12 +8,13 @@ This project is based on the project ***ProxyBuilder***.
 [![Build Status - drone.io](https://drone.io/github.com/RapidPM/dynamic-cdi/status.png)](https://drone.io/github.com/RapidPM/dynamic-cdi/latest)
 
 branch:
-+ master:
+
+master:
 [![Build Status - travis  ](https://travis-ci.org/RapidPM/dynamic-cdi.svg?branch=master)](https://travis-ci.org/RapidPM/dynamic-cdi)
 [![Coverage Status - master](https://coveralls.io/repos/RapidPM/dynamic-cdi/badge.svg?branch=master)](https://coveralls.io/r/RapidPM/dynamic-cdi?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/55a3ad19323939002100061e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a3ad19323939002100061e)
 
-+ develop:
+develop:
 [![Build Status - travis  ](https://travis-ci.org/RapidPM/dynamic-cdi.svg?branch=develop)](https://travis-ci.org/RapidPM/dynamic-cdi)
 [![Coverage Status - develop](https://coveralls.io/repos/RapidPM/dynamic-cdi/badge.svg?branch=develop)](https://coveralls.io/r/RapidPM/dynamic-cdi?branch=develop)
 [![Dependency Status](https://www.versioneye.com/user/projects/55a3ad16323939001800069a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a3ad16323939001800069a)
