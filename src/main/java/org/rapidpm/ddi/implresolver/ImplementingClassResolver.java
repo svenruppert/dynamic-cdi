@@ -4,6 +4,7 @@ import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.producer.ProducerLocator;
+import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
 
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +47,10 @@ public class ImplementingClassResolver {
       while (iteratorOfSubTypes.hasNext()) {
         Class<? extends I> next = iteratorOfSubTypes.next();
         if (next.isInterface()) iteratorOfSubTypes.remove();
+        //remove Adapters -  http://rapidpm.myjetbrains.com/youtrack/issue/DDI-5
+        //DDI-5
+        if (next.isAnnotationPresent(IsStaticObjectAdapter.class)) iteratorOfSubTypes.remove();
+
       }
       if (subTypesOf.isEmpty()) return interf;
       else if (subTypesOf.size() == 1) {
