@@ -161,7 +161,7 @@ public class DI {
                 .make();
           } else {
             value = new InstanceCreator().instantiate(realClass);
-            activateDI(value); //rekursiver abstieg
+            //activateDI(value); //rekursiver abstieg
           }
           if (metrics || secure || logging) {
             final DynamicProxyBuilder dynamicProxyBuilder = DynamicProxyBuilder.createBuilder(type, value);
@@ -178,7 +178,7 @@ public class DI {
           }
         } else {
           value = new InstanceCreator().instantiate(realClass);
-          activateDI(value); //rekursiver abstieg
+          //activateDI(value); //rekursiver abstieg
         }
         //check Scope ....
 //        Object value = scopes.getProperty(clazz, key);
