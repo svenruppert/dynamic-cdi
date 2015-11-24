@@ -1,5 +1,7 @@
 package org.rapidpm.ddi;
 
+import org.rapidpm.proxybuilder.type.dymamic.virtual.CreationStrategy;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -14,7 +16,7 @@ public @interface Proxy {
 
   boolean virtual() default false;
 
-  boolean concurrent() default false;
+  CreationStrategy concurrent() default CreationStrategy.NONE;
 
   boolean metrics() default false;
 
@@ -22,5 +24,11 @@ public @interface Proxy {
 
   boolean logging() default false;
 
+  ProxyType proxyType() default ProxyType.DYNAMIC;
+
+  enum ProxyType {
+    DYNAMIC,
+    STATIC
+  }
 
 }

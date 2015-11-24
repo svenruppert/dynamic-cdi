@@ -1,5 +1,6 @@
 package junit.org.rapidpm.ddi.classresolver;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
@@ -12,7 +13,7 @@ import org.rapidpm.ddi.Produces;
 /**
  * Created by svenruppert on 01.09.15.
  */
-public class ClassResolverTest009 {
+public class ClassResolverTest009 extends DDIBaseTest {
 
   /**
    * 1 Interface, 2 impl, 1 Producer for Interface -> Producer will be used

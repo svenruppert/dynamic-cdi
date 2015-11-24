@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Proxy;
-import org.rapidpm.proxybuilder.type.metrics.MetricsRegistry;
+import org.rapidpm.proxybuilder.type.dymamic.metrics.MetricsRegistry;
 
 import javax.inject.Inject;
 import java.util.SortedMap;

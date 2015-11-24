@@ -21,11 +21,9 @@ import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.InstanceCreator;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
-import org.rapidpm.proxybuilder.VirtualProxyBuilder;
-import org.rapidpm.proxybuilder.type.virtual.Concurrency;
-import org.rapidpm.proxybuilder.type.virtual.ProxyGenerator;
-import org.rapidpm.proxybuilder.type.virtual.ProxyType;
-import org.rapidpm.proxybuilder.type.virtual.dynamic.ServiceStrategyFactoryNotThreadSafe;
+import org.rapidpm.proxybuilder.type.dymamic.DynamicProxyBuilder;
+import org.rapidpm.proxybuilder.type.dymamic.virtual.CreationStrategy;
+import org.rapidpm.proxybuilder.type.dymamic.virtual.DynamicProxyGenerator;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -46,7 +44,7 @@ import java.util.Set;
  */
 public class DI {
 
-
+  private static ImplementingClassResolver implementingClassResolver = new ImplementingClassResolver();
   private static ReflectionsModel reflectionsModel = new ReflectionsModel();
   private static boolean bootstrapedNeeded = true;
 
@@ -63,6 +61,7 @@ public class DI {
 
   public static synchronized void bootstrap() {
 //    reflectionsModel = new ReflectionsModel();
+    implementingClassResolver.clearCache();
     if (bootstrapedNeeded) {
       reflectionsModel.rescann("");
     }
@@ -71,39 +70,46 @@ public class DI {
 
   public static synchronized void clearReflectionModel() {
     reflectionsModel = new ReflectionsModel();
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = true;
   }
 
   public static synchronized void activatePackages(String pkg) {
     reflectionsModel.rescann(pkg);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, URL... urls) {
     reflectionsModel.rescann(pkg, urls);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, Collection<URL> urls) {
     reflectionsModel.rescann(pkg, urls);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, URL... urls) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, Collection<URL> urls) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
+    implementingClassResolver.clearCache();
     bootstrapedNeeded = false;
   }
 
@@ -131,40 +137,36 @@ public class DI {
     for (final Field field : fields) {
       if (field.isAnnotationPresent(Inject.class)) {
         Class type = field.getType();
-        final Class realClass = new ImplementingClassResolver().resolve(type);
-//class or producer or producer for interface ??
-
+        final Class realClass = implementingClassResolver.resolve(type);
         Object value; //Attribute Type for inject
         if (field.isAnnotationPresent(Proxy.class)) {
           final Proxy annotation = field.getAnnotation(Proxy.class);
 
           final boolean virtual = annotation.virtual();
-          final boolean concurrent = annotation.concurrent();
+          final CreationStrategy creationStrategy = annotation.concurrent();
           final boolean metrics = annotation.metrics();
           final boolean secure = annotation.secure(); //woher die Sec Rules?
           final boolean logging = annotation.logging();
 
+          final Proxy.ProxyType proxyType = annotation.proxyType();
+          //just now, only dynamic version is created..
           if (virtual) {
-            //interface , realclass
-            value = ProxyGenerator.newBuilder()
-                .withSubject(type).withRealClass(realClass)
-                .withType(ProxyType.DYNAMIC)
-                .withConcurrency(Concurrency.NONE)
+            value = DynamicProxyGenerator.newBuilder()
+                .withSubject(type)
+                .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
                 .withServiceFactory(new DDIServiceFactory<>(realClass))
-                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
+                .withCreationStrategy(creationStrategy)
+//                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
                 .build()
                 .make();
           } else {
             value = new InstanceCreator().instantiate(realClass);
-            activateDI(value); //rekursiver abstieg
+            //activateDI(value); //rekursiver abstieg
           }
-          if (concurrent || metrics || secure || logging) {
-            final VirtualProxyBuilder virtualProxyBuilder = VirtualProxyBuilder.createBuilder(type, value);
+          if (metrics || secure || logging) {
+            final DynamicProxyBuilder dynamicProxyBuilder = DynamicProxyBuilder.createBuilder(type, value);
             if (metrics) {
-              virtualProxyBuilder.addMetrics();
-            }
-            if (concurrent) {
-              //virtualProxyBuilder.
+              dynamicProxyBuilder.addMetrics();
             }
             if (secure) {
 //              virtualProxyBuilder.addSecurityRule(()->{});
@@ -172,11 +174,11 @@ public class DI {
             if (logging) {
               //virtualProxyBuilder.addLogging();
             }
-            value = virtualProxyBuilder.build();
+            value = dynamicProxyBuilder.build();
           }
         } else {
           value = new InstanceCreator().instantiate(realClass);
-          activateDI(value); //rekursiver abstieg
+          //activateDI(value); //rekursiver abstieg
         }
         //check Scope ....
 //        Object value = scopes.getProperty(clazz, key);
@@ -246,6 +248,10 @@ public class DI {
 
   //delegator
 
+
+  public static <T> Class<? extends T> resolveImplementingClass(final Class<T> interf) {
+    return (Class<? extends T>) implementingClassResolver.resolve(interf);
+  }
 
   public static boolean isPkgPrefixActivated(final String pkgPrefix) {
     return reflectionsModel.isPkgPrefixActivated(pkgPrefix);

@@ -5,9 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Proxy;
-import org.rapidpm.ddi.DDIModelException;
-import org.rapidpm.proxybuilder.type.virtual.dynamic.ServiceStrategyFactoryNotThreadSafe;
-import org.rapidpm.proxybuilder.type.virtual.dynamic.VirtualDynamicProxyInvocationHandler;
+import org.rapidpm.proxybuilder.type.dymamic.virtual.VirtualDynamicProxyInvocationHandler;
+import org.rapidpm.proxybuilder.type.dymamic.virtual.creationstrategy.ServiceStrategyFactoryNotThreadSafe;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
