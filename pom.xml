@@ -41,8 +41,8 @@
     </developer>
   </developers>
   <issueManagement>
-    <system>Github</system>
-    <url>https://github.com/RapidPM/dynamic-cdi/issues</url>
+    <system>Youtrack</system>
+    <url>http://rapidpm.myjetbrains.com/youtrack/issues?q=project%3A+DynamicDependencyInjection</url>
   </issueManagement>
   <ciManagement>
     <system>TravisCI</system>
