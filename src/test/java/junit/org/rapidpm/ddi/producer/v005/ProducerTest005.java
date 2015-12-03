@@ -24,6 +24,7 @@ public class ProducerTest005 extends DDIBaseTest {
     } catch (Exception e) {
       Assert.assertTrue(e instanceof DDIModelException);
       final String message = e.getMessage();
+      System.out.println("message = " + message);
       Assert.assertTrue(message.contains("interface with multiple implementations and no ClassResolver and n Producers f the interface"));
       throw e;
     }

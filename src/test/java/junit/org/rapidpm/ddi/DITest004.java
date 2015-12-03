@@ -33,6 +33,7 @@ public class DITest004 extends DDIBaseTest {
     Service service = new Service();
 
     Assert.assertFalse(service.postconstructed);
+    Assert.assertNull(service.subService);
     DI.activateDI(service);
     Assert.assertTrue(service.postconstructed);
 
