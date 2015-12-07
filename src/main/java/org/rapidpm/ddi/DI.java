@@ -74,6 +74,12 @@ public class DI {
     bootstrapedNeeded = true;
   }
 
+  public static synchronized void activatePackages(Class pkg) {
+    reflectionsModel.rescann(pkg.getPackage().getName());
+    implementingClassResolver.clearCache();
+    bootstrapedNeeded = false;
+  }
+
   public static synchronized void activatePackages(String pkg) {
     reflectionsModel.rescann(pkg);
     implementingClassResolver.clearCache();
