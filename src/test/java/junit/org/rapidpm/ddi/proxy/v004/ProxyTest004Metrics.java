@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Proxy;
-import org.rapidpm.proxybuilder.type.dymamic.metrics.MetricsRegistry;
+import org.rapidpm.proxybuilder.core.metrics.RapidPMMetricsRegistry;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -29,7 +29,7 @@ public class ProxyTest004Metrics extends DDIBaseTest {
 
   @Before
   public void setUp() throws Exception {
-    final MetricRegistry metrics = MetricsRegistry.getInstance().getMetrics();
+    final MetricRegistry metrics = RapidPMMetricsRegistry.getInstance().getMetrics();
     reporter = ConsoleReporter.forRegistry(metrics)
         .convertRatesTo(TimeUnit.NANOSECONDS)
         .convertDurationsTo(TimeUnit.MILLISECONDS)
@@ -58,7 +58,7 @@ public class ProxyTest004Metrics extends DDIBaseTest {
       workingHole(s.toUpperCase());
     });
 
-    final SortedMap<String, Histogram> histograms = MetricsRegistry.getInstance().getMetrics().getHistograms();
+    final SortedMap<String, Histogram> histograms = RapidPMMetricsRegistry.getInstance().getMetrics().getHistograms();
     Assert.assertNotNull(histograms);
     Assert.assertFalse(histograms.isEmpty());
 

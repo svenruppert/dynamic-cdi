@@ -10,7 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Proxy;
-import org.rapidpm.proxybuilder.type.dymamic.metrics.MetricsRegistry;
+import org.rapidpm.proxybuilder.core.metrics.RapidPMMetricsRegistry;
+
 
 import javax.inject.Inject;
 import java.util.SortedMap;
@@ -27,7 +28,7 @@ public class ProxyTest003 extends DDIBaseTest {
 
   @Before
   public void setUp() throws Exception {
-    final MetricRegistry metrics = MetricsRegistry.getInstance().getMetrics();
+    final MetricRegistry metrics = RapidPMMetricsRegistry.getInstance().getMetrics();
     reporter = ConsoleReporter.forRegistry(metrics)
         .convertRatesTo(TimeUnit.NANOSECONDS)
         .convertDurationsTo(TimeUnit.MILLISECONDS)
@@ -51,7 +52,7 @@ public class ProxyTest003 extends DDIBaseTest {
       workingHole(s.toUpperCase());
     });
 
-    final SortedMap<String, Histogram> histograms = MetricsRegistry.getInstance().getMetrics().getHistograms();
+    final SortedMap<String, Histogram> histograms = RapidPMMetricsRegistry.getInstance().getMetrics().getHistograms();
     Assert.assertNotNull(histograms);
     Assert.assertFalse(histograms.isEmpty());
     Assert.assertTrue(histograms.containsKey(Service.class.getSimpleName() + ".doWork"));
@@ -59,7 +60,7 @@ public class ProxyTest003 extends DDIBaseTest {
     final Histogram histogram = histograms.get(Service.class.getSimpleName() + ".doWork");
     Assert.assertNotNull(histogram);
     Assert.assertNotNull(histogram.getSnapshot());
-    MetricsRegistry.getInstance().getMetrics().remove(Service.class.getSimpleName() + ".doWork");
+    RapidPMMetricsRegistry.getInstance().getMetrics().remove(Service.class.getSimpleName() + ".doWork");
     System.out.println("s1 = " + s1);
 
   }
@@ -81,7 +82,7 @@ public class ProxyTest003 extends DDIBaseTest {
       workingHole(s.toUpperCase());
     });
 
-    final SortedMap<String, Histogram> histograms = MetricsRegistry.getInstance().getMetrics().getHistograms();
+    final SortedMap<String, Histogram> histograms = RapidPMMetricsRegistry.getInstance().getMetrics().getHistograms();
     Assert.assertNotNull(histograms);
     Assert.assertTrue(histograms.isEmpty());
 
