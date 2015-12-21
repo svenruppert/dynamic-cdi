@@ -64,7 +64,7 @@
       <groupId>org.rapidpm.proxybuilder</groupId>
       <artifactId>rapidpm-proxybuilder-modules-builder</artifactId>
     </dependency>
-    <!--using Annotation Processing-->
+    <!--using Annotation Processing Object Adapter -->
     <dependency>
       <groupId>org.rapidpm.proxybuilder</groupId>
       <artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-processors</artifactId>
@@ -72,6 +72,16 @@
     <dependency>
       <groupId>org.rapidpm.proxybuilder</groupId>
       <artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-annotations</artifactId>
+    </dependency>
+
+    <!--using Annotation Processing Static Proxies Generated-->
+    <dependency>
+      <groupId>org.rapidpm.proxybuilder</groupId>
+      <artifactId>rapidpm-proxybuilder-modules-static-generated-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.rapidpm.proxybuilder</groupId>
+      <artifactId>rapidpm-proxybuilder-modules-static-generated-processors</artifactId>
     </dependency>
   </dependencies>
 
@@ -87,6 +97,9 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              </transformers>
               <dependencyReducedPomLocation>${project.build.directory}/reduced-pom.xml</dependencyReducedPomLocation>
               <minimizeJar>false</minimizeJar>
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
