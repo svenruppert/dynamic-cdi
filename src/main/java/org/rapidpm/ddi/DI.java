@@ -128,6 +128,16 @@ public class DI {
     return instance;
   }
 
+  public static synchronized <T> T activateDI(Class<T> clazz2Instanciate) {
+    if (bootstrapedNeeded) bootstrap();
+    //resolve implementation
+    final T instance = new InstanceCreator().instantiate(clazz2Instanciate);
+    injectAttributes(instance);
+    initialize(instance);
+    //register at new Scope ?
+    return instance;
+  }
+
   private static <T> void injectAttributes(final T rootInstance) throws SecurityException {
     injectAttributesForClass(rootInstance.getClass(), rootInstance);
   }
@@ -256,7 +266,7 @@ public class DI {
 
 
   public static <T> Class<? extends T> resolveImplementingClass(final Class<T> interf) {
-    return (Class<? extends T>) implementingClassResolver.resolve(interf);
+    return implementingClassResolver.resolve(interf);
   }
 
   public static boolean isPkgPrefixActivated(final String pkgPrefix) {
