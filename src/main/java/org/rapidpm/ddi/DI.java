@@ -337,6 +337,11 @@ public class DI {
   //delegator
 
 
+  public static Set<String> listAllActivatedMetrics() {
+    return Collections.unmodifiableSet(metricsActivated);
+  }
+
+
   public static <T> Set<Class<? extends T>> getStaticMetricProxiesFor(final Class<T> type) {
     return reflectionsModel.getStaticMetricProxiesFor(type);
   }
