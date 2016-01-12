@@ -62,7 +62,7 @@ public class ProxyTest004Metrics extends DDIBaseTest {
     Assert.assertNotNull(histograms);
     Assert.assertFalse(histograms.isEmpty());
 
-    final Histogram histogram = histograms.get(Service.class.getSimpleName() + ".doWork");
+    final Histogram histogram = histograms.get(Service.class.getName() + ".doWork");
     final long count = histogram.getCount();
     Assert.assertTrue(count >= 1);
 

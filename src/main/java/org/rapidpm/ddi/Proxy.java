@@ -28,7 +28,9 @@ public @interface Proxy {
 
   enum ProxyType {
     DYNAMIC,
-    STATIC
+    GENERATED,
+    STATIC,
+    AUTODETECT
   }
 
 }

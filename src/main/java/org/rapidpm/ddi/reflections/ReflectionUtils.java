@@ -1,11 +1,13 @@
 package org.rapidpm.ddi.reflections;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
 /**
  * Created by svenruppert on 11.08.15.
  */
-public class ReflectionUtils {
+public class ReflectionUtils extends org.reflections.ReflectionUtils {
 
   public boolean checkInterface(final Type aClass, Class targetInterface) {
     if (aClass.equals(targetInterface)) return true;
@@ -30,4 +32,19 @@ public class ReflectionUtils {
 
     return false;
   }
+
+
+  public <T> void setDelegatorToMetrixsProxy(T proxy, T original) {
+
+    final String simpleName = original.getClass().getSimpleName();
+    try {
+      final Method declaredMethod = proxy.getClass().getDeclaredMethod("with" + simpleName, original.getClass());
+      declaredMethod.invoke(proxy, original);
+    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+      e.printStackTrace();
+    }
+
+  }
+
+
 }

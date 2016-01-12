@@ -12,7 +12,6 @@ import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Proxy;
 import org.rapidpm.proxybuilder.core.metrics.RapidPMMetricsRegistry;
 
-
 import javax.inject.Inject;
 import java.util.SortedMap;
 import java.util.concurrent.TimeUnit;
@@ -55,12 +54,12 @@ public class ProxyTest003 extends DDIBaseTest {
     final SortedMap<String, Histogram> histograms = RapidPMMetricsRegistry.getInstance().getMetrics().getHistograms();
     Assert.assertNotNull(histograms);
     Assert.assertFalse(histograms.isEmpty());
-    Assert.assertTrue(histograms.containsKey(Service.class.getSimpleName() + ".doWork"));
+    Assert.assertTrue(histograms.containsKey(Service.class.getName() + ".doWork"));
 
-    final Histogram histogram = histograms.get(Service.class.getSimpleName() + ".doWork");
+    final Histogram histogram = histograms.get(Service.class.getName() + ".doWork");
     Assert.assertNotNull(histogram);
     Assert.assertNotNull(histogram.getSnapshot());
-    RapidPMMetricsRegistry.getInstance().getMetrics().remove(Service.class.getSimpleName() + ".doWork");
+    RapidPMMetricsRegistry.getInstance().getMetrics().remove(Service.class.getName() + ".doWork");
     System.out.println("s1 = " + s1);
 
   }
@@ -84,7 +83,8 @@ public class ProxyTest003 extends DDIBaseTest {
 
     final SortedMap<String, Histogram> histograms = RapidPMMetricsRegistry.getInstance().getMetrics().getHistograms();
     Assert.assertNotNull(histograms);
-    Assert.assertTrue(histograms.isEmpty());
+    final Histogram histogram = histograms.get(demoLogic.service.getClass().getName());
+    Assert.assertNull(histogram);
 
     System.out.println("s1 = " + s1);
 

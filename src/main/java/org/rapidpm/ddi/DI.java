@@ -20,7 +20,9 @@ package org.rapidpm.ddi;
 import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.InstanceCreator;
+import org.rapidpm.ddi.reflections.ReflectionUtils;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
+import org.rapidpm.proxybuilder.ProxyBuilder;
 import org.rapidpm.proxybuilder.type.dymamic.DynamicProxyBuilder;
 import org.rapidpm.proxybuilder.type.dymamic.virtual.CreationStrategy;
 import org.rapidpm.proxybuilder.type.dymamic.virtual.DynamicProxyGenerator;
@@ -36,6 +38,8 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -47,6 +51,10 @@ public class DI {
   private static ImplementingClassResolver implementingClassResolver = new ImplementingClassResolver();
   private static ReflectionsModel reflectionsModel = new ReflectionsModel();
   private static boolean bootstrapedNeeded = true;
+
+  private static Set<String> metricsActivated = Collections.synchronizedSet(new HashSet<>());
+  private static Set<String> loggingActivated = Collections.synchronizedSet(new HashSet<>());
+
 
   private DI() {
   }
@@ -71,6 +79,8 @@ public class DI {
   public static synchronized void clearReflectionModel() {
     reflectionsModel = new ReflectionsModel();
     implementingClassResolver.clearCache();
+    metricsActivated.clear();
+    loggingActivated.clear();
     bootstrapedNeeded = true;
   }
 
@@ -119,13 +129,35 @@ public class DI {
     bootstrapedNeeded = false;
   }
 
+  public static void activateMetrics(String pkgName) {
+    final Collection<String> classesForPkg = reflectionsModel.getClassesForPkg(pkgName);
+    metricsActivated.addAll(classesForPkg);
+  }
+
+  public static void activateMetrics(Class clazz) {
+    final boolean pkgPrefixActivated = reflectionsModel.isPkgPrefixActivated(clazz.getPackage().getName());
+    if (pkgPrefixActivated) metricsActivated.add(clazz.getName());
+  }
+
+  public static void deActivateMetrics(String pkgName) {
+    final Collection<String> classesForPkg = reflectionsModel.getClassesForPkg(pkgName);
+    metricsActivated.removeAll(classesForPkg);
+  }
+
+  public static void deActivateMetrics(Class clazz) {
+    final boolean pkgPrefixActivated = reflectionsModel.isPkgPrefixActivated(clazz.getPackage().getName());
+    if (pkgPrefixActivated) metricsActivated.remove(clazz.getName());
+  }
+
 
   public static synchronized <T> T activateDI(T instance) {
     if (bootstrapedNeeded) bootstrap();
     injectAttributes(instance);
     initialize(instance);
     //register at new Scope ?
-    return instance;
+    //Metrics ??
+    final Class<T> aClass = (Class<T>) instance.getClass();
+    return createMetricsProxy(aClass, instance);
   }
 
   public static synchronized <T> T activateDI(Class<T> clazz2Instanciate) {
@@ -134,9 +166,34 @@ public class DI {
     final T instance = new InstanceCreator().instantiate(clazz2Instanciate);
     injectAttributes(instance);
     initialize(instance);
-    //register at new Scope ?
+    return createMetricsProxy(clazz2Instanciate, instance);
+  }
+
+
+  private static <T> T createMetricsProxy(Class<T> clazz2Instanciate, T instance) {
+    if (metricsActivated.contains(clazz2Instanciate.getName())) {
+      //Metrics Adapter available ?
+      //InMemoryCompile ?
+
+      final Set<Class<? extends T>> staticMetricProxiesFor = DI.getStaticMetricProxiesFor(clazz2Instanciate);
+      if (staticMetricProxiesFor.isEmpty()) {
+        if (clazz2Instanciate.isInterface()) {
+          return ProxyBuilder.newDynamicProxyBuilder(clazz2Instanciate, instance).addMetrics().build();
+        }
+        //TODO try inMemoryCompile
+        //ByteCode if expl. allowed ?
+      } else if (staticMetricProxiesFor.size() == 1) {
+        final Class<T> c = (Class<T>) staticMetricProxiesFor.toArray()[0];
+        final T metricsProxy = new InstanceCreator().instantiate(c);
+        new ReflectionUtils().setDelegatorToMetrixsProxy(metricsProxy, instance);
+        return metricsProxy;
+      } else {
+        throw new DDIModelException("to many MetricProxies for " + clazz2Instanciate + " -> Proxies are " + staticMetricProxiesFor);
+      }
+    }
     return instance;
   }
+
 
   private static <T> void injectAttributes(final T rootInstance) throws SecurityException {
     injectAttributesForClass(rootInstance.getClass(), rootInstance);
@@ -165,6 +222,21 @@ public class DI {
           final boolean logging = annotation.logging();
 
           final Proxy.ProxyType proxyType = annotation.proxyType();
+
+          switch (proxyType) {
+            case AUTODETECT:
+              break;
+            case DYNAMIC:
+              break;
+            case GENERATED:
+              break;
+            case STATIC:
+              break;
+            default:
+              break;
+          }
+
+
           //just now, only dynamic version is created..
           if (virtual) {
             value = DynamicProxyGenerator.newBuilder()
@@ -265,12 +337,20 @@ public class DI {
   //delegator
 
 
+  public static <T> Set<Class<? extends T>> getStaticMetricProxiesFor(final Class<T> type) {
+    return reflectionsModel.getStaticMetricProxiesFor(type);
+  }
+
   public static <T> Class<? extends T> resolveImplementingClass(final Class<T> interf) {
     return implementingClassResolver.resolve(interf);
   }
 
   public static boolean isPkgPrefixActivated(final String pkgPrefix) {
     return reflectionsModel.isPkgPrefixActivated(pkgPrefix);
+  }
+
+  public static boolean isPkgPrefixActivated(final Class clazz) {
+    return reflectionsModel.isPkgPrefixActivated(clazz.getPackage().getName());
   }
 
   public static LocalDateTime getPkgPrefixActivatedTimestamp(final String pkgPrefix) {
