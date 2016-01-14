@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.ResponsibleFor;
-import org.rapidpm.ddi.implresolver.ClassResolver;
 
 import javax.inject.Inject;
 
@@ -18,6 +16,7 @@ public class DITest005 {
 
   @Before
   public void setUp() throws Exception {
+    DI.clearReflectionModel();
     DI.activateDI(this);
   }
 
