@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 //public class ImplementingClassResolver<I> implements ClassResolver<I> {
 public class ImplementingClassResolver {
 
-  private Map<Class, Class> resolverCache = new ConcurrentHashMap<>();
+  private final Map<Class, Class> resolverCache = new ConcurrentHashMap<>();
 
   public void clearCache() {
     resolverCache.clear();
@@ -80,8 +80,7 @@ public class ImplementingClassResolver {
           for (Class<? extends ClassResolver> resolver : clearedListOfResolvers) {
             try {
               final ClassResolver<I> classResolver = resolver.newInstance();
-              final Class<? extends I> resolve = classResolver.resolve(interf);
-              return resolve;
+              return classResolver.resolve(interf);
             } catch (InstantiationException | IllegalAccessException e) {
               e.printStackTrace();
               throw new DDIModelException(interf + " -- " + e);

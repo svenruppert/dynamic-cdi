@@ -8,7 +8,7 @@ import org.rapidpm.ddi.producerresolver.ProducerResolverLocator;
 import java.util.Set;
 
 /**
- * Created by svenruppert on 17.08.15.
+ * Created by Sven Ruppert on 17.08.15.
  */
 public class InstanceCreator {
 

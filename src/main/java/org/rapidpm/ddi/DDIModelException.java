@@ -1,7 +1,7 @@
 package org.rapidpm.ddi;
 
 /**
- * Created by svenruppert on 14.07.15.
+ * Created by Sven Ruppert on 14.07.15.
  */
 public class DDIModelException extends RuntimeException {
   public DDIModelException() {

@@ -1,13 +1,13 @@
 package org.rapidpm.ddi.producer;
 
 import org.rapidpm.ddi.DI;
-
 import org.rapidpm.ddi.Produces;
+
 import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Created by svenruppert on 17.08.15.
+ * Created by Sven Ruppert on 17.08.15.
  */
 public class ProducerLocator {
 

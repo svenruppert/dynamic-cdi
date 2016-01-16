@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by svenruppert on 09.01.16.
+ * Created by Sven Ruppert on 09.01.16.
  */
 public class StaticMetricsProxyScanner extends AbstractScanner {
 

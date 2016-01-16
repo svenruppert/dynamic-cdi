@@ -8,7 +8,7 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by svenruppert on 05.08.15.
+ * Created by Sven Ruppert on 05.08.15.
  */
 
 

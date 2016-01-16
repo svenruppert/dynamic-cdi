@@ -1,14 +1,14 @@
 package org.rapidpm.ddi;
 
 import org.rapidpm.ddi.producer.InstanceCreator;
-import org.rapidpm.proxybuilder.type.dymamic.virtual.VirtualDynamicProxyInvocationHandler;
+import org.rapidpm.proxybuilder.type.dymamic.virtual.VirtualDynamicProxyInvocationHandler.ServiceFactory;
 
 /**
- * Created by svenruppert on 23.07.15.
+ * Created by Sven Ruppert on 23.07.15.
  */
-public class DDIServiceFactory<C> implements VirtualDynamicProxyInvocationHandler.ServiceFactory<C> {
+public class DDIServiceFactory<C> implements ServiceFactory<C> {
 
-  private Class<C> realClass;
+  private final Class<C> realClass;
 
   public DDIServiceFactory(final Class<C> realClass) {
     this.realClass = realClass;
@@ -16,8 +16,7 @@ public class DDIServiceFactory<C> implements VirtualDynamicProxyInvocationHandle
 
   @Override
   public C createInstance() {
-    final C instantiate = new InstanceCreator().instantiate(realClass);
-    return instantiate;
+    return new InstanceCreator().instantiate(realClass);
   }
 }
 

@@ -16,23 +16,21 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by svenruppert on 14.07.15.
+ * Created by Sven Ruppert on 14.07.15.
  */
 public class ReflectionsModel {
 
 
   //TODO refactoring to pessimistic write / concurrent read
 
-  private boolean parallelExecutors = false;
-  private Map<String, LocalDateTime> activatedPackagesMap = new ConcurrentHashMap<>();
-
-  private Reflections reflections = new Reflections(
+  private final Map<String, LocalDateTime> activatedPackagesMap = new ConcurrentHashMap<>();
+  private final Object obj = new Object();
+  private boolean parallelExecutors;
+  private final Reflections reflections = new Reflections(
       createConfigurationBuilder()
           .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix("org.rapidpm")))
           .setScanners(createScanners())
   );
-
-  private Object obj = new Object();
 
   public ReflectionsModel() {
   }
@@ -42,7 +40,7 @@ public class ReflectionsModel {
     this.parallelExecutors = parallelExecutors;
   }
 
-  public void rescann(String pkgPrefix) {
+  public void rescann(final String pkgPrefix) {
     rescannImpl(createConfigurationBuilder()
         .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(pkgPrefix)))
         .setScanners(createScanners()));
@@ -66,7 +64,7 @@ public class ReflectionsModel {
   }
 
   private Scanner[] createScanners() {
-    Scanner[] sccannerArray = new Scanner[5];
+    final Scanner[] sccannerArray = new Scanner[5];
     sccannerArray[0] = new SubTypesScanner();
     sccannerArray[1] = new TypeAnnotationsScanner();
     sccannerArray[2] = new MethodAnnotationsScanner();

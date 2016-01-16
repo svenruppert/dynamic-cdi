@@ -5,7 +5,7 @@ import org.reflections.util.FilterBuilder;
 
 
 /**
- * Created by svenruppert on 09.01.16.
+ * Created by Sven Ruppert on 09.01.16.
  */
 public class PkgTypesScanner extends AbstractScanner {
 

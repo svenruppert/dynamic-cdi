@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Created by svenruppert on 25.09.15.
+ * Created by Sven Ruppert on 25.09.15.
  */
 public class ProducerResolverLocator {
 
