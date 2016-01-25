@@ -4,8 +4,8 @@ import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.implresolver.ClassResolver;
 import org.rapidpm.ddi.ResponsibleFor;
+import org.rapidpm.ddi.implresolver.ClassResolver;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -60,7 +60,7 @@ public class ClassResolverTest003 extends DDIBaseTest {
 
   public static class ServiceImplA implements Service {
     @Inject SubService subService;
-    boolean postconstructed = false;
+    boolean postconstructed;
 
     public String work(String txt) {
       return subService.work(txt);
@@ -69,11 +69,12 @@ public class ClassResolverTest003 extends DDIBaseTest {
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
-    }    @Override
+    }
+
+    @Override
     public SubService getSubService() {
       return subService;
     }
-
 
 
     public boolean isPostconstructed() {
@@ -85,15 +86,16 @@ public class ClassResolverTest003 extends DDIBaseTest {
 
   public static class ServiceImplB implements Service {
     @Inject SubService subService;
-    boolean postconstructed = false;
+    boolean postconstructed;
 
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
-    }    public String work(String txt) {
-      return subService.work(txt);
     }
 
+    public String work(String txt) {
+      return subService.work(txt);
+    }
 
 
     @Override
@@ -111,7 +113,7 @@ public class ClassResolverTest003 extends DDIBaseTest {
 
   public static class SubService {
     @Inject SubSubService subSubService;
-    boolean postconstructed = false;
+    boolean postconstructed;
 
     public String work(final String txt) {
       return subSubService.work(txt);

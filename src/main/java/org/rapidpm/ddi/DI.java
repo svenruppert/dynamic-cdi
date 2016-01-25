@@ -17,11 +17,13 @@
 package org.rapidpm.ddi;
 
 
+import org.rapidpm.ddi.Proxy.ProxyType;
 import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.InstanceCreator;
 import org.rapidpm.ddi.reflections.ReflectionUtils;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
+import org.rapidpm.ddi.scopes.InjectionScopeManager;
 import org.rapidpm.proxybuilder.ProxyBuilder;
 import org.rapidpm.proxybuilder.type.dymamic.DynamicProxyBuilder;
 import org.rapidpm.proxybuilder.type.dymamic.virtual.CreationStrategy;
@@ -42,18 +44,19 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.rapidpm.ddi.scopes.InjectionScopeManager.listAllActiveScopeNames;
+
 
 /**
  * Created by Sven Ruppert on 05.12.2014.
  */
 public class DI {
 
-  private static ImplementingClassResolver implementingClassResolver = new ImplementingClassResolver();
+  private static final ImplementingClassResolver IMPLEMENTING_CLASS_RESOLVER = new ImplementingClassResolver();
+  private static final Set<String> METRICS_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
+  private static final Set<String> LOGGING_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
   private static ReflectionsModel reflectionsModel = new ReflectionsModel();
   private static boolean bootstrapedNeeded = true;
-
-  private static Set<String> metricsActivated = Collections.synchronizedSet(new HashSet<>());
-  private static Set<String> loggingActivated = Collections.synchronizedSet(new HashSet<>());
 
 
   private DI() {
@@ -69,7 +72,7 @@ public class DI {
 
   public static synchronized void bootstrap() {
 //    reflectionsModel = new ReflectionsModel();
-    implementingClassResolver.clearCache();
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
     if (bootstrapedNeeded) {
       reflectionsModel.rescann("");
     }
@@ -78,86 +81,111 @@ public class DI {
 
   public static synchronized void clearReflectionModel() {
     reflectionsModel = new ReflectionsModel();
-    implementingClassResolver.clearCache();
-    metricsActivated.clear();
-    loggingActivated.clear();
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    METRICS_ACTIVATED.clear();
+    LOGGING_ACTIVATED.clear();
+    InjectionScopeManager.cleanUp();
     bootstrapedNeeded = true;
   }
 
-  public static synchronized void activatePackages(Class pkg) {
-    reflectionsModel.rescann(pkg.getPackage().getName());
-    implementingClassResolver.clearCache();
+  public static synchronized void activatePackages(Class clazz) {
+    reflectionsModel.rescann(clazz.getPackage().getName());
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    InjectionScopeManager.cleanUp();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg) {
     reflectionsModel.rescann(pkg);
-    implementingClassResolver.clearCache();
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    InjectionScopeManager.cleanUp();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, URL... urls) {
     reflectionsModel.rescann(pkg, urls);
-    implementingClassResolver.clearCache();
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    InjectionScopeManager.cleanUp();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, Collection<URL> urls) {
     reflectionsModel.rescann(pkg, urls);
-    implementingClassResolver.clearCache();
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    InjectionScopeManager.cleanUp();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg);
-    implementingClassResolver.clearCache();
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    InjectionScopeManager.cleanUp();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, URL... urls) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
-    implementingClassResolver.clearCache();
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    InjectionScopeManager.cleanUp();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, Collection<URL> urls) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
-    implementingClassResolver.clearCache();
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    InjectionScopeManager.cleanUp();
     bootstrapedNeeded = false;
   }
 
   public static void activateMetrics(String pkgName) {
-    final Collection<String> classesForPkg = reflectionsModel.getClassesForPkg(pkgName);
-    metricsActivated.addAll(classesForPkg);
+    final boolean pkgPrefixActivated = reflectionsModel.isPkgPrefixActivated(pkgName);
+    if (pkgPrefixActivated) {
+      final Collection<String> classesForPkg = reflectionsModel.getClassesForPkg(pkgName);
+      METRICS_ACTIVATED.addAll(classesForPkg);
+    }
   }
 
   public static void activateMetrics(Class clazz) {
     final boolean pkgPrefixActivated = reflectionsModel.isPkgPrefixActivated(clazz.getPackage().getName());
-    if (pkgPrefixActivated) metricsActivated.add(clazz.getName());
+    if (pkgPrefixActivated) METRICS_ACTIVATED.add(clazz.getName());
   }
 
   public static void deActivateMetrics(String pkgName) {
     final Collection<String> classesForPkg = reflectionsModel.getClassesForPkg(pkgName);
-    metricsActivated.removeAll(classesForPkg);
+    METRICS_ACTIVATED.removeAll(classesForPkg);
   }
 
   public static void deActivateMetrics(Class clazz) {
-    final boolean pkgPrefixActivated = reflectionsModel.isPkgPrefixActivated(clazz.getPackage().getName());
-    if (pkgPrefixActivated) metricsActivated.remove(clazz.getName());
+    METRICS_ACTIVATED.remove(clazz.getName());
   }
-
 
   public static synchronized <T> T activateDI(T instance) {
     if (bootstrapedNeeded) bootstrap();
+
+//    if (InjectionScopeManager.isManagedByMe(instance.getClass())) {
+//      final String scopeName = InjectionScopeManager.scopeForClass(instance.getClass());
+//      System.out.println("instance.getClass() = " + instance.getClass() + " is normally managed by a Scope " + scopeName);
+//    }
+
     injectAttributes(instance);
     initialize(instance);
-    //register at new Scope ?
-    //Metrics ??
     final Class<T> aClass = (Class<T>) instance.getClass();
     return createMetricsProxy(aClass, instance);
+  }
+
+  public static Set<String> listAllActiveScopes() {
+    return listAllActiveScopeNames();
+  }
+
+  public static void registerClassForScope(Class clazz, String scope) {
+    InjectionScopeManager.registerClassForScope(clazz, scope);
+  }
+
+  public static void deRegisterClassForScope(Class clazz) {
+    InjectionScopeManager.deRegisterClassForScope(clazz);
   }
 
   public static synchronized <T> T activateDI(Class<T> clazz2Instanciate) {
@@ -171,11 +199,11 @@ public class DI {
 
 
   private static <T> T createMetricsProxy(Class<T> clazz2Instanciate, T instance) {
-    if (metricsActivated.contains(clazz2Instanciate.getName())) {
+    if (METRICS_ACTIVATED.contains(clazz2Instanciate.getName())) {
       //Metrics Adapter available ?
       //InMemoryCompile ?
 
-      final Set<Class<? extends T>> staticMetricProxiesFor = DI.getStaticMetricProxiesFor(clazz2Instanciate);
+      final Set<Class<? extends T>> staticMetricProxiesFor = getStaticMetricProxiesFor(clazz2Instanciate);
       if (staticMetricProxiesFor.isEmpty()) {
         if (clazz2Instanciate.isInterface()) {
           return ProxyBuilder.newDynamicProxyBuilder(clazz2Instanciate, instance).addMetrics().build();
@@ -210,7 +238,7 @@ public class DI {
     for (final Field field : fields) {
       if (field.isAnnotationPresent(Inject.class)) {
         Class type = field.getType();
-        final Class realClass = implementingClassResolver.resolve(type);
+        final Class realClass = IMPLEMENTING_CLASS_RESOLVER.resolve(type);
         Object value; //Attribute Type for inject
         if (field.isAnnotationPresent(Proxy.class)) {
           final Proxy annotation = field.getAnnotation(Proxy.class);
@@ -221,7 +249,7 @@ public class DI {
           final boolean secure = annotation.secure(); //woher die Sec Rules?
           final boolean logging = annotation.logging();
 
-          final Proxy.ProxyType proxyType = annotation.proxyType();
+          final ProxyType proxyType = annotation.proxyType();
 
           switch (proxyType) {
             case AUTODETECT:
@@ -338,7 +366,7 @@ public class DI {
 
 
   public static Set<String> listAllActivatedMetrics() {
-    return Collections.unmodifiableSet(metricsActivated);
+    return Collections.unmodifiableSet(METRICS_ACTIVATED);
   }
 
 
@@ -347,7 +375,7 @@ public class DI {
   }
 
   public static <T> Class<? extends T> resolveImplementingClass(final Class<T> interf) {
-    return implementingClassResolver.resolve(interf);
+    return IMPLEMENTING_CLASS_RESOLVER.resolve(interf);
   }
 
   public static boolean isPkgPrefixActivated(final String pkgPrefix) {

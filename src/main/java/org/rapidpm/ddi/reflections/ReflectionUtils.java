@@ -1,5 +1,7 @@
 package org.rapidpm.ddi.reflections;
 
+import org.rapidpm.ddi.DDIModelException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -41,7 +43,7 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
       final Method declaredMethod = proxy.getClass().getDeclaredMethod("with" + simpleName, original.getClass());
       declaredMethod.invoke(proxy, original);
     } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-      e.printStackTrace();
+      throw new DDIModelException(e);
     }
 
   }

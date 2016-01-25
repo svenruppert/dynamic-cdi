@@ -4,6 +4,7 @@ import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.producerresolver.ProducerResolver;
 import org.rapidpm.ddi.producerresolver.ProducerResolverLocator;
+import org.rapidpm.ddi.scopes.InjectionScopeManager;
 
 import java.util.Set;
 
@@ -12,10 +13,7 @@ import java.util.Set;
  */
 public class InstanceCreator {
 
-
   public <T> T instantiate(Class<T> clazz) {
-    //check scope -> Singleton
-    //check scope -> ???
 
     T newInstance;
     if (clazz.isInterface()) {
@@ -28,8 +26,6 @@ public class InstanceCreator {
   }
 
   private <T> T createNewInstance(final Class classOrInterf, final Class clazz) {
-    //kann ein Interface sein, oder eine Klasse von einem ClassResolver
-
     final Class resolverTarget;
     //explicite all combinations
     if (classOrInterf.isInterface() && !clazz.isInterface()) {
@@ -41,11 +37,30 @@ public class InstanceCreator {
     } else { // classOrInterf.isInterface() &&  clazz.isInterface()
       resolverTarget = classOrInterf;
     }
+
+    //Check Scopes..
+    final boolean managedByMeTarget = InjectionScopeManager.isManagedByMe(classOrInterf);
+    final boolean managedByMeImpl = InjectionScopeManager.isManagedByMe(resolverTarget);
+
+    if (managedByMeTarget) {
+      final T cast = (T) InjectionScopeManager.getInstance(classOrInterf);
+      if (cast != null) {
+        return cast;
+      }
+    } else if (managedByMeImpl) {
+      final T cast = (T) InjectionScopeManager.getInstance(resolverTarget);
+      if (cast != null) {
+        return cast;
+      }
+    }
+
     final Set<Class<?>> producerClassses = new ProducerLocator().findProducersFor(classOrInterf);
 
     if (producerClassses.size() == 1) {
       final Class cls = (Class) producerClassses.toArray()[0];
-      return createInstanceWithThisProducer(cls);
+      final T result = createInstanceWithThisProducer(cls);
+      putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
+      return result;
     } else if (producerClassses.size() > 1) {
       final Set<Class<? extends ProducerResolver>> producerResolverClasses
           = new ProducerResolverLocator().findProducersResolverFor(resolverTarget);
@@ -55,7 +70,9 @@ public class InstanceCreator {
         try {
           final ProducerResolver producerResolver = producerResolverClass.newInstance();
           DI.activateDI(producerResolver);
-          return createInstanceWithThisProducer(producerResolver.resolve(resolverTarget));
+          final T result = createInstanceWithThisProducer(producerResolver.resolve(resolverTarget));
+          putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
+          return result;
         } catch (InstantiationException | IllegalAccessException e) {
           throw new DDIModelException(e);
         }
@@ -69,17 +86,19 @@ public class InstanceCreator {
       if (clazz.isInterface()) {
         throw new DDIModelException(" only interfaces found for " + classOrInterf);
       } else {
-        final T newInstance;
+        final T result;
         try {
-          newInstance = (T) clazz.newInstance();
-          DI.activateDI(newInstance);
-          return newInstance;
+          result = (T) clazz.newInstance();
+          DI.activateDI(result);
+          putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
+          return result;
         } catch (InstantiationException | IllegalAccessException e) {
           e.printStackTrace();
           throw new DDIModelException(e);
         }
       }
     }
+
     throw new RuntimeException("this point should never reached...");
   }
 
@@ -93,6 +112,14 @@ public class InstanceCreator {
       e.printStackTrace();
       throw new DDIModelException(e);
     }
+  }
+
+  private <T> void putToScope(final Class classOrInterf, final Class clazz, final boolean managedByMeTarget, final boolean managedByMeImpl, final T result) {
+    if (managedByMeTarget && managedByMeImpl) {
+      InjectionScopeManager.manageInstance(classOrInterf, result);
+    } else if (managedByMeTarget) {
+      InjectionScopeManager.manageInstance(classOrInterf, result);
+    } else if (managedByMeImpl) InjectionScopeManager.manageInstance(clazz, result);
   }
 
 

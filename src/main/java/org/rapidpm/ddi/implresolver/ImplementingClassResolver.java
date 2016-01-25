@@ -31,7 +31,7 @@ public class ImplementingClassResolver {
   }
 
 
-  public synchronized <I> Class<? extends I> resolve(Class<I> interf) {
+  public <I> Class<? extends I> resolve(Class<I> interf) {
     if (!resolverCache.containsKey(interf)) {
       resolverCache.put(interf, resolveNewForClass(interf));
     }
