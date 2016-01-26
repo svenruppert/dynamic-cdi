@@ -36,6 +36,7 @@ public class ImplementingClassResolver {
       resolverCache.put(interf, resolveNewForClass(interf));
     }
     return resolverCache.get(interf);
+//    return resolveNewForClass(interf);
   }
 
   private <I> Class<? extends I> resolveNewForClass(Class<I> interf) {

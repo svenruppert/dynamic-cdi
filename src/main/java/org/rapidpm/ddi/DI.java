@@ -190,7 +190,6 @@ public class DI {
 
   public static synchronized <T> T activateDI(Class<T> clazz2Instanciate) {
     if (bootstrapedNeeded) bootstrap();
-    //resolve implementation
     final T instance = new InstanceCreator().instantiate(clazz2Instanciate);
     injectAttributes(instance);
     initialize(instance);
@@ -237,76 +236,80 @@ public class DI {
     Field[] fields = targetClass.getDeclaredFields();
     for (final Field field : fields) {
       if (field.isAnnotationPresent(Inject.class)) {
-        Class type = field.getType();
-        final Class realClass = IMPLEMENTING_CLASS_RESOLVER.resolve(type);
+
+        final Class targetType = field.getType();
+        final Class realClass = IMPLEMENTING_CLASS_RESOLVER.resolve(targetType);
         Object value; //Attribute Type for inject
+
         if (field.isAnnotationPresent(Proxy.class)) {
-          final Proxy annotation = field.getAnnotation(Proxy.class);
-
-          final boolean virtual = annotation.virtual();
-          final CreationStrategy creationStrategy = annotation.concurrent();
-          final boolean metrics = annotation.metrics();
-          final boolean secure = annotation.secure(); //woher die Sec Rules?
-          final boolean logging = annotation.logging();
-
-          final ProxyType proxyType = annotation.proxyType();
-
-          switch (proxyType) {
-            case AUTODETECT:
-              break;
-            case DYNAMIC:
-              break;
-            case GENERATED:
-              break;
-            case STATIC:
-              break;
-            default:
-              break;
-          }
-
-
-          //just now, only dynamic version is created..
-          if (virtual) {
-            value = DynamicProxyGenerator.newBuilder()
-                .withSubject(type)
-                .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
-                .withServiceFactory(new DDIServiceFactory<>(realClass))
-                .withCreationStrategy(creationStrategy)
-//                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
-                .build()
-                .make();
-          } else {
-            value = new InstanceCreator().instantiate(realClass);
-            //activateDI(value); //rekursiver abstieg
-          }
-          if (metrics || secure || logging) {
-            final DynamicProxyBuilder dynamicProxyBuilder = DynamicProxyBuilder.createBuilder(type, value);
-            if (metrics) {
-              dynamicProxyBuilder.addMetrics();
-            }
-            if (secure) {
-//              virtualProxyBuilder.addSecurityRule(()->{});
-            }
-            if (logging) {
-              //virtualProxyBuilder.addLogging();
-            }
-            value = dynamicProxyBuilder.build();
-          }
+          value = createProxy(field, targetType);
         } else {
-          value = new InstanceCreator().instantiate(realClass);
+//          value = new InstanceCreator().instantiate(realClass);//TODO test it
+          value = new InstanceCreator().instantiate(targetType);
           //activateDI(value); //rekursiver abstieg
         }
-        //check Scope ....
-//        Object value = scopes.getProperty(clazz, key);
-//        if (!type.isPrimitive()) {
-//          value = instantiate(type);
-//        }
-
         if (value != null) {
           injectIntoField(field, rootInstance, value);
         }
       }
     }
+  }
+
+  private static Object createProxy(final Field field, final Class targetType) {
+    Object value;
+
+    final Proxy annotation = field.getAnnotation(Proxy.class);
+
+    final boolean virtual = annotation.virtual();
+    final CreationStrategy creationStrategy = annotation.concurrent();
+    final boolean metrics = annotation.metrics();
+    final boolean secure = annotation.secure(); //woher die Sec Rules?
+    final boolean logging = annotation.logging();
+    final ProxyType proxyType = annotation.proxyType();
+    switch (proxyType) {
+      case AUTODETECT:
+        break;
+      case DYNAMIC:
+        break;
+      case GENERATED:
+        break;
+      case STATIC:
+        break;
+      default:
+        break;
+    }
+    //just now, only dynamic version is created..
+    if (virtual) {
+      value = DynamicProxyGenerator.newBuilder()
+          .withSubject(targetType)
+          .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
+//                .withServiceFactory(new DDIServiceFactory<>(realClass)) //TODO Test it
+          .withServiceFactory(new DDIServiceFactory<>(targetType)) //TODO Test it
+          .withCreationStrategy(creationStrategy)
+//                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
+          .build()
+          .make();
+    } else {
+//            value = new InstanceCreator().instantiate(realClass); // TODO Test it
+      value = new InstanceCreator().instantiate(targetType); // TODO Test it
+      //activateDI(value); //rekursiver abstieg
+    }
+
+
+    if (metrics || secure || logging) {
+      final DynamicProxyBuilder dynamicProxyBuilder = DynamicProxyBuilder.createBuilder(targetType, value);
+      if (metrics) {
+        dynamicProxyBuilder.addMetrics();
+      }
+      if (secure) {
+//              virtualProxyBuilder.addSecurityRule(()->{});
+      }
+      if (logging) {
+        //virtualProxyBuilder.addLogging();
+      }
+      value = dynamicProxyBuilder.build();
+    }
+    return value;
   }
 
 
@@ -329,11 +332,6 @@ public class DI {
     Class<?> clazz = instance.getClass();
     invokeMethodWithAnnotation(clazz, instance, PostConstruct.class);
   }
-
-//  private boolean isNotPrimitive(Class<?> type) {
-//    return !type.isPrimitive();
-//  }
-
 
   private static void invokeMethodWithAnnotation(Class clazz, final Object instance,
                                                  final Class<? extends Annotation> annotationClass)
@@ -363,7 +361,6 @@ public class DI {
 
 
   //delegator
-
 
   public static Set<String> listAllActivatedMetrics() {
     return Collections.unmodifiableSet(METRICS_ACTIVATED);
