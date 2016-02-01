@@ -18,8 +18,8 @@ package junit.org.rapidpm.ddi.named;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Test;
-import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.DDIModelException;
+import org.rapidpm.ddi.DI;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -27,7 +27,7 @@ import javax.inject.Inject;
 /**
  * Multiple implementations of an Interface, no decission possible
  *
- * Created by Sven Ruppert on 07.12.2014.
+ * Created by RapidPM - Team on 07.12.2014.
  */
 public class NamedTest002 extends DDIBaseTest {
 
@@ -81,7 +81,7 @@ public class NamedTest002 extends DDIBaseTest {
 
   public static class ServiceImplB implements Service {
 
-    boolean postconstructed = false;
+    boolean postconstructed;
 
     @PostConstruct
     public void postconstruct() {

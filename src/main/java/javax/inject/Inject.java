@@ -23,9 +23,6 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * Created by Sven Ruppert on 05.12.2014.
- */
 @Target({METHOD, CONSTRUCTOR, FIELD})
 @Retention(RUNTIME)
 @Documented

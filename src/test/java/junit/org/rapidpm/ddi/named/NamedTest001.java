@@ -24,9 +24,6 @@ import org.rapidpm.ddi.DI;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-/**
- * Created by Sven Ruppert on 06.12.2014.
- */
 public class NamedTest001 extends DDIBaseTest {
 
 
@@ -58,7 +55,7 @@ public class NamedTest001 extends DDIBaseTest {
 
   public static class ServiceImpl implements Service {
     @Inject SubService subService;
-    boolean postconstructed = false;
+    boolean postconstructed;
 
     public String work(String txt) {
       return subService.work(txt);
@@ -72,7 +69,7 @@ public class NamedTest001 extends DDIBaseTest {
 
   public static class SubService {
     @Inject SubSubService subSubService;
-    boolean postconstructed = false;
+    boolean postconstructed;
 
     public String work(final String txt) {
       return subSubService.work(txt);

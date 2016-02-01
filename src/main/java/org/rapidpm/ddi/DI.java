@@ -47,9 +47,6 @@ import java.util.Set;
 import static org.rapidpm.ddi.scopes.InjectionScopeManager.listAllActiveScopeNames;
 
 
-/**
- * Created by Sven Ruppert on 05.12.2014.
- */
 public class DI {
 
   private static final ImplementingClassResolver IMPLEMENTING_CLASS_RESOLVER = new ImplementingClassResolver();

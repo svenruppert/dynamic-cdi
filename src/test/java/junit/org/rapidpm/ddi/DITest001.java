@@ -22,9 +22,6 @@ import org.rapidpm.ddi.DI;
 
 import javax.inject.Inject;
 
-/**
- * Created by Sven Ruppert on 06.12.2014.
- */
 public class DITest001 extends DDIBaseTest {
 
 

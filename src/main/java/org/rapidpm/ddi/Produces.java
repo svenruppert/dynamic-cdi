@@ -30,7 +30,7 @@ import static java.lang.annotation.ElementType.TYPE;
  *
  * at Inject at Produced Interface
  *
- * Created by Sven Ruppert on 06.12.2014.
+ * Created by RapidPM - Team on 06.12.2014.
  */
 @Target({TYPE})
 @Documented
