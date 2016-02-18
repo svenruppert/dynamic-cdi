@@ -25,6 +25,8 @@ import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.producer.ProducerLocator;
 import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
+import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
+import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
 
 import java.util.Iterator;
 import java.util.List;
@@ -83,12 +85,13 @@ public class ImplementingClassResolver {
     final Iterator<Class<? extends I>> iteratorOfSubTypes = subTypesOf.iterator();
     while (iteratorOfSubTypes.hasNext()) {
       final Class<? extends I> next = iteratorOfSubTypes.next();
-      if (next.isInterface()) iteratorOfSubTypes.remove();
-      //remove Adapters -  http://rapidpm.myjetbrains.com/youtrack/issue/DDI-5
-      //DDI-5
-      if (next.isAnnotationPresent(IsStaticObjectAdapter.class)) iteratorOfSubTypes.remove();
-
+      if (next.isInterface()
+          || next.isAnnotationPresent(IsStaticObjectAdapter.class)
+          || next.isAnnotationPresent(IsMetricsProxy.class)
+          || next.isAnnotationPresent(IsGeneratedProxy.class)
+          ) iteratorOfSubTypes.remove();
     }
+
   }
 
   @Nullable
