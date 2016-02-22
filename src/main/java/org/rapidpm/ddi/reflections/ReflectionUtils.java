@@ -56,7 +56,8 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
 
     final String simpleName = original.getClass().getSimpleName();
     try {
-      final Method declaredMethod = proxy.getClass().getDeclaredMethod("with" + simpleName, original.getClass());
+//      final Method declaredMethod = proxy.getClass().getDeclaredMethod("with" + simpleName, original.getClass());
+      final Method declaredMethod = proxy.getClass().getDeclaredMethod("withDelegator", original.getClass());
       declaredMethod.invoke(proxy, original);
     } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
       throw new DDIModelException(e);
