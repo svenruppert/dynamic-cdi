@@ -78,62 +78,59 @@ public class DI {
 
   public static synchronized void clearReflectionModel() {
     reflectionsModel = new ReflectionsModel();
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    clearCaches();
     METRICS_ACTIVATED.clear();
     LOGGING_ACTIVATED.clear();
-    InjectionScopeManager.cleanUp();
     bootstrapedNeeded = true;
+  }
+
+  private static void clearCaches() {
+    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    InjectionScopeManager.cleanUp();
   }
 
   public static synchronized void activatePackages(Class clazz) {
     reflectionsModel.rescann(clazz.getPackage().getName());
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
-    InjectionScopeManager.cleanUp();
+    clearCaches();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg) {
     reflectionsModel.rescann(pkg);
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
-    InjectionScopeManager.cleanUp();
+    clearCaches();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, URL... urls) {
     reflectionsModel.rescann(pkg, urls);
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
-    InjectionScopeManager.cleanUp();
+    clearCaches();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(String pkg, Collection<URL> urls) {
     reflectionsModel.rescann(pkg, urls);
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
-    InjectionScopeManager.cleanUp();
+    clearCaches();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg);
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
-    InjectionScopeManager.cleanUp();
+    clearCaches();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, URL... urls) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
-    InjectionScopeManager.cleanUp();
+    clearCaches();
     bootstrapedNeeded = false;
   }
 
   public static synchronized void activatePackages(boolean parallelExecutors, String pkg, Collection<URL> urls) {
     reflectionsModel.setParallelExecutors(parallelExecutors);
     reflectionsModel.rescann(pkg, urls);
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
-    InjectionScopeManager.cleanUp();
+    clearCaches();
     bootstrapedNeeded = false;
   }
 
