@@ -238,9 +238,7 @@ public class DI {
         if (field.isAnnotationPresent(Proxy.class)) {
           value = createProxy(field, targetType);
         } else {
-//          value = new InstanceCreator().instantiate(realClass);//TODO test it
           value = new InstanceCreator().instantiate(targetType);
-          //activateDI(value); //rekursiver abstieg
         }
         if (value != null) {
           injectIntoField(field, rootInstance, value);
@@ -251,6 +249,9 @@ public class DI {
 
   private static Object createProxy(final Field field, final Class targetType) {
     Object value;
+
+
+    //TODO cross check with activated Metrics.. avoid double Metrics Proxy
 
     final Proxy annotation = field.getAnnotation(Proxy.class);
 
