@@ -27,6 +27,8 @@ import org.rapidpm.ddi.scopes.InjectionScopeManager;
 
 import java.util.Set;
 
+import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
+
 public class InstanceCreator {
 
   public <T> T instantiate(Class<T> clazz) {
@@ -70,7 +72,7 @@ public class InstanceCreator {
       }
     }
 
-    final Set<Class<?>> producerClassses = new ProducerLocator().findProducersFor(classOrInterf);
+    final Set<Class<?>> producerClassses = findProducersFor(classOrInterf);
 
     if (producerClassses.size() == 1) {
       final Class cls = (Class) producerClassses.toArray()[0];
@@ -91,7 +93,7 @@ public class InstanceCreator {
         try {
 
           //find Producer for Impl
-          final Set<Class<?>> producersForImpl = new ProducerLocator().findProducersFor(clazz);
+          final Set<Class<?>> producersForImpl = findProducersFor(clazz);
           if (producersForImpl.isEmpty()) {
             result = (T) clazz.newInstance();
             DI.activateDI(result);

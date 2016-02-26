@@ -23,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
-import org.rapidpm.ddi.producer.ProducerLocator;
 import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
 import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
 import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
@@ -35,6 +34,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
+
 /**
  * one subtype - will return this class
  * n subtypes - will search for classresolver to decide what will be the right implementation
@@ -43,22 +44,23 @@ import java.util.stream.Collectors;
  * <p>
  * Created by svenruppert on 23.07.15.
  */
-//public class ImplementingClassResolver<I> implements ClassResolver<I> {
 public class ImplementingClassResolver {
 
-  private final Map<Class, Class> resolverCache = new ConcurrentHashMap<>();
+  private static final ImplementingClassResolver INSTANCE = new ImplementingClassResolver();
 
-  public void clearCache() {
-    resolverCache.clear();
+
+  //here only if you have 1 interface and multiple implementations - here the ClassResolver
+//  private final Map<Class, Class> resolverCacheForClass2Class = new ConcurrentHashMap<>();
+  private final Map<Class, Class<? extends ClassResolver>> resolverCacheForClass2ClassResolver = new ConcurrentHashMap<>();
+
+  public static void clearCache() {
+//    INSTANCE.resolverCacheForClass2Class.clear();
+    INSTANCE.resolverCacheForClass2ClassResolver.clear();
   }
 
 
-  public <I> Class<? extends I> resolve(Class<I> interf) {
-    if (!resolverCache.containsKey(interf)) {
-      resolverCache.put(interf, resolveNewForClass(interf));
-    }
-    return resolverCache.get(interf);
-//    return resolveNewForClass(interf);
+  public static <I> Class<? extends I> resolve(Class<I> interf) {
+    return INSTANCE.resolveNewForClass(interf);
   }
 
   private <I> Class<? extends I> resolveNewForClass(final Class<I> interf) {
@@ -67,18 +69,16 @@ public class ImplementingClassResolver {
 
       //remove subtypes that are interfaces
       removeInterfacesFromSubTypes(subTypesOf);
+
       if (subTypesOf.isEmpty()) return interf;
       else if (subTypesOf.size() == 1) {
-        final Class<? extends I> implClass = handleOneSubType(interf, subTypesOf.toArray()[0]);
-        if (implClass != null) return implClass;
+        return handleOneSubType(interf, subTypesOf.toArray()[0]);
       } else {
-        final Class<? extends I> clearedListOfResolvers = handleManySubTypes(interf, subTypesOf);
-        if (clearedListOfResolvers != null) return clearedListOfResolvers;
+        return handleManySubTypes(interf, subTypesOf);
       }
     } else {
       return interf;
     }
-    throw new DDIModelException("this point should never been reached.. no decission possible for = " + interf);
   }
 
   private <I> void removeInterfacesFromSubTypes(final Set<Class<? extends I>> subTypesOf) {
@@ -94,11 +94,12 @@ public class ImplementingClassResolver {
 
   }
 
+  //ToDo this result could be cached....
   @Nullable
   private <I> Class<? extends I> handleOneSubType(final Class<I> interf, final Object o) {
     final Class<? extends I> implClass = (Class<? extends I>) o;
-    final Set<Class<?>> producersForInterface = new ProducerLocator().findProducersFor(interf);
-    final Set<Class<?>> producersForImpl = new ProducerLocator().findProducersFor(implClass);
+    final Set<Class<?>> producersForInterface = findProducersFor(interf);
+    final Set<Class<?>> producersForImpl = findProducersFor(implClass);
     //@formatter:off
         if (!producersForInterface.isEmpty() && !producersForImpl.isEmpty()) return interf;
         if (producersForInterface.isEmpty()  && producersForImpl.isEmpty())  return implClass;
@@ -110,8 +111,12 @@ public class ImplementingClassResolver {
 
   @Nullable
   private <I> Class<? extends I> handleManySubTypes(final Class<I> interf, final Set<Class<? extends I>> subTypesOf) {
-    final Set<Class<? extends ClassResolver>> subTypesOfClassResolver = DI.getSubTypesOf(ClassResolver.class);
-    final List<Class> clearedListOfResolvers = subTypesOfClassResolver
+
+    if (resolverCacheForClass2ClassResolver.containsKey(interf)) {
+      return handleOneResolver(interf, resolverCacheForClass2ClassResolver.get(interf));
+    }
+
+    final List<Class<? extends ClassResolver>> clearedListOfResolvers = DI.getSubTypesOf(ClassResolver.class)
         .stream()
         .filter(aClassResolver -> aClassResolver.isAnnotationPresent(ResponsibleFor.class))
         .filter(aClassResolver -> {
@@ -121,22 +126,23 @@ public class ImplementingClassResolver {
         .collect(Collectors.toList());
 
     if (clearedListOfResolvers.size() == 1) {
-      final Class<? extends I> classResolver = handleOneResolver(interf, clearedListOfResolvers);
-      if (classResolver != null) return classResolver;
+      final Class<? extends ClassResolver> classResolverClass = clearedListOfResolvers.get(0);
+      resolverCacheForClass2ClassResolver.put(interf, classResolverClass);
+      return handleOneResolver(interf, classResolverClass);
     } else if (clearedListOfResolvers.isEmpty()) {
       return handleNoResolvers(interf, subTypesOf);
-    } else {
-      return handleToManyResolvers(interf, clearedListOfResolvers);
     }
-    return null;
+
+    final String message = "interface with multiple implementations and more as 1 ClassResolver = "
+        + interf
+        + " ClassResolver: " + clearedListOfResolvers;
+    throw new DDIModelException(message);
   }
 
   @Nullable
-//  private <I> Class<? extends I> handleOneResolver(final Class<I> interf, final List<Class<ClassResolver<I>>> clearedListOfResolvers) {
-  private <I> Class<? extends I> handleOneResolver(final Class<I> interf, final List<Class> clearedListOfResolvers) {
-    final Class<ClassResolver<I>> resolver = clearedListOfResolvers.get(0);
+  private <I> Class<? extends I> handleOneResolver(final Class<I> interf, final Class<? extends ClassResolver> classResolverClass) {
     try {
-      final ClassResolver<I> classResolver = resolver.newInstance();
+      final ClassResolver<I> classResolver = classResolverClass.newInstance();
       return classResolver.resolve(interf);
     } catch (InstantiationException | IllegalAccessException e) {
       e.printStackTrace();
@@ -145,7 +151,7 @@ public class ImplementingClassResolver {
   }
 
   private <I> Class<? extends I> handleNoResolvers(final Class<I> interf, final Set<Class<? extends I>> subTypesOf) {
-    final Set<Class<?>> producersForInterface = new ProducerLocator().findProducersFor(interf);
+    final Set<Class<?>> producersForInterface = findProducersFor(interf);
     if (producersForInterface.isEmpty()) {
       final StringBuilder stringBuilder = new StringBuilder("interface with multiple implementations and no ClassResolver= " + interf);
       final List<String> implList = subTypesOf
@@ -165,13 +171,6 @@ public class ImplementingClassResolver {
     stringBuilder.append(implList).append(prodList);
 
     throw new DDIModelException(stringBuilder.toString());
-  }
-
-  private <I> Class<? extends I> handleToManyResolvers(final Class<I> interf, final List<Class> clearedListOfResolvers) {
-    final String message = "interface with multiple implementations and more as 1 ClassResolver = "
-        + interf
-        + " ClassResolver: " + clearedListOfResolvers;
-    throw new DDIModelException(message);
   }
 
 }

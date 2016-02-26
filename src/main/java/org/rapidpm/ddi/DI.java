@@ -21,6 +21,7 @@ import org.rapidpm.ddi.Proxy.ProxyType;
 import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
 import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
 import org.rapidpm.ddi.producer.InstanceCreator;
+import org.rapidpm.ddi.producer.ProducerLocator;
 import org.rapidpm.ddi.reflections.ReflectionUtils;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
 import org.rapidpm.ddi.scopes.InjectionScopeManager;
@@ -49,7 +50,7 @@ import static org.rapidpm.ddi.scopes.InjectionScopeManager.listAllActiveScopeNam
 
 public class DI {
 
-  private static final ImplementingClassResolver IMPLEMENTING_CLASS_RESOLVER = new ImplementingClassResolver();
+  //  private static final ImplementingClassResolver IMPLEMENTING_CLASS_RESOLVER = new ImplementingClassResolver();
   private static final Set<String> METRICS_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
   private static final Set<String> LOGGING_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
   private static ReflectionsModel reflectionsModel = new ReflectionsModel();
@@ -69,7 +70,7 @@ public class DI {
 
   public static synchronized void bootstrap() {
 //    reflectionsModel = new ReflectionsModel();
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    ImplementingClassResolver.clearCache();
     if (bootstrapedNeeded) {
       reflectionsModel.rescann("");
     }
@@ -85,7 +86,8 @@ public class DI {
   }
 
   private static void clearCaches() {
-    IMPLEMENTING_CLASS_RESOLVER.clearCache();
+    ImplementingClassResolver.clearCache();
+    ProducerLocator.clearCache();
     InjectionScopeManager.cleanUp();
   }
 
@@ -227,12 +229,12 @@ public class DI {
       injectAttributesForClass(superclass, rootInstance);
     }
 
-    Field[] fields = targetClass.getDeclaredFields();
+    final Field[] fields = targetClass.getDeclaredFields();
     for (final Field field : fields) {
       if (field.isAnnotationPresent(Inject.class)) {
 
         final Class targetType = field.getType();
-        final Class realClass = IMPLEMENTING_CLASS_RESOLVER.resolve(targetType);
+//        final Class realClass = IMPLEMENTING_CLASS_RESOLVER.resolve(targetType);
         Object value; //Attribute Type for inject
 
         if (field.isAnnotationPresent(Proxy.class)) {
@@ -367,7 +369,7 @@ public class DI {
   }
 
   public static <T> Class<? extends T> resolveImplementingClass(final Class<T> interf) {
-    return IMPLEMENTING_CLASS_RESOLVER.resolve(interf);
+    return ImplementingClassResolver.resolve(interf);
   }
 
   public static boolean isPkgPrefixActivated(final String pkgPrefix) {

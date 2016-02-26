@@ -23,25 +23,39 @@ import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ProducerLocator {
 
-  public Set<Class<?>> findProducersFor(final Class clazzOrInterf) {
+  //class 2 producer-set
+  private static final Map<Class, Set<Class<?>>> RESOLVER_CACHE_FOR_CLASS_2_PRODUCER_SET = new ConcurrentHashMap<>();
+
+  private ProducerLocator() {
+  }
+
+  public static void clearCache() {
+    RESOLVER_CACHE_FOR_CLASS_2_PRODUCER_SET.clear();
+  }
+
+  public static Set<Class<?>> findProducersFor(final Class clazzOrInterf) {
+    if (RESOLVER_CACHE_FOR_CLASS_2_PRODUCER_SET.containsKey(clazzOrInterf)) return RESOLVER_CACHE_FOR_CLASS_2_PRODUCER_SET.get(clazzOrInterf);
+
     final Set<Class<?>> typesAnnotatedWith = DI.getTypesAnnotatedWith(Produces.class);
 
     final Iterator<Class<?>> iterator = typesAnnotatedWith.iterator();
     while (iterator.hasNext()) {
-      Class producerClass = iterator.next();
+      final Class producerClass = iterator.next();
       final Produces annotation = (Produces) producerClass.getAnnotation(Produces.class);
       final Class value = annotation.value();
-//      if (value == null) throw new DDIModelException("Producer without target Interface " + producerClass);
       if (value.equals(clazzOrInterf)) {
         //TODO logger
       } else {
         iterator.remove();
       }
     }
+    RESOLVER_CACHE_FOR_CLASS_2_PRODUCER_SET.put(clazzOrInterf, typesAnnotatedWith);
     return typesAnnotatedWith;
   }
 }
