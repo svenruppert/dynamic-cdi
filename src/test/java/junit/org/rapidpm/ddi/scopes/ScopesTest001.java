@@ -94,7 +94,6 @@ public class ScopesTest001 extends DDIBaseTest {
 
     Assert.assertEquals("PER INJECT", InjectionScopeManager.scopeForClass(NonSingletonTestClass.class));
 
-
     final Set<String> strings = InjectionScopeManager.listAllActiveScopeNames();
     Assert.assertTrue(strings.contains(TestScope.class.getSimpleName()));
 

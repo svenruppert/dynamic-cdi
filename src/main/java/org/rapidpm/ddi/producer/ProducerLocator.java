@@ -22,10 +22,11 @@ package org.rapidpm.ddi.producer;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
 
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class ProducerLocator {
 
@@ -42,20 +43,17 @@ public class ProducerLocator {
   public static Set<Class<?>> findProducersFor(final Class clazzOrInterf) {
     if (RESOLVER_CACHE_FOR_CLASS_2_PRODUCER_SET.containsKey(clazzOrInterf)) return RESOLVER_CACHE_FOR_CLASS_2_PRODUCER_SET.get(clazzOrInterf);
 
-    final Set<Class<?>> typesAnnotatedWith = DI.getTypesAnnotatedWith(Produces.class);
+    final Set<Class<?>> typesAnnotatedWith = DI.getTypesAnnotatedWith(Produces.class)
+        .stream()
+        .filter(producerClass -> {
+          final Produces annotation = producerClass.getAnnotation(Produces.class);
+          final Class value = annotation.value();
+          return value.equals(clazzOrInterf);
+        })
+        .collect(Collectors.toSet());
 
-    final Iterator<Class<?>> iterator = typesAnnotatedWith.iterator();
-    while (iterator.hasNext()) {
-      final Class producerClass = iterator.next();
-      final Produces annotation = (Produces) producerClass.getAnnotation(Produces.class);
-      final Class value = annotation.value();
-      if (value.equals(clazzOrInterf)) {
-        //TODO logger
-      } else {
-        iterator.remove();
-      }
-    }
-    RESOLVER_CACHE_FOR_CLASS_2_PRODUCER_SET.put(clazzOrInterf, typesAnnotatedWith);
-    return typesAnnotatedWith;
+    final Set<Class<?>> unmodifiableSet = Collections.unmodifiableSet(typesAnnotatedWith);
+    RESOLVER_CACHE_FOR_CLASS_2_PRODUCER_SET.put(clazzOrInterf, unmodifiableSet);
+    return unmodifiableSet;
   }
 }

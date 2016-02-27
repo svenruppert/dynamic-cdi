@@ -89,6 +89,7 @@ public class DI {
     ImplementingClassResolver.clearCache();
     ProducerLocator.clearCache();
     InjectionScopeManager.cleanUp();
+    reflectionsModel.clearCaches();
   }
 
   public static synchronized void activatePackages(Class clazz) {
@@ -334,26 +335,42 @@ public class DI {
                                                  final Class<? extends Annotation> annotationClass)
       throws IllegalStateException, SecurityException {
 
-    Method[] declaredMethods = clazz.getDeclaredMethods();
-    for (final Method method : declaredMethods) {
-      if (method.isAnnotationPresent(annotationClass)) {
-        AccessController.doPrivileged((PrivilegedAction) () -> {
-          boolean wasAccessible = method.isAccessible();
-          try {
-            method.setAccessible(true);
-            return method.invoke(instance); //TODO Dynamic ObjectAdapter ?
-          } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new IllegalStateException("Problem invoking " + annotationClass + " : " + method, ex);
-          } finally {
-            method.setAccessible(wasAccessible);
-          }
-        });
+    final Set<Method> methodsAnnotatedWith = reflectionsModel.getMethodsAnnotatedWith(clazz, new PostConstruct() {
+      @Override
+      public Class<? extends Annotation> annotationType() {
+        return PostConstruct.class;
       }
-    }
-    Class superclass = clazz.getSuperclass();
-    if (superclass != null) {
-      invokeMethodWithAnnotation(superclass, instance, annotationClass);
-    }
+    });
+
+    methodsAnnotatedWith.forEach(m -> {
+      try {
+        m.invoke(instance);
+      } catch (IllegalAccessException | InvocationTargetException e) {
+        e.printStackTrace();
+      }
+    });
+
+
+//    Method[] declaredMethods = clazz.getDeclaredMethods();
+//    for (final Method method : declaredMethods) {
+//      if (method.isAnnotationPresent(annotationClass)) {
+//        AccessController.doPrivileged((PrivilegedAction) () -> {
+//          boolean wasAccessible = method.isAccessible();
+//          try {
+//            method.setAccessible(true);
+//            return method.invoke(instance); //TODO Dynamic ObjectAdapter ?
+//          } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+//            throw new IllegalStateException("Problem invoking " + annotationClass + " : " + method, ex);
+//          } finally {
+//            method.setAccessible(wasAccessible);
+//          }
+//        });
+//      }
+//    }
+//    Class superclass = clazz.getSuperclass();
+//    if (superclass != null) {
+//      invokeMethodWithAnnotation(superclass, instance, annotationClass);
+//    }
   }
 
 
@@ -386,6 +403,10 @@ public class DI {
 
   public static <T> Set<Class<? extends T>> getSubTypesOf(final Class<T> type) {
     return reflectionsModel.getSubTypesOf(type);
+  }
+
+  public static <T> Set<Class<? extends T>> getSubTypesWithoutInterfacesAndGeneratedOf(final Class<T> type) {
+    return reflectionsModel.getSubTypesWithoutInterfacesAndGeneratedOf(type);
   }
 
   public static Set<Class<?>> getTypesAnnotatedWith(final Class<? extends Annotation> annotation) {

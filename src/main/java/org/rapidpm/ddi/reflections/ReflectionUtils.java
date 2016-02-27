@@ -20,10 +20,15 @@
 package org.rapidpm.ddi.reflections;
 
 import org.rapidpm.ddi.DDIModelException;
+import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
+import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
+import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Iterator;
+import java.util.Set;
 
 public class ReflectionUtils extends org.reflections.ReflectionUtils {
 
@@ -64,6 +69,22 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
     }
 
   }
+
+  public <I> void removeInterfacesAndGeneratedFromSubTypes(final Set<Class<? extends I>> subTypesOf) {
+    final Iterator<Class<? extends I>> iteratorOfSubTypes = subTypesOf.iterator();
+    while (iteratorOfSubTypes.hasNext()) {
+      final Class<? extends I> next = iteratorOfSubTypes.next();
+      if (next.isInterface()
+          || next.isAnnotationPresent(IsStaticObjectAdapter.class)
+          || next.isAnnotationPresent(IsMetricsProxy.class)
+          || next.isAnnotationPresent(IsGeneratedProxy.class)
+          ) iteratorOfSubTypes.remove();
+    }
+
+  }
+
+
+
 
 
 }

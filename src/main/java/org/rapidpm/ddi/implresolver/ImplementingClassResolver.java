@@ -23,11 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
-import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,10 +61,7 @@ public class ImplementingClassResolver {
 
   private <I> Class<? extends I> resolveNewForClass(final Class<I> interf) {
     if (interf.isInterface()) {
-      final Set<Class<? extends I>> subTypesOf = DI.getSubTypesOf(interf);
-
-      //remove subtypes that are interfaces
-      removeInterfacesFromSubTypes(subTypesOf);
+      final Set<Class<? extends I>> subTypesOf = DI.getSubTypesWithoutInterfacesAndGeneratedOf(interf);
 
       if (subTypesOf.isEmpty()) return interf;
       else if (subTypesOf.size() == 1) {
@@ -81,18 +74,6 @@ public class ImplementingClassResolver {
     }
   }
 
-  private <I> void removeInterfacesFromSubTypes(final Set<Class<? extends I>> subTypesOf) {
-    final Iterator<Class<? extends I>> iteratorOfSubTypes = subTypesOf.iterator();
-    while (iteratorOfSubTypes.hasNext()) {
-      final Class<? extends I> next = iteratorOfSubTypes.next();
-      if (next.isInterface()
-          || next.isAnnotationPresent(IsStaticObjectAdapter.class)
-          || next.isAnnotationPresent(IsMetricsProxy.class)
-          || next.isAnnotationPresent(IsGeneratedProxy.class)
-          ) iteratorOfSubTypes.remove();
-    }
-
-  }
 
   //ToDo this result could be cached....
   @Nullable
@@ -116,7 +97,7 @@ public class ImplementingClassResolver {
       return handleOneResolver(interf, resolverCacheForClass2ClassResolver.get(interf));
     }
 
-    final List<Class<? extends ClassResolver>> clearedListOfResolvers = DI.getSubTypesOf(ClassResolver.class)
+    final List<Class<? extends ClassResolver>> clearedListOfResolvers = DI.getSubTypesWithoutInterfacesAndGeneratedOf(ClassResolver.class)
         .stream()
         .filter(aClassResolver -> aClassResolver.isAnnotationPresent(ResponsibleFor.class))
         .filter(aClassResolver -> {

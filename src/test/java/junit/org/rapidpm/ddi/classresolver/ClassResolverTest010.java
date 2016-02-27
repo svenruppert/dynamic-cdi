@@ -29,7 +29,7 @@ import java.util.Set;
 
 public class ClassResolverTest010 extends DDIBaseTest {
 
-@Inject Service service;
+  @Inject Service service;
 
   @Test
   public void test001() throws Exception {
@@ -43,7 +43,6 @@ public class ClassResolverTest010 extends DDIBaseTest {
     }
 
 
-
     DI.activateDI(this);
     Assert.assertNotNull(service);
 
@@ -52,17 +51,20 @@ public class ClassResolverTest010 extends DDIBaseTest {
   public interface Service {
     String doWork(String str);
   }
+
   public interface ServiceA extends Service {
     String doWork(String str);
   }
-  public interface ServiceB extends Service  {
-    String doWork(String str);
-  }
-  public interface ServiceAA extends ServiceA  {
+
+  public interface ServiceB extends Service {
     String doWork(String str);
   }
 
-  public static class ServiceImpl implements ServiceAA{
+  public interface ServiceAA extends ServiceA {
+    String doWork(String str);
+  }
+
+  public static class ServiceImpl implements ServiceAA {
 
     @Override
     public String doWork(final String str) {
