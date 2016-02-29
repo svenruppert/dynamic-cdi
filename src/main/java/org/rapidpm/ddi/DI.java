@@ -235,7 +235,6 @@ public class DI {
       if (field.isAnnotationPresent(Inject.class)) {
 
         final Class targetType = field.getType();
-//        final Class realClass = IMPLEMENTING_CLASS_RESOLVER.resolve(targetType);
         Object value; //Attribute Type for inject
 
         if (field.isAnnotationPresent(Proxy.class)) {
