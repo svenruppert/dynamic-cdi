@@ -343,7 +343,10 @@ public class DI {
 
     methodsAnnotatedWith.forEach(m -> {
       try {
+        final boolean accessible = m.isAccessible();
+        m.setAccessible(true);
         m.invoke(instance);
+        m.setAccessible(accessible);
       } catch (IllegalAccessException | InvocationTargetException e) {
         e.printStackTrace();
       }
