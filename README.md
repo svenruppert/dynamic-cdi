@@ -10,11 +10,9 @@ This project is based on the project ***ProxyBuilder***.
 branch:
 
 master:
-[![Build Status - travis  ](https://travis-ci.org/RapidPM/dynamic-cdi.svg?branch=master)](https://travis-ci.org/RapidPM/dynamic-cdi)
 [![Dependency Status](https://www.versioneye.com/user/projects/55a3ad19323939002100061e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a3ad19323939002100061e)
 
 develop:
-[![Build Status - travis  ](https://travis-ci.org/RapidPM/dynamic-cdi.svg?branch=develop)](https://travis-ci.org/RapidPM/dynamic-cdi)
 [![Dependency Status](https://www.versioneye.com/user/projects/55a3ad16323939001800069a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a3ad16323939001800069a)
 
 This project could be used alone, but is developed for the project rapidpm-microservice. To get the full stack please check out the following projects.
