@@ -5,15 +5,8 @@
 Here we will start with an more dynamic version of the default cdi implementations.
 This project is based on the project ***ProxyBuilder***.
 
-[![Build Status - drone.io](https://drone.io/github.com/RapidPM/dynamic-cdi/status.png)](https://drone.io/github.com/RapidPM/dynamic-cdi/latest)
+Please check out the HomePage for detailed informations. [www.dynamic-dependency-injection.org/](http://www.dynamic-dependency-injection.org/)
 
-branch:
-
-master:
-[![Dependency Status](https://www.versioneye.com/user/projects/55a3ad19323939002100061e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a3ad19323939002100061e)
-
-develop:
-[![Dependency Status](https://www.versioneye.com/user/projects/55a3ad16323939001800069a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a3ad16323939001800069a)
 
 This project could be used alone, but is developed for the project rapidpm-microservice. To get the full stack please check out the following projects.
 
@@ -88,16 +81,3 @@ if you write ``@Inject Impl.``
 * Impl., 1 Producer -> will use the Producer for the Impl.
 
 You can combine all with a ``@Proxy(virtual=true)`` and it will use the same solution, but only as VirtualProxy.
-
-
-
-
-## How to write Mocks for Interfaces ?
-If you want to write a Mock for an jUnitTest, use the DynamicObjectAdapterBuilder for the Interface and **null** for the realSubject.
-
-```java
-
-
-```
-
-
