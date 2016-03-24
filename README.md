@@ -11,11 +11,11 @@ Please check out the HomePage for detailed informations. [www.dynamic-dependency
 This project could be used alone, but is developed for the project rapidpm-microservice. To get the full stack please check out the following projects.
 
 for SNAPSHOTS
-https://github.com/RapidPM/rapidpm-dependencies (develop branch : clean install)
-https://github.com/RapidPM/proxybuilder (develop branch : clean install)
-https://github.com/RapidPM/dynamic-cdi (develop branch : clean install)
-https://github.com/RapidPM/rapidpm-microservice (develop branch : clean install)
-https://github.com/RapidPM/rapidpm-microservice-examples (develop branch : clean install)
++ https://github.com/RapidPM/rapidpm-dependencies (develop branch : clean install)
++ https://github.com/RapidPM/proxybuilder (develop branch : clean install)
++ https://github.com/RapidPM/dynamic-cdi (develop branch : clean install)
++ https://github.com/RapidPM/rapidpm-microservice (develop branch : clean install)
++ https://github.com/RapidPM/rapidpm-microservice-examples (develop branch : clean install)
 
 ## SNAPSHOTS
 If you are using maven you could add the following to your settings.xml to get the snapshots.
