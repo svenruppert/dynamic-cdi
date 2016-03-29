@@ -20,6 +20,7 @@
 package junit.org.rapidpm.ddi.classresolver;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
@@ -27,8 +28,14 @@ import org.rapidpm.ddi.implresolver.ClassResolver;
 
 public class ClassresolverTest014 {
 
-
   public static Boolean toggle = true;
+
+  @Before
+  public void setUp() throws Exception {
+    DI.clearReflectionModel();
+    DI.activatePackages("org.rapidpm");
+    DI.activatePackages(this.getClass());
+  }
 
   @Test
   public void test001() throws Exception {
@@ -60,7 +67,6 @@ public class ClassresolverTest014 {
 
   @ResponsibleFor(Service.class)
   public static class ServiceClassResolver implements ClassResolver<Service> {
-
     @Override
     public Class<? extends Service> resolve(final Class<Service> interf) {
       toggle = !toggle;
