@@ -16,11 +16,17 @@
 
 package junit.org.rapidpm.ddi;
 
-import org.junit.Test;
+
+import org.junit.gen5.api.Test;
+import org.junit.gen5.junit4.runner.JUnit5;
+import org.junit.runner.RunWith;
 import org.rapidpm.ddi.DI;
+
 import javax.inject.Inject;
+
 import static org.junit.gen5.api.Assertions.*;
 
+@RunWith(JUnit5.class)
 public class DITest001 extends DDIBaseTest {
 
   @Test
@@ -36,7 +42,8 @@ public class DITest001 extends DDIBaseTest {
 
 
   public static class Service {
-    @Inject SubService subService;
+    @Inject
+    SubService subService;
 
     public String work(String txt) {
       return subService.work(txt);

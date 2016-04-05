@@ -21,10 +21,12 @@ package junit.org.rapidpm.ddi;
 
 import org.junit.gen5.api.AfterEach;
 import org.junit.gen5.api.BeforeEach;
+import org.junit.gen5.junit4.runner.JUnit5;
+import org.junit.runner.RunWith;
 import org.rapidpm.ddi.DI;
 
+@RunWith(JUnit5.class)
 public class DDIBaseTest {
-
 
   @BeforeEach
   public void initDDI() throws Exception {

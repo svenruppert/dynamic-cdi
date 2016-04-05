@@ -97,6 +97,18 @@
       <groupId>org.rapidpm.proxybuilder</groupId>
       <artifactId>rapidpm-proxybuilder-modules-static-generated-processors</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.junit</groupId>
+      <artifactId>junit5-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit</groupId>
+      <artifactId>junit5-engine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit</groupId>
+      <artifactId>junit4-runner</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
