@@ -19,15 +19,15 @@
 
 package junit.org.rapidpm.ddi;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.gen5.api.AfterEach;
+import org.junit.gen5.api.BeforeEach;
 import org.rapidpm.ddi.DI;
 
 public class DDIBaseTest {
 
 
-  @Before
-  public void setUpDDI() throws Exception {
+  @BeforeEach
+  public void initDDI() throws Exception {
     DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
     final String name = this.getClass().getPackage().getName();
@@ -35,7 +35,7 @@ public class DDIBaseTest {
     DI.activatePackages(name);
   }
 
-  @After
+  @AfterEach
   public void tearDownDDI() throws Exception {
     DI.clearReflectionModel();
   }

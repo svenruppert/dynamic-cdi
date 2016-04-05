@@ -16,24 +16,22 @@
 
 package junit.org.rapidpm.ddi;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
-
 import javax.inject.Inject;
+import static org.junit.gen5.api.Assertions.*;
 
 public class DITest001 extends DDIBaseTest {
-
 
   @Test
   public void testInjection001() throws Exception {
     Service service = new Service();
     DI.activateDI(service);
 
-    Assert.assertNotNull(service.subService);
-
-    Assert.assertEquals("SubService test", service.work("test"));
-
+    assertAll("SubService",
+        () -> assertNotNull(service.subService),
+        () -> assertEquals("SubService test", service.work("test"))
+    );
   }
 
 

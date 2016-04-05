@@ -19,9 +19,9 @@
 
 package junit.org.rapidpm.ddi;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.gen5.api.AfterEach;
+import org.junit.gen5.api.Test;
 import org.rapidpm.ddi.DI;
 
 public class DITest010 {
@@ -37,7 +37,7 @@ public class DITest010 {
   }
 
 
-  @After
+  @AfterEach
   public void tearDown() throws Exception {
     DI.clearReflectionModel();
   }

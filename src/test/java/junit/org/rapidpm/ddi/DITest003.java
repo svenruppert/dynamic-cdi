@@ -17,11 +17,15 @@
 package junit.org.rapidpm.ddi;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.gen5.api.Test;
 import org.rapidpm.ddi.DI;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.gen5.api.Assertions.assertAll;
+import static org.junit.gen5.api.Assertions.assertNotNull;
 
 public class DITest003 extends DDIBaseTest {
 
@@ -33,9 +37,10 @@ public class DITest003 extends DDIBaseTest {
     DI.activateDI(service);
     Assert.assertTrue(service.postconstructed);
 
-    Assert.assertNotNull(service.subService);
-    Assert.assertEquals("SubService test", service.work("test"));
-
+    assertAll("SubService",
+        () -> assertNotNull(service.subService),
+        () -> assertEquals("SubService test", service.work("test"))
+    );
   }
 
   public static class Service {
