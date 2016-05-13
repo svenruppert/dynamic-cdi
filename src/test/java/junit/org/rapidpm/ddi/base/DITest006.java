@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi;
+package junit.org.rapidpm.ddi.base;
 
 import org.junit.Assert;
 import org.junit.Before;

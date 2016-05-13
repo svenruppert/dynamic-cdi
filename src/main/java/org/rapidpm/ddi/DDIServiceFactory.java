@@ -32,7 +32,7 @@ public class DDIServiceFactory<C> implements ServiceFactory<C> {
 
   @Override
   public C createInstance() {
-    return new InstanceCreator().instantiate(realClass);
+    return new InstanceCreator().instantiate(realClass); //TODO DI.activate
   }
 }
 

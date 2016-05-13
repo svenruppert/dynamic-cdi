@@ -40,7 +40,6 @@ public class FooTestMetrics {
   }
 
   @Test
-  @Ignore
   public void test001() throws Exception {
 
     final FooRight fooRight = DI.activateDI(FooRight.class);

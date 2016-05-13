@@ -96,7 +96,7 @@ public class InstanceCreator {
           final Set<Class<?>> producersForImpl = findProducersFor(clazz);
           if (producersForImpl.isEmpty()) {
             result = (T) clazz.newInstance();
-            DI.activateDI(result);
+//            DI.activateDI(result);
 //            putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
           } else if (producersForImpl.size() > 1) {
             //TODO find ProducerResolver
@@ -114,7 +114,7 @@ public class InstanceCreator {
               final Producer<T> tProducer = producerClass.newInstance();
               DI.activateDI(tProducer);
               result = tProducer.create();
-              DI.activateDI(result);
+//              DI.activateDI(result);
             }
 //            throw new DDIModelException("to many producers for Impl " + clazz + " - > " + producersForImpl);
           } else {
@@ -122,7 +122,7 @@ public class InstanceCreator {
             final Producer<T> tProducer = producerClass.newInstance();
             DI.activateDI(tProducer);
             result = tProducer.create();
-            DI.activateDI(result);
+//            DI.activateDI(result);
           }
           putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
           return result;
@@ -138,10 +138,11 @@ public class InstanceCreator {
 
   private <T> T createInstanceWithThisProducer(final Class cls) {
     try {
-      Producer<T> newInstance = (Producer<T>) cls.newInstance();
-      DI.activateDI(newInstance);
-      final T instance = newInstance.create();
-      return DI.activateDI(instance);
+      Producer<T> producer = (Producer<T>) cls.newInstance();
+      DI.activateDI(producer);
+      final T instance = producer.create();
+//      return DI.activateDI(instance);
+      return instance;
     } catch (InstantiationException | IllegalAccessException e) {
       e.printStackTrace();
       throw new DDIModelException(e);

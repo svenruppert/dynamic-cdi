@@ -19,13 +19,18 @@
 
 package junit.org.rapidpm.ddi.metrics.v001.foo;
 
+import org.rapidpm.proxybuilder.staticgenerated.annotations.StaticLoggingProxy;
+import org.rapidpm.proxybuilder.staticgenerated.annotations.StaticMetricsProxy;
+
 /**
  * Created by b.bosch on 17.02.2016.
  */
+@StaticMetricsProxy
+@StaticLoggingProxy
 public class FooImpl implements FooLeft, FooRight {
   private final String name;
 
-  private FooImpl(String name) {
+  protected FooImpl(String name) {
     this.name = name;
   }
 
