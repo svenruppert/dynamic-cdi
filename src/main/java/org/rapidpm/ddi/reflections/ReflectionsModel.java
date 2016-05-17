@@ -21,9 +21,6 @@ package org.rapidpm.ddi.reflections;
 
 import com.google.common.base.Predicate;
 import kotlin.Pair;
-import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.Scanner;
@@ -91,12 +88,13 @@ public class ReflectionsModel {
   }
 
   private Scanner[] createScanners() {
-    final Scanner[] sccannerArray = new Scanner[5];
+    final Scanner[] sccannerArray = new Scanner[6];
     sccannerArray[0] = new SubTypesScanner();
     sccannerArray[1] = new TypeAnnotationsScanner();
     sccannerArray[2] = new MethodAnnotationsScanner();
     sccannerArray[3] = new PkgTypesScanner();
     sccannerArray[4] = new StaticMetricsProxyScanner();
+    sccannerArray[5] = new StaticLoggingProxyScanner();
     return sccannerArray;
   }
 
@@ -169,6 +167,19 @@ public class ReflectionsModel {
 
   }
 
+  public <T> Set<Class<? extends T>> getStaticLoggingProxiesFor(final Class<T> type) {
+
+    final ClassLoader[] classLoaders = reflections.getConfiguration().getClassLoaders();
+
+    final Collection<String> loggingProxyClassNames = reflections.getStore()
+        .get(index(StaticLoggingProxyScanner.class))
+        .get(type.getName());
+
+    final List<Class<? extends T>> classes = ReflectionUtils.forNames(loggingProxyClassNames, classLoaders);
+    return Collections.unmodifiableSet(new HashSet<>(classes));
+
+  }
+
   //delegated methods
 
 
@@ -189,25 +200,12 @@ public class ReflectionsModel {
       return (Set<Class<? extends T>>) subTypeOfCacheWithoutInterfacesnadGenerated.get(type.getName());
     }
     final Set<Class<? extends T>> subTypesOf = reflections.getSubTypesOf(type);
-    removeInterfacesAndGeneratedFromSubTypes(subTypesOf);
+    new ReflectionUtils().removeInterfacesAndGeneratedFromSubTypes(subTypesOf);
     final Set<Class<? extends T>> unmodifiableSet = Collections.unmodifiableSet(subTypesOf);
     subTypeOfCacheWithoutInterfacesnadGenerated.put(type.getName(), unmodifiableSet);
     return unmodifiableSet;
 //    return reflections.getSubTypesOf(type);
   }
-
-  private <I> void removeInterfacesAndGeneratedFromSubTypes(final Set<Class<? extends I>> subTypesOf) {
-    final Iterator<Class<? extends I>> iteratorOfSubTypes = subTypesOf.iterator();
-    while (iteratorOfSubTypes.hasNext()) {
-      final Class<? extends I> next = iteratorOfSubTypes.next();
-      if (next.isInterface()
-          || next.isAnnotationPresent(IsStaticObjectAdapter.class)
-          || next.isAnnotationPresent(IsMetricsProxy.class)
-          || next.isAnnotationPresent(IsGeneratedProxy.class)
-          ) iteratorOfSubTypes.remove();
-    }
-  }
-
 
   public Set<Class<?>> getTypesAnnotatedWith(final Class<? extends Annotation> annotation) {
     if (typesAnnotatedWithCache.containsKey(annotation)) return (Set<Class<?>>) typesAnnotatedWithCache.get(annotation);

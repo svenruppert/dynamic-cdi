@@ -22,12 +22,16 @@ package org.rapidpm.ddi.reflections;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
 import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
+import org.rapidpm.proxybuilder.staticgenerated.annotations.IsLoggingProxy;
 import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 public class ReflectionUtils extends org.reflections.ReflectionUtils {
@@ -57,17 +61,70 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
   }
 
 
-  public <T> void setDelegatorToMetrixsProxy(T proxy, T original) {
-
-    final String simpleName = original.getClass().getSimpleName();
+  public <T, P extends T, O extends T> void setDelegatorToProxy(P proxy, O original) {
     try {
-//      final Method declaredMethod = proxy.getClass().getDeclaredMethod("with" + simpleName, original.getClass());
-      final Method declaredMethod = proxy.getClass().getDeclaredMethod("withDelegator", original.getClass());
-      declaredMethod.invoke(proxy, original);
-    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+      final Class<?> proxyClass = proxy.getClass();
+      final Field delegator = proxyClass.getDeclaredField("delegator");
+      final boolean accessible = delegator.isAccessible();
+      delegator.setAccessible(true);
+
+      // TODO how to deal with lambdas ?
+      delegator.set(proxy, original);
+
+      delegator.setAccessible(accessible);
+    } catch (IllegalAccessException | NoSuchFieldException e) {
       throw new DDIModelException(e);
     }
+  }
 
+  public <T, P extends T, O extends T> void setDelegatorToProxy(P proxy, O original, Class<T> clazz) {
+    try {
+      final Class<?> proxyClass = proxy.getClass();
+      final Field delegator = proxyClass.getDeclaredField("delegator");
+      final boolean accessible = delegator.isAccessible();
+      delegator.setAccessible(true);
+
+      // TODO how to deal with lambdas ?
+      delegator.set(proxy, original);
+
+      delegator.setAccessible(accessible);
+    } catch (IllegalAccessException | NoSuchFieldException e) {
+      throw new DDIModelException(e);
+    }
+  }
+
+  public <T> void setDelegatorToProxyViaMethod(T proxy, T original) {
+    final Class<?> proxyClass = proxy.getClass();
+    final Optional<Method> methodOptional = Arrays.asList(proxyClass.getDeclaredMethods())
+        .stream()
+        .filter(m -> m.getName().equals("withDelegator"))
+        .findFirst();
+
+    if (methodOptional.isPresent()) {
+      final Method method = methodOptional.get();
+      try {
+        method.invoke(proxy, original);
+      } catch (IllegalAccessException | InvocationTargetException e) {
+        throw new DDIModelException(e);
+      }
+    }
+  }
+
+  public <T> void setDelegatorToProxyViaMethodHandle(T proxy, T original) {
+//    final Class<?> proxyClass = proxy.getClass();
+//    final Optional<Method> methodOptional = Arrays.asList(proxyClass.getDeclaredMethods())
+//        .stream()
+//        .filter(m -> m.getName().equals("withDelegator"))
+//        .findFirst();
+//
+//    if (methodOptional.isPresent()) {
+//      final Method method = methodOptional.get();
+//      try {
+//        method.invoke(proxy, original);
+//      } catch (IllegalAccessException | InvocationTargetException e) {
+//        throw new DDIModelException(e);
+//      }
+//    }
   }
 
   public <I> void removeInterfacesAndGeneratedFromSubTypes(final Set<Class<? extends I>> subTypesOf) {
@@ -76,15 +133,13 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
       final Class<? extends I> next = iteratorOfSubTypes.next();
       if (next.isInterface()
           || next.isAnnotationPresent(IsStaticObjectAdapter.class)
-          || next.isAnnotationPresent(IsMetricsProxy.class)
           || next.isAnnotationPresent(IsGeneratedProxy.class)
+          || next.isAnnotationPresent(IsMetricsProxy.class)
+          || next.isAnnotationPresent(IsLoggingProxy.class)
           ) iteratorOfSubTypes.remove();
     }
 
   }
-
-
-
 
 
 }

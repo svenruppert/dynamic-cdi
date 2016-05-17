@@ -150,6 +150,19 @@ public class DI {
     if (pkgPrefixActivated) METRICS_ACTIVATED.add(clazz.getName());
   }
 
+  public static void activateLogging(String pkgName) {
+    final boolean pkgPrefixActivated = reflectionsModel.isPkgPrefixActivated(pkgName);
+    if (pkgPrefixActivated) {
+      final Collection<String> classesForPkg = reflectionsModel.getClassesForPkg(pkgName);
+      LOGGING_ACTIVATED.addAll(classesForPkg);
+    }
+  }
+
+  public static void activateLogging(Class clazz) {
+    final boolean pkgPrefixActivated = reflectionsModel.isPkgPrefixActivated(clazz.getPackage().getName());
+    if (pkgPrefixActivated) LOGGING_ACTIVATED.add(clazz.getName());
+  }
+
   public static void deActivateMetrics(String pkgName) {
     final Collection<String> classesForPkg = reflectionsModel.getClassesForPkg(pkgName);
     METRICS_ACTIVATED.removeAll(classesForPkg);
@@ -159,18 +172,36 @@ public class DI {
     METRICS_ACTIVATED.remove(clazz.getName());
   }
 
+  public static void deActivateLogging(String pkgName) {
+    final Collection<String> classesForPkg = reflectionsModel.getClassesForPkg(pkgName);
+    LOGGING_ACTIVATED.removeAll(classesForPkg);
+  }
+
+  public static void deActivateLogging(Class clazz) {
+    LOGGING_ACTIVATED.remove(clazz.getName());
+  }
+
   public static synchronized <T> T activateDI(T instance) {
     if (bootstrapedNeeded) bootstrap();
-
-//    if (InjectionScopeManager.isManagedByMe(instance.getClass())) {
-//      final String scopeName = InjectionScopeManager.scopeForClass(instance.getClass());
-//      System.out.println("instance.getClass() = " + instance.getClass() + " is normally managed by a Scope " + scopeName);
-//    }
 
     injectAttributes(instance);
     initialize(instance);
     final Class<T> aClass = (Class<T>) instance.getClass();
-    return createMetricsProxy(aClass, instance);
+    final T loggingProxy = createLoggingProxy(aClass, instance);
+    final T metricsProxy = createMetricsProxy(aClass, loggingProxy);
+    return metricsProxy;
+  }
+
+  public static synchronized <T> T activateDI(Class<T> clazz2Instanciate) {
+    if (bootstrapedNeeded) bootstrap();
+
+    final T instance = new InstanceCreator().instantiate(clazz2Instanciate);
+    injectAttributes(instance);
+    initialize(instance);
+
+    final T loggingProxy = createLoggingProxy(clazz2Instanciate, instance);
+    final T metricsProxy = createMetricsProxy(clazz2Instanciate, loggingProxy);
+    return metricsProxy;
   }
 
   public static Set<String> listAllActiveScopes() {
@@ -185,37 +216,51 @@ public class DI {
     InjectionScopeManager.deRegisterClassForScope(clazz);
   }
 
-  public static synchronized <T> T activateDI(Class<T> clazz2Instanciate) {
-    if (bootstrapedNeeded) bootstrap();
-    final T instance = new InstanceCreator().instantiate(clazz2Instanciate);
-    injectAttributes(instance);
-    initialize(instance);
-    return createMetricsProxy(clazz2Instanciate, instance);
-  }
 
 
   private static <T> T createMetricsProxy(Class<T> clazz2Instanciate, T instance) {
     if (METRICS_ACTIVATED.contains(clazz2Instanciate.getName())) {
-      //Metrics Adapter available ?
-      //InMemoryCompile ?
-
-      final Set<Class<? extends T>> staticMetricProxiesFor = getStaticMetricProxiesFor(clazz2Instanciate);
-      if (staticMetricProxiesFor.isEmpty()) {
-        if (clazz2Instanciate.isInterface()) {
+      final Set<Class<? extends T>> staticProxiesFor = getStaticMetricProxiesFor(clazz2Instanciate);
+      if (staticProxiesFor.isEmpty()) {
+        if (clazz2Instanciate.isInterface()) { //TODO try inMemoryCompile
           return ProxyBuilder.newDynamicProxyBuilder(clazz2Instanciate, instance).addMetrics().build();
         }
-        //TODO try inMemoryCompile
-        //ByteCode if expl. allowed ?
-      } else if (staticMetricProxiesFor.size() == 1) {
-        final Class<T> c = (Class<T>) staticMetricProxiesFor.toArray()[0];
-        final T metricsProxy = new InstanceCreator().instantiate(c);
-        new ReflectionUtils().setDelegatorToMetrixsProxy(metricsProxy, instance);
-        return metricsProxy;
+      } else if (staticProxiesFor.size() == 1) {
+        final Class<? extends T>[] proxyClasses = staticProxiesFor.toArray(new Class[1]);
+        return createGeneratedStaticProxy(instance, proxyClasses[0]);
       } else {
-        throw new DDIModelException("to many MetricProxies for " + clazz2Instanciate + " -> Proxies are " + staticMetricProxiesFor);
+        throw new DDIModelException("to many MetricProxies for " + clazz2Instanciate + " -> Proxies are " + staticProxiesFor);
       }
     }
     return instance;
+  }
+
+
+  private static <T> T createLoggingProxy(Class<T> clazz2Instanciate, T delegator) {
+    if (LOGGING_ACTIVATED.contains(clazz2Instanciate.getName())) {
+      final Set<Class<? extends T>> staticProxiesFor = getStaticLoggingProxiesFor(clazz2Instanciate);
+      if (staticProxiesFor.isEmpty()) {
+        if (clazz2Instanciate.isInterface()) { //TODO try inMemoryCompile
+          return ProxyBuilder.newDynamicProxyBuilder(clazz2Instanciate, delegator).addLogging().build();
+        } else {
+          //not interface ??
+        }
+      } else if (staticProxiesFor.size() == 1) {
+        final Class<? extends T>[] proxyClasses = staticProxiesFor.toArray(new Class[1]);
+        return createGeneratedStaticProxy(delegator, proxyClasses[0]);
+      } else {
+        throw new DDIModelException("to many LoggingProxies for " + clazz2Instanciate + " -> Proxies are " + staticProxiesFor);
+      }
+    }
+    return delegator;
+  }
+
+  private static <T> T createGeneratedStaticProxy(final T delegator, final Class<? extends T> staticProxyClass) {
+    final T staticProxy = new InstanceCreator().instantiate(staticProxyClass);
+    injectAttributes(delegator);
+    initialize(delegator);
+    new ReflectionUtils().setDelegatorToProxy(staticProxy, delegator);
+    return staticProxy;
   }
 
 
@@ -239,10 +284,13 @@ public class DI {
 
         if (field.isAnnotationPresent(Proxy.class)) {
           value = createProxy(field, targetType);
+          DI.activateDI(value);
         } else {
           value = new InstanceCreator().instantiate(targetType);
+          DI.activateDI(value);
         }
         if (value != null) {
+
           injectIntoField(field, rootInstance, value);
         }
       }
@@ -254,7 +302,7 @@ public class DI {
 
 
     //TODO cross check with activated Metrics.. avoid double Metrics Proxy
-
+    //TODO compare with registered Values for Metrics and Proxies
     final Proxy annotation = field.getAnnotation(Proxy.class);
 
     final boolean virtual = annotation.virtual();
@@ -288,7 +336,7 @@ public class DI {
           .make();
     } else {
 //            value = new InstanceCreator().instantiate(realClass); // TODO Test it
-      value = new InstanceCreator().instantiate(targetType); // TODO Test it
+      value = new InstanceCreator().instantiate(targetType); // TODO Test it //TODO DI.activate
       //activateDI(value); //rekursiver abstieg
     }
 
@@ -351,30 +399,7 @@ public class DI {
         e.printStackTrace();
       }
     });
-
-
-//    Method[] declaredMethods = clazz.getDeclaredMethods();
-//    for (final Method method : declaredMethods) {
-//      if (method.isAnnotationPresent(annotationClass)) {
-//        AccessController.doPrivileged((PrivilegedAction) () -> {
-//          boolean wasAccessible = method.isAccessible();
-//          try {
-//            method.setAccessible(true);
-//            return method.invoke(instance); //TODO Dynamic ObjectAdapter ?
-//          } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-//            throw new IllegalStateException("Problem invoking " + annotationClass + " : " + method, ex);
-//          } finally {
-//            method.setAccessible(wasAccessible);
-//          }
-//        });
-//      }
-//    }
-//    Class superclass = clazz.getSuperclass();
-//    if (superclass != null) {
-//      invokeMethodWithAnnotation(superclass, instance, annotationClass);
-//    }
   }
-
 
   //delegator
 
@@ -385,6 +410,10 @@ public class DI {
 
   public static <T> Set<Class<? extends T>> getStaticMetricProxiesFor(final Class<T> type) {
     return reflectionsModel.getStaticMetricProxiesFor(type);
+  }
+
+  public static <T> Set<Class<? extends T>> getStaticLoggingProxiesFor(final Class<T> type) {
+    return reflectionsModel.getStaticLoggingProxiesFor(type);
   }
 
   public static <T> Class<? extends T> resolveImplementingClass(final Class<T> interf) {

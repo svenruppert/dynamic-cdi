@@ -33,7 +33,7 @@ public class ReflectionUtilsTest001 {
   @Test(expected = DDIModelException.class)
   public void test001() throws Exception {
     final ReflectionUtils utils = new ReflectionUtils();
-    utils.setDelegatorToMetrixsProxy(new TestMetricsServiceStaticMetricsProxy() {
+    utils.setDelegatorToProxy(new TestMetricsServiceStaticMetricsProxy() {
     }, new TestMetricsServiceImpl());
   }
 
