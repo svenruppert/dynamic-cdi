@@ -67,23 +67,6 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
       final Field delegator = proxyClass.getDeclaredField("delegator");
       final boolean accessible = delegator.isAccessible();
       delegator.setAccessible(true);
-
-      // TODO how to deal with lambdas ?
-      delegator.set(proxy, original);
-
-      delegator.setAccessible(accessible);
-    } catch (IllegalAccessException | NoSuchFieldException e) {
-      throw new DDIModelException(e);
-    }
-  }
-
-  public <T, P extends T, O extends T> void setDelegatorToProxy(P proxy, O original, Class<T> clazz) {
-    try {
-      final Class<?> proxyClass = proxy.getClass();
-      final Field delegator = proxyClass.getDeclaredField("delegator");
-      final boolean accessible = delegator.isAccessible();
-      delegator.setAccessible(true);
-
       // TODO how to deal with lambdas ?
       delegator.set(proxy, original);
 
@@ -95,8 +78,8 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
 
   public <T> void setDelegatorToProxyViaMethod(T proxy, T original) {
     final Class<?> proxyClass = proxy.getClass();
-    final Optional<Method> methodOptional = Arrays.asList(proxyClass.getDeclaredMethods())
-        .stream()
+    final Optional<Method> methodOptional = Arrays
+        .stream(proxyClass.getDeclaredMethods())
         .filter(m -> m.getName().equals("withDelegator"))
         .findFirst();
 
@@ -110,22 +93,6 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
     }
   }
 
-  public <T> void setDelegatorToProxyViaMethodHandle(T proxy, T original) {
-//    final Class<?> proxyClass = proxy.getClass();
-//    final Optional<Method> methodOptional = Arrays.asList(proxyClass.getDeclaredMethods())
-//        .stream()
-//        .filter(m -> m.getName().equals("withDelegator"))
-//        .findFirst();
-//
-//    if (methodOptional.isPresent()) {
-//      final Method method = methodOptional.get();
-//      try {
-//        method.invoke(proxy, original);
-//      } catch (IllegalAccessException | InvocationTargetException e) {
-//        throw new DDIModelException(e);
-//      }
-//    }
-  }
 
   public <I> void removeInterfacesAndGeneratedFromSubTypes(final Set<Class<? extends I>> subTypesOf) {
     final Iterator<Class<? extends I>> iteratorOfSubTypes = subTypesOf.iterator();

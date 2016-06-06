@@ -21,28 +21,6 @@ import org.rapidpm.ddi.reflections.ReflectionUtils;
 @Ignore
 public class ReflectionUtilsV002Test {
 
-  @Test
-  public void test001() throws Exception {
-    final ReflectionUtils utils = new ReflectionUtils();
-    utils.setDelegatorToProxy(new TestImplStaticLoggingProxy(), new TestImpl(), TestInterface.class);
-  }
-
-  @Test
-  public void test002() throws Exception {
-    final ReflectionUtils utils = new ReflectionUtils();
-    utils.setDelegatorToProxy(new TestImplStaticLoggingProxy(), () -> null,TestInterface.class);
-  }
-
-  @Test
-  public void test003() throws Exception {
-    final ReflectionUtils utils = new ReflectionUtils();
-    utils.setDelegatorToProxy(new TestImplStaticLoggingProxy(), new TestInterface(){
-      @Override
-      public String doWork() {
-        return "";
-      }
-    },TestInterface.class);
-  }
 
   @Test
   public void test001a() throws Exception {
