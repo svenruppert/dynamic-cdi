@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.scopes;
+package junit.org.rapidpm.ddi.scopes.v003;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
