@@ -33,7 +33,6 @@ package org.rapidpm.ddi.scopes;
 import org.rapidpm.ddi.DI;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,8 +77,17 @@ public class InjectionScopeManager {
   }
 
   public static synchronized void cleanUp() {
-    final Set<Class<? extends InjectionScope>> subTypesOf = DI.getSubTypesOf(InjectionScope.class);
-    subTypesOf
+    final Set<Class<? extends InjectionScope>> scopesFromReflectionModel = DI.getSubTypesOf(InjectionScope.class);
+
+    registerNewScopes(scopesFromReflectionModel);
+
+
+
+    removeOldScopes(scopesFromReflectionModel);
+  }
+
+  private static void registerNewScopes(Set<Class<? extends InjectionScope>> scopeClasses) {
+    scopeClasses
             .stream()
             .map(c -> {
               try {
@@ -92,10 +100,19 @@ public class InjectionScopeManager {
             .filter(scope -> scope != null)
             .filter(scope -> !INJECTION_SCOPE_MAP.containsKey(scope.getScopeName()))
             .forEach((injectionScope) -> INJECTION_SCOPE_MAP.put(injectionScope.getScopeName(), injectionScope));
+  }
 
-    final Set<String> activeScopeNames = new HashSet<>(INJECTION_SCOPE_MAP.keySet());
+  private static void removeOldScopes(Set<Class<? extends InjectionScope>> scopeClasses) {
 
-    final Set<String> scopes = subTypesOf.stream()
+    final Set<String> scopeNamesFromReflectionModel = getNamesFromScopes(scopeClasses);
+
+    INJECTION_SCOPE_MAP.keySet().stream()
+            .filter(scope -> !scopeNamesFromReflectionModel.contains(scope))
+            .forEach(InjectionScopeManager::removeScope);
+  }
+
+  private static Set<String> getNamesFromScopes(Set<Class<? extends InjectionScope>> scopes) {
+    return scopes.stream()
             .map(c -> {
               try {
                 return c.newInstance();
@@ -107,11 +124,6 @@ public class InjectionScopeManager {
             .filter(scope -> scope != null)
             .map(InjectionScope::getScopeName)
             .collect(Collectors.toSet());
-
-    activeScopeNames.removeAll(scopes);
-
-    // remove all non existing scope instances
-    activeScopeNames.forEach(InjectionScopeManager::removeScope);
   }
 
   public static void registerClassForScope(final Class clazz, final String scopeName) {
