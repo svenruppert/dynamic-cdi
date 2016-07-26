@@ -80,6 +80,8 @@ public class DI {
   public static synchronized void clearReflectionModel() {
     reflectionsModel = new ReflectionsModel();
     clearCaches();
+    InjectionScopeManager.reInitAllScopes();
+
     METRICS_ACTIVATED.clear();
     LOGGING_ACTIVATED.clear();
     bootstrapedNeeded = true;
@@ -217,7 +219,6 @@ public class DI {
   }
 
 
-
   private static <T> T createMetricsProxy(Class<T> clazz2Instanciate, T instance) {
     if (METRICS_ACTIVATED.contains(clazz2Instanciate.getName())) {
       final Set<Class<? extends T>> staticProxiesFor = getStaticMetricProxiesFor(clazz2Instanciate);
@@ -326,14 +327,14 @@ public class DI {
     //just now, only dynamic version is created..
     if (virtual) {
       value = DynamicProxyGenerator.newBuilder()
-          .withSubject(targetType)
-          .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
+              .withSubject(targetType)
+              .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
 //                .withServiceFactory(new DDIServiceFactory<>(realClass)) //TODO Test it
-          .withServiceFactory(new DDIServiceFactory<>(targetType)) //TODO Test it
-          .withCreationStrategy(creationStrategy)
+              .withServiceFactory(new DDIServiceFactory<>(targetType)) //TODO Test it
+              .withCreationStrategy(creationStrategy)
 //                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
-          .build()
-          .make();
+              .build()
+              .make();
     } else {
 //            value = new InstanceCreator().instantiate(realClass); // TODO Test it
       value = new InstanceCreator().instantiate(targetType); // TODO Test it //TODO DI.activate
@@ -380,7 +381,7 @@ public class DI {
 
   private static void invokeMethodWithAnnotation(Class clazz, final Object instance,
                                                  final Class<? extends Annotation> annotationClass)
-      throws IllegalStateException, SecurityException {
+          throws IllegalStateException, SecurityException {
 
     final Set<Method> methodsAnnotatedWith = reflectionsModel.getMethodsAnnotatedWith(clazz, new PostConstruct() {
       @Override

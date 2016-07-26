@@ -98,13 +98,17 @@ public class ScopesTest001 extends DDIBaseTest {
     Assert.assertTrue(strings.contains(TestScope.class.getSimpleName()));
 
     final SingletonTestClass singletonTestClassA = DI.activateDI(SingletonTestClass.class);
+
     InjectionScopeManager.clearScope(singeltonScopeName);
+
     final SingletonTestClass singletonTestClassB = DI.activateDI(SingletonTestClass.class);
     Assert.assertNotEquals(singletonTestClassA, singletonTestClassB);
 
     final SingletonTestClass singletonTestClassC = DI.activateDI(SingletonTestClass.class);
     Assert.assertNotEquals(singletonTestClassA, singletonTestClassB);
     Assert.assertNotEquals(singletonTestClassA, singletonTestClassC);
+
+
     Assert.assertEquals(singletonTestClassB, singletonTestClassC);
 
   }
