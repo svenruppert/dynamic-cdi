@@ -108,6 +108,7 @@ public class InjectionScopeManager {
 
     activeScopeNames.stream()
         .forEach(InjectionScopeManager::removeScope);
+    // TODO: clean CLASS_NAME_2_SCOPENAME_MAP
   }
 
   public static void registerClassForScope(final Class clazz, final String scopeName) {
@@ -136,6 +137,7 @@ public class InjectionScopeManager {
   public static void clearScope(final String scopeName) {
     INJECTION_SCOPE_MAP.computeIfPresent(scopeName, (s, injectionScope) -> {
       injectionScope.clear();
+      // TODO: clean CLASS_NAME_2_SCOPENAME_MAP
       return injectionScope;
     });
   }
