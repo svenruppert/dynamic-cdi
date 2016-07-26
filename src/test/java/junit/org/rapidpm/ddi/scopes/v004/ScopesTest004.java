@@ -11,8 +11,6 @@ public class ScopesTest004 extends DDIBaseTest {
 
   @Test
   public void test001() throws Exception {
-
-
     final Service serviceA = DI.activateDI(Service.class);
     final Service serviceB = DI.activateDI(Service.class);
 
@@ -20,7 +18,6 @@ public class ScopesTest004 extends DDIBaseTest {
     Assert.assertNotNull(serviceB);
 
     Assert.assertNotEquals(serviceA.value(), serviceB.value());
-
   }
 
   @Test
@@ -35,7 +32,6 @@ public class ScopesTest004 extends DDIBaseTest {
     Assert.assertNotNull(serviceB);
 
     Assert.assertEquals(serviceA.value(), serviceB.value());
-
   }
 
   @Test
@@ -59,8 +55,7 @@ public class ScopesTest004 extends DDIBaseTest {
     DI.registerClassForScope(SingleResource.class, JVMSingletonInjectionScope.class.getSimpleName());
     final String scopeAfter = InjectionScopeManager.scopeForClass(SingleResource.class);
 
-    System.out.println("scopeBefore = " + scopeBefore);
-    System.out.println("scopeAfter = " + scopeAfter);
+    Assert.assertNotEquals(scopeBefore, scopeAfter);
 
     final Service serviceA = DI.activateDI(Service.class);
     final Service serviceB = DI.activateDI(Service.class);
