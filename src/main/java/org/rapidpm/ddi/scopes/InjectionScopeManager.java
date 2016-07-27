@@ -14,18 +14,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    CLASS_NAME_2_SCOPENAME_MAP = new ConcurrentHashMap<>();
-    INJECTION_SCOPE_MAP = new ConcurrentHashMap<>();
-    final Set<Class<? extends InjectionScope>> subTypesOf = DI.getSubTypesOf(InjectionScope.class);
-    for (Class<? extends InjectionScope> aClass : subTypesOf) {
-      try {
-        final InjectionScope injectionScope = aClass.newInstance();
-        INJECTION_SCOPE_MAP.put(injectionScope.getScopeName(), injectionScope);
-      } catch (InstantiationException | IllegalAccessException e) {
-        e.printStackTrace();
-      }
-    }
-
+ * under the License.
  */
 
 package org.rapidpm.ddi.scopes;
