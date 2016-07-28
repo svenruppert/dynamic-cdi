@@ -1,6 +1,8 @@
 # Welcome to the Project Dynamic CDI
 
 [![Join the chat at https://gitter.im/RapidPM/dynamic-cdi](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/RapidPM/dynamic-cdi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![](https://build.rapidpm.org/app/rest/builds/buildType:id:RapidPM_Develop_DynamicDependencyInjection_Snapshot/statusIcon)](https://build.rapidpm.org/viewType.html?buildTypeId=RapidPM_Develop_DynamicDependencyInjection_Snapshot&guest=1)
+
 
 Here we will start with an more dynamic version of the default cdi implementations.
 This project is based on the project ***ProxyBuilder***.
