@@ -41,7 +41,7 @@ public class ProducerResolverTest004 extends DDIBaseTest{
       DI.activateDI(this);
     } catch (Exception e) {
       Assert.assertTrue(e instanceof DDIModelException);
-      Assert.assertTrue(e.getMessage().contains("ProducerResolver without ResponsibleFor"));
+      Assert.assertTrue(e.getMessage().contains("to many Producer and no ProducerResolver found for interface"));
       throw e;
     }
   }

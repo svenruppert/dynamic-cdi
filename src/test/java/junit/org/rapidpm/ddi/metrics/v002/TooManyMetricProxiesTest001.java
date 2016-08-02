@@ -42,9 +42,28 @@ public class TooManyMetricProxiesTest001 {
       Assert.assertTrue(e.getMessage().contains("to many MetricProxies for interface"));
       throw e;
     }
-
-
   }
+
+  @Test(expected = DDIModelException.class)
+  public void test002() throws Exception {
+    DI.clearReflectionModel();
+    DI.activatePackages(this.getClass());
+    DI.activateMetrics(MetricsService.class.getPackage().getName());
+
+    try {
+      DI.activateDI(MetricsService.class);
+    } catch (Exception e) {
+      e.printStackTrace();
+      Assert.assertEquals(DDIModelException.class, e.getClass());
+      Assert.assertTrue(e.getMessage().contains("to many MetricProxies for interface"));
+      throw e;
+    }
+  }
+
+
+
+
+
 
   public interface MetricsService {
   }

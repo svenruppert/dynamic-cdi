@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.instancecreator;
+package junit.org.rapidpm.ddi.instancecreator.v001;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
@@ -30,11 +30,8 @@ public class InstanceCreatorTest001 extends DDIBaseTest {
 
   @Test
   public void test001() throws Exception {
-    DI.activateDI("org.rapidpm");
-    DI.activateDI("junit.org.rapidpm");
     final Service instantiate = new InstanceCreator().instantiate(Service.class);
     Assert.assertNotNull(instantiate);
-
   }
 
 
