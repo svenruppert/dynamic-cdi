@@ -67,11 +67,7 @@ public class InjectionScopeManager {
 
   public static synchronized void cleanUp() {
     final Set<Class<? extends InjectionScope>> scopesFromReflectionModel = DI.getSubTypesOf(InjectionScope.class);
-
     registerNewScopes(scopesFromReflectionModel);
-
-
-
     removeOldScopes(scopesFromReflectionModel);
   }
 

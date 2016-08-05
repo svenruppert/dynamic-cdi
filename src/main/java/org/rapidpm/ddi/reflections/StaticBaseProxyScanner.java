@@ -50,9 +50,7 @@ public abstract class StaticBaseProxyScanner extends AbstractScanner {
 
     final Set<String> classAnnotationNames = new HashSet<>(getMetadataAdapter().getClassAnnotationNames(cls));
     if (classAnnotationNames.contains(responsibleForAnnotation().getName())) {
-      if (superclassName.isEmpty()) {
-        //
-      } else {
+      if (!superclassName.isEmpty()) {
         getStore().put(superclassName, className);
       }
       interfacesNames.forEach(c -> getStore().put(c, className));
