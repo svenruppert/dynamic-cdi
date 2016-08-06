@@ -52,7 +52,7 @@ import static org.rapidpm.ddi.scopes.InjectionScopeManager.listAllActiveScopeNam
 
 public class DI {
 
-  private static final Logger logger = LoggerFactory.getLogger(DI.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DI.class);
   //  private static final ImplementingClassResolver IMPLEMENTING_CLASS_RESOLVER = new ImplementingClassResolver();
   private static final Set<String> METRICS_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
   private static final Set<String> LOGGING_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
@@ -370,7 +370,7 @@ public class DI {
         field.set(instance, target);
         return null; // return nothing...
       } catch (IllegalArgumentException | IllegalAccessException ex) {
-        logger.error("Cannot set field: ", ex);
+        LOGGER.error("Cannot set field: ", ex);
         throw new IllegalStateException("Cannot set field: " + field, ex);
       } finally {
         field.setAccessible(wasAccessible);
@@ -401,7 +401,7 @@ public class DI {
         m.invoke(instance);
         m.setAccessible(accessible);
       } catch (IllegalAccessException | InvocationTargetException e) {
-        logger.error("method could not invoked ", e);
+        LOGGER.error("method could not invoked ", e);
       }
     });
   }

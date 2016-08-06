@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class InjectionScopeManager {
 
 
-  private static final Logger logger = LoggerFactory.getLogger(InjectionScopeManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(InjectionScopeManager.class);
   private static final Map<String, String> CLASS_NAME_2_SCOPENAME_MAP = new ConcurrentHashMap<>();
   private static final Map<String, InjectionScope> INJECTION_SCOPE_MAP = new ConcurrentHashMap<>();
 
@@ -81,7 +81,7 @@ public class InjectionScopeManager {
               try {
                 return c.newInstance();
               } catch (InstantiationException | IllegalAccessException e) {
-                logger.error("could not create an instance ", e);
+                LOGGER.error("could not create an instance ", e);
               }
               return null;
             })
@@ -105,7 +105,7 @@ public class InjectionScopeManager {
               try {
                 return c.newInstance();
               } catch (InstantiationException | IllegalAccessException e) {
-                logger.error("could not create new instance ", e);
+                LOGGER.error("could not create new instance ", e);
               }
               return null;
             })
@@ -166,7 +166,7 @@ public class InjectionScopeManager {
         final InjectionScope injectionScope = aClass.newInstance();
         INJECTION_SCOPE_MAP.put(injectionScope.getScopeName(), injectionScope);
       } catch (InstantiationException | IllegalAccessException e) {
-        logger.error("could not create an instance ", e);
+        LOGGER.error("could not create an instance ", e);
       }
     }
 
