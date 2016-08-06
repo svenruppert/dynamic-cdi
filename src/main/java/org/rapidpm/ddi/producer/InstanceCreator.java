@@ -24,12 +24,15 @@ import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.producerresolver.ProducerResolver;
 import org.rapidpm.ddi.producerresolver.ProducerResolverLocator;
 import org.rapidpm.ddi.scopes.InjectionScopeManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
 import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
 
 public class InstanceCreator {
+  private static final Logger LOGGER = LoggerFactory.getLogger(InstanceCreator.class);
 
   public <T> T instantiate(Class<T> clazz) {
 
@@ -127,7 +130,7 @@ public class InstanceCreator {
           putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
           return result;
         } catch (InstantiationException | IllegalAccessException e) {
-          e.printStackTrace();
+
           throw new DDIModelException(e);
         }
       }
@@ -144,7 +147,7 @@ public class InstanceCreator {
 //      return DI.activateDI(instance);
       return instance;
     } catch (InstantiationException | IllegalAccessException e) {
-      e.printStackTrace();
+      LOGGER.error("could not create instance ", e);
       throw new DDIModelException(e);
     }
   }
