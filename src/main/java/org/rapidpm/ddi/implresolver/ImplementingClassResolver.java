@@ -23,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,7 @@ import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
  */
 public class ImplementingClassResolver {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(ImplementingClassResolver.class);
   private static final ImplementingClassResolver INSTANCE = new ImplementingClassResolver();
 
 
@@ -126,7 +129,7 @@ public class ImplementingClassResolver {
       final ClassResolver<I> classResolver = classResolverClass.newInstance();
       return classResolver.resolve(interf);
     } catch (InstantiationException | IllegalAccessException e) {
-      e.printStackTrace();
+      LOGGER.error("could not create instance ", e);
       throw new DDIModelException(interf + " -- " + e);
     }
   }

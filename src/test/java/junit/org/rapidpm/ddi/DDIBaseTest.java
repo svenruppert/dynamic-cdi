@@ -31,7 +31,6 @@ public class DDIBaseTest {
     DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
     final String name = this.getClass().getPackage().getName();
-    System.out.println("name = " + name);
     DI.activatePackages(name);
   }
 

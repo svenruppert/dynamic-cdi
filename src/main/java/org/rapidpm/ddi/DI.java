@@ -29,6 +29,8 @@ import org.rapidpm.proxybuilder.ProxyBuilder;
 import org.rapidpm.proxybuilder.type.dymamic.DynamicProxyBuilder;
 import org.rapidpm.proxybuilder.type.dymamic.virtual.CreationStrategy;
 import org.rapidpm.proxybuilder.type.dymamic.virtual.DynamicProxyGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -50,6 +52,7 @@ import static org.rapidpm.ddi.scopes.InjectionScopeManager.listAllActiveScopeNam
 
 public class DI {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(DI.class);
   //  private static final ImplementingClassResolver IMPLEMENTING_CLASS_RESOLVER = new ImplementingClassResolver();
   private static final Set<String> METRICS_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
   private static final Set<String> LOGGING_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
@@ -80,6 +83,8 @@ public class DI {
   public static synchronized void clearReflectionModel() {
     reflectionsModel = new ReflectionsModel();
     clearCaches();
+    InjectionScopeManager.reInitAllScopes();
+
     METRICS_ACTIVATED.clear();
     LOGGING_ACTIVATED.clear();
     bootstrapedNeeded = true;
@@ -217,7 +222,6 @@ public class DI {
   }
 
 
-
   private static <T> T createMetricsProxy(Class<T> clazz2Instanciate, T instance) {
     if (METRICS_ACTIVATED.contains(clazz2Instanciate.getName())) {
       final Set<Class<? extends T>> staticProxiesFor = getStaticMetricProxiesFor(clazz2Instanciate);
@@ -326,14 +330,14 @@ public class DI {
     //just now, only dynamic version is created..
     if (virtual) {
       value = DynamicProxyGenerator.newBuilder()
-          .withSubject(targetType)
-          .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
+              .withSubject(targetType)
+              .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
 //                .withServiceFactory(new DDIServiceFactory<>(realClass)) //TODO Test it
-          .withServiceFactory(new DDIServiceFactory<>(targetType)) //TODO Test it
-          .withCreationStrategy(creationStrategy)
+              .withServiceFactory(new DDIServiceFactory<>(targetType)) //TODO Test it
+              .withCreationStrategy(creationStrategy)
 //                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
-          .build()
-          .make();
+              .build()
+              .make();
     } else {
 //            value = new InstanceCreator().instantiate(realClass); // TODO Test it
       value = new InstanceCreator().instantiate(targetType); // TODO Test it //TODO DI.activate
@@ -366,6 +370,7 @@ public class DI {
         field.set(instance, target);
         return null; // return nothing...
       } catch (IllegalArgumentException | IllegalAccessException ex) {
+        LOGGER.error("Cannot set field: ", ex);
         throw new IllegalStateException("Cannot set field: " + field, ex);
       } finally {
         field.setAccessible(wasAccessible);
@@ -380,7 +385,7 @@ public class DI {
 
   private static void invokeMethodWithAnnotation(Class clazz, final Object instance,
                                                  final Class<? extends Annotation> annotationClass)
-      throws IllegalStateException, SecurityException {
+          throws IllegalStateException, SecurityException {
 
     final Set<Method> methodsAnnotatedWith = reflectionsModel.getMethodsAnnotatedWith(clazz, new PostConstruct() {
       @Override
@@ -396,7 +401,7 @@ public class DI {
         m.invoke(instance);
         m.setAccessible(accessible);
       } catch (IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
+        LOGGER.error("method could not invoked ", e);
       }
     });
   }

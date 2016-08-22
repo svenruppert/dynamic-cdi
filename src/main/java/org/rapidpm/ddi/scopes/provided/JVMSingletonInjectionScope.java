@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class JVMSingletonInjectionScope extends InjectionScope {
 
+
   private static final Map<String, Object> SINGLETONS = new ConcurrentHashMap<>();
 
   @Override
@@ -41,6 +42,7 @@ public class JVMSingletonInjectionScope extends InjectionScope {
     final String name = targetClassOrInterface.getName();
     if (SINGLETONS.containsKey(name)) {
       //logging that Singleton was tried to set twice
+      throw new RuntimeException("tried to set the Singleton twice .. " + targetClassOrInterface + " with instance " + instance);
     } else {
       SINGLETONS.put(name, instance);
     }

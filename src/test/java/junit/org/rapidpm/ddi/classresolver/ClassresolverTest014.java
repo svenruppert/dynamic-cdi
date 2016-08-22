@@ -39,10 +39,6 @@ public class ClassresolverTest014 {
 
   @Test
   public void test001() throws Exception {
-    DI.clearReflectionModel();
-    DI.activatePackages("org.rapidpm");
-    DI.activatePackages(ClassresolverTest014.class);
-
     Assert.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
     Assert.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
     Assert.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());

@@ -83,4 +83,16 @@ public class ProducerResolverTest001 extends DDIBaseTest{
       return Producer_A_2.class;
     }
   }
+
+  // useless for this test, but for test coverage
+ public static interface ToRemove {}
+ public static class ToRemoveImpl implements ToRemove {}
+
+  @ResponsibleFor(ToRemoveImpl.class)
+  public static class ToRemoveImplResolver implements ProducerResolver<ToRemoveImpl,Producer<ToRemoveImpl>> {
+    @Override
+    public Class resolve(final Class<? extends ToRemoveImpl> interf) {
+      return null;
+    }
+  }
 }

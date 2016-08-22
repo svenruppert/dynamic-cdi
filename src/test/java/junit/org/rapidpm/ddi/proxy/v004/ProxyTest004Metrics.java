@@ -42,7 +42,6 @@ public class ProxyTest004Metrics extends DDIBaseTest {
 
   String s1;
   private ConsoleReporter reporter;
-
   @Before
   public void setUp() throws Exception {
     final MetricRegistry metrics = RapidPMMetricsRegistry.getInstance().getMetrics();

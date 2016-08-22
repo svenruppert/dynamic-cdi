@@ -24,8 +24,11 @@ import org.junit.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TooManyMetricProxiesTest001 {
+  private static final Logger logger = LoggerFactory.getLogger(TooManyMetricProxiesTest001.class);
 
 
   @Test(expected = DDIModelException.class)
@@ -37,14 +40,33 @@ public class TooManyMetricProxiesTest001 {
     try {
       DI.activateDI(MetricsService.class);
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error("test ", e);
       Assert.assertEquals(DDIModelException.class, e.getClass());
       Assert.assertTrue(e.getMessage().contains("to many MetricProxies for interface"));
       throw e;
     }
-
-
   }
+
+  @Test(expected = DDIModelException.class)
+  public void test002() throws Exception {
+    DI.clearReflectionModel();
+    DI.activatePackages(this.getClass());
+    DI.activateMetrics(MetricsService.class.getPackage().getName());
+
+    try {
+      DI.activateDI(MetricsService.class);
+    } catch (Exception e) {
+      logger.error("test ", e);
+      Assert.assertEquals(DDIModelException.class, e.getClass());
+      Assert.assertTrue(e.getMessage().contains("to many MetricProxies for interface"));
+      throw e;
+    }
+  }
+
+
+
+
+
 
   public interface MetricsService {
   }
