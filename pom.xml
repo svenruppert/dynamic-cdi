@@ -59,11 +59,11 @@
   </developers>
   <issueManagement>
     <system>Youtrack</system>
-    <url>http://rapidpm.myjetbrains.com/youtrack/issues?q=project%3A+DynamicDependencyInjection</url>
+    <url>https://issues.rapidpm.org/issues?q=project%3A+DynamicDependencyInjection</url>
   </issueManagement>
   <ciManagement>
     <system>TeamCity</system>
-    <url>http://78.47.22.54/project.html?projectId=RapidPM_RapidPMDynamicDependencyInjection</url>
+    <url>https://build.rapidpm.org/</url>
   </ciManagement>
   <licenses>
     <license>
