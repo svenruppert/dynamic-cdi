@@ -20,6 +20,7 @@
 package org.rapidpm.ddi.reflections;
 
 import com.google.common.base.Predicate;
+import org.rapidpm.dependencies.core.basepattern.multiple.Pair;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.Scanner;
