@@ -1,6 +1,5 @@
 package junit.org.rapidpm.ddi.classresolver.v015;
 
-import junit.org.rapidpm.ddi.classresolver.ClassresolverTest014;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

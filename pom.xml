@@ -26,12 +26,12 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
   </parent>
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
@@ -59,11 +59,11 @@
   </developers>
   <issueManagement>
     <system>Youtrack</system>
-    <url>http://rapidpm.myjetbrains.com/youtrack/issues?q=project%3A+DynamicDependencyInjection</url>
+    <url>https://issues.rapidpm.org/issues?q=project%3A+DynamicDependencyInjection</url>
   </issueManagement>
   <ciManagement>
     <system>TeamCity</system>
-    <url>http://78.47.22.54/project.html?projectId=RapidPM_RapidPMDynamicDependencyInjection</url>
+    <url>https://build.rapidpm.org/</url>
   </ciManagement>
   <licenses>
     <license>
@@ -129,6 +129,7 @@
               <dependencyReducedPomLocation>${project.build.directory}/reduced-pom.xml</dependencyReducedPomLocation>
               <minimizeJar>false</minimizeJar>
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+              <createSourcesJar>true</createSourcesJar>
               <shadeSourcesContent>false</shadeSourcesContent>
               <filters>
                 <filter>

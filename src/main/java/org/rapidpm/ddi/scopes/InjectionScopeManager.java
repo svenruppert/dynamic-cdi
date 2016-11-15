@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -85,7 +86,7 @@ public class InjectionScopeManager {
               }
               return null;
             })
-            .filter(scope -> scope != null)
+            .filter(Objects::nonNull)
             .filter(scope -> !INJECTION_SCOPE_MAP.containsKey(scope.getScopeName()))
             .forEach((injectionScope) -> INJECTION_SCOPE_MAP.put(injectionScope.getScopeName(), injectionScope));
   }
@@ -109,7 +110,7 @@ public class InjectionScopeManager {
               }
               return null;
             })
-            .filter(scope -> scope != null)
+            .filter(Objects::nonNull)
             .map(InjectionScope::getScopeName)
             .collect(Collectors.toSet());
   }
