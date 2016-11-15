@@ -24,7 +24,6 @@ import com.codahale.metrics.MetricRegistry;
 import junit.org.rapidpm.ddi.reflectionmodel.v005.api.Service;
 import junit.org.rapidpm.ddi.reflectionmodel.v005.model001.ServiceImpl001;
 import junit.org.rapidpm.ddi.reflectionmodel.v005.model002.ServiceImpl002;
-import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +67,6 @@ public class ReflectionModelTest005 {
     postCheck(serviceClass, endExclusive);
   }
 
-  @NotNull
   private MetricRegistry preCheckAndGetMetrics(final Class<? extends Service> serviceClass) {
     final RapidPMMetricsRegistry metricsRegistry = RapidPMMetricsRegistry.getInstance();
     final MetricRegistry metrics = metricsRegistry.getMetrics();

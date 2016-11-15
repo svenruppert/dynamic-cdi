@@ -19,7 +19,6 @@
 
 package org.rapidpm.ddi.implresolver;
 
-import org.jetbrains.annotations.Nullable;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
@@ -79,7 +78,6 @@ public class ImplementingClassResolver {
 
 
   //ToDo this result could be cached....
-  @Nullable
   private <I> Class<? extends I> handleOneSubType(final Class<I> interf, final Object o) {
     final Class<? extends I> implClass = (Class<? extends I>) o;
     final Set<Class<?>> producersForInterface = findProducersFor(interf);
@@ -93,7 +91,6 @@ public class ImplementingClassResolver {
     return null;
   }
 
-  @Nullable
   private <I> Class<? extends I> handleManySubTypes(final Class<I> interf, final Set<Class<? extends I>> subTypesOf) {
 
     if (resolverCacheForClass2ClassResolver.containsKey(interf)) {
@@ -123,7 +120,6 @@ public class ImplementingClassResolver {
     throw new DDIModelException(message);
   }
 
-  @Nullable
   private <I> Class<? extends I> handleOneResolver(final Class<I> interf, final Class<? extends ClassResolver> classResolverClass) {
     try {
       final ClassResolver<I> classResolver = classResolverClass.newInstance();

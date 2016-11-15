@@ -1,7 +1,6 @@
 package junit.org.rapidpm.ddi.logging.v002;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
@@ -74,7 +73,6 @@ public class LogginV002Test extends DDIBaseTest {
     infoLogs.clear();
   }
 
-  @NotNull
   private TestLoggerFactory getTestLoggerFactory() throws NoSuchFieldException, IllegalAccessException {
     final StaticLoggerBinder staticLoggerBinder = StaticLoggerBinder.getSingleton();
     final Class<? extends StaticLoggerBinder> staticLoggerBinderClass = staticLoggerBinder.getClass();

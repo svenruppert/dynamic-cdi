@@ -1,4 +1,4 @@
-package junit.org.rapidpm.ddi.classresolver.v016
+package junit.org.rapidpm.ddi.classresolver.v015;
 
 /**
  * Copyright (C) 2010 RapidPM
@@ -11,11 +11,11 @@ package junit.org.rapidpm.ddi.classresolver.v016
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-
+ *
  * Created by RapidPM - Team on 02.06.16.
  */
-class ServiceA : Service {
-  override fun doWork(txt: String): String {
-    return txt + "A"
+public class ServiceA implements Service {
+  public String doWork(String txt) {
+    return txt + "A";
   }
 }
