@@ -28,13 +28,13 @@ public class ReflectionUtilsV002Test {
     utils.setDelegatorToProxyViaMethod(new TestImplStaticLoggingProxy(), new TestImpl());
   }
 
-  @Test
+  @Test @Ignore
   public void test002a() throws Exception {
     final ReflectionUtils utils = new ReflectionUtils();
     utils.setDelegatorToProxyViaMethod(new TestImplStaticLoggingProxy(), (TestInterface) () -> null);
   }
 
-  @Test
+  @Test @Ignore
   public void test003a() throws Exception {
     final ReflectionUtils utils = new ReflectionUtils();
     utils.setDelegatorToProxyViaMethod(new TestImplStaticLoggingProxy(), new TestInterface(){
