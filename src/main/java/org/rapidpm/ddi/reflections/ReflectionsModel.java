@@ -36,6 +36,9 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+
+import static java.util.Collections.unmodifiableSet;
 
 
 public class ReflectionsModel {
@@ -46,9 +49,9 @@ public class ReflectionsModel {
   private final Map<String, LocalDateTime> activatedPackagesMap = new ConcurrentHashMap<>();
   private final Object obj = new Object();
   private final Map<Pair<String, String>, Set<Method>> methodsAnnotatedWithCache = new ConcurrentHashMap<>();
-  private final Map subTypeOfCache = new ConcurrentHashMap<>();
-  private final Map subTypeOfCacheWithoutInterfacesnadGenerated = new ConcurrentHashMap<>();
-  private final Map typesAnnotatedWithCache = new ConcurrentHashMap<>();
+  private final Map<String, Set> subTypeOfCache = new ConcurrentHashMap<>();
+  private final Map<String, Set> subTypeOfCacheWithoutInterfacesnadGenerated = new ConcurrentHashMap<>();
+  private final Map<Class<? extends Annotation>, Set> typesAnnotatedWithCache = new ConcurrentHashMap<>();
   private boolean parallelExecutors;
   private final Reflections reflections = new Reflections(
       createConfigurationBuilder()
@@ -163,45 +166,48 @@ public class ReflectionsModel {
         .get(type.getName());
 
     final List<Class<? extends T>> classes = ReflectionUtils.forNames(metricProxyClassNames, classLoaders);
-    return Collections.unmodifiableSet(new HashSet<>(classes));
+    return unmodifiableSet(new HashSet<>(classes));
 
   }
 
   public <T> Set<Class<? extends T>> getStaticLoggingProxiesFor(final Class<T> type) {
-
     final ClassLoader[] classLoaders = reflections.getConfiguration().getClassLoaders();
-
     final Collection<String> loggingProxyClassNames = reflections.getStore()
         .get(index(StaticLoggingProxyScanner.class))
         .get(type.getName());
 
     final List<Class<? extends T>> classes = ReflectionUtils.forNames(loggingProxyClassNames, classLoaders);
-    return Collections.unmodifiableSet(new HashSet<>(classes));
-
+    return unmodifiableSet(new HashSet<>(classes));
   }
 
   //delegated methods
 
+  private final Function<Set, Set> newSet = (Function<Set, Set>) input -> {
+    final HashSet<Set<Class<?>>> hashSet = new HashSet<>();
+    hashSet.addAll(input);
+    return hashSet;
+  };
 
   public <T> Set<Class<? extends T>> getSubTypesOf(final Class<T> type) {
     if (subTypeOfCache.containsKey(type.getName())) {
       return (Set<Class<? extends T>>) subTypeOfCache.get(type.getName());
     }
     final Set<Class<? extends T>> subTypesOf = reflections.getSubTypesOf(type);
-    final Set<Class<? extends T>> unmodifiableSet = Collections.unmodifiableSet(subTypesOf);
-    subTypeOfCache.put(type.getName(), unmodifiableSet);
-    return unmodifiableSet;
+//    final Set<Class<? extends T>> unmodifiableSet = Collections.unmodifiableSet(subTypesOf);
+    subTypeOfCache.put(type.getName(), subTypesOf);
+    return subTypesOf;
 //    return reflections.getSubTypesOf(type);
   }
 
 
   public <T> Set<Class<? extends T>> getSubTypesWithoutInterfacesAndGeneratedOf(final Class<T> type) {
+
+
     if (subTypeOfCacheWithoutInterfacesnadGenerated.containsKey(type.getName())) {
       return (Set<Class<? extends T>>) subTypeOfCacheWithoutInterfacesnadGenerated.get(type.getName());
     }
     final Set<Class<? extends T>> subTypesOf = reflections.getSubTypesOf(type);
-    new ReflectionUtils().removeInterfacesAndGeneratedFromSubTypes(subTypesOf);
-    final Set<Class<? extends T>> unmodifiableSet = Collections.unmodifiableSet(subTypesOf);
+    final Set<Class<? extends T>> unmodifiableSet = new ReflectionUtils().removeInterfacesAndGeneratedFromSubTypes(subTypesOf);
     subTypeOfCacheWithoutInterfacesnadGenerated.put(type.getName(), unmodifiableSet);
     return unmodifiableSet;
 //    return reflections.getSubTypesOf(type);
@@ -210,7 +216,7 @@ public class ReflectionsModel {
   public Set<Class<?>> getTypesAnnotatedWith(final Class<? extends Annotation> annotation) {
     if (typesAnnotatedWithCache.containsKey(annotation)) return (Set<Class<?>>) typesAnnotatedWithCache.get(annotation);
 
-    final Set<Class<?>> typesAnnotatedWith = Collections.unmodifiableSet(reflections.getTypesAnnotatedWith(annotation));
+    final Set<Class<?>> typesAnnotatedWith = unmodifiableSet(reflections.getTypesAnnotatedWith(annotation));
     typesAnnotatedWithCache.put(annotation, typesAnnotatedWith);
     return typesAnnotatedWith;
 //    return reflections.getTypesAnnotatedWith(annotation);
@@ -238,7 +244,7 @@ public class ReflectionsModel {
     final Set<Method> allMethods = ReflectionUtils.getAllMethods(clazz,
         (Predicate<Method>) input -> input != null && input.isAnnotationPresent(annotation.annotationType()));
 
-    final Set<Method> unmodifiableSet = Collections.unmodifiableSet(allMethods);
+    final Set<Method> unmodifiableSet = unmodifiableSet(allMethods);
     methodsAnnotatedWithCache.put(key, unmodifiableSet);
     return unmodifiableSet;
   }

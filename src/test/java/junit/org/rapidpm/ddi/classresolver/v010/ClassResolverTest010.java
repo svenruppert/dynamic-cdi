@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver.v010;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
@@ -33,17 +33,12 @@ public class ClassResolverTest010 extends DDIBaseTest {
 
   @Test
   public void test001() throws Exception {
-
     final Set<Class<? extends Service>> subTypesOf = DI.getSubTypesOf(Service.class);
     for (Class<? extends Service> aClass : subTypesOf) {
       System.out.println("aClass = " + aClass);
       System.out.println("aClass.isInterface() = " + aClass.isInterface());
-
-
     }
-
-
-    DI.activateDI(this);
+    //DI.activateDI(this);
     Assert.assertNotNull(service);
 
   }

@@ -17,36 +17,33 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.base;
+package junit.org.rapidpm.ddi.classresolver.v012;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 
-public class DITest010 extends DDIBaseTest {
+import javax.inject.Inject;
+
+public class ClassResolverTest012 extends DDIBaseTest {
 
 
-  @Test
+  @Test(expected = RuntimeException.class)
   public void test001() throws Exception {
-    DI.clearReflectionModel();
-    DI.activatePackages(this.getClass());
-    final Service service = DI.activateDI(Service.class);
-    Assert.assertNotNull(service);
-    Assert.assertEquals(ServiceImpl.class, service.getClass());
+    Service service = new Service();
+    DI.activateDI(service);
   }
 
-
-  @After
-  public void tearDown() throws Exception {
-    DI.clearReflectionModel();
+  public interface SubService {
   }
 
-  public interface Service {
+  public static class Service {
+    @Inject SubService subService;
   }
 
-  public static class ServiceImpl implements Service {
+  public static class FaultySubService implements SubService {
+    public FaultySubService() {
+      throw new RuntimeException("OOPS");
+    }
   }
-
 }

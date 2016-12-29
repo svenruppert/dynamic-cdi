@@ -29,16 +29,13 @@ import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.producer.Producer;
 import org.rapidpm.ddi.producerresolver.ProducerResolver;
 
-import javax.inject.Inject;
-
 public class ProducerResolverTest003 extends DDIBaseTest {
 
-  @Inject MyService myService;
 
   @Test(expected = DDIModelException.class)
   public void test001() throws Exception {
     try {
-      DI.activateDI(this);
+      DI.activateDI(MyService.class);
     } catch (Exception e) {
       Assert.assertTrue(e instanceof DDIModelException);
       Assert.assertTrue(e.getMessage().contains("to many producersResolver for Impl"));
@@ -76,7 +73,7 @@ public class ProducerResolverTest003 extends DDIBaseTest {
   }
 
   @ResponsibleFor(MyServiceImpl_A.class)
-  public static class MyProducerResolver_A implements ProducerResolver<MyServiceImpl_A,Producer<MyServiceImpl_A>> {
+  public static class MyProducerResolver_A implements ProducerResolver<MyServiceImpl_A, Producer<MyServiceImpl_A>> {
     @Override
     public Class resolve(final Class<? extends MyServiceImpl_A> interf) {
       return Producer_A_2.class;
@@ -84,7 +81,7 @@ public class ProducerResolverTest003 extends DDIBaseTest {
   }
 
   @ResponsibleFor(MyServiceImpl_A.class)
-  public static class MyProducerResolver_B implements ProducerResolver<MyServiceImpl_A,Producer<MyServiceImpl_A>> {
+  public static class MyProducerResolver_B implements ProducerResolver<MyServiceImpl_A, Producer<MyServiceImpl_A>> {
     @Override
     public Class resolve(final Class<? extends MyServiceImpl_A> interf) {
       return Producer_A_2.class;

@@ -19,6 +19,7 @@
 
 package junit.org.rapidpm.ddi.base;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,17 +28,17 @@ import org.rapidpm.ddi.DI;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-public class DITest006 {
+public class DITest006 extends DDIBaseTest {
   static boolean postconstructA1;
   static boolean postconstructA2;
   static boolean postconstructB1;
   static boolean postconstructB2;
 
-  @Before
-  public void setUp() throws Exception {
-    DI.clearReflectionModel();
-    DI.activatePackages(DITest006.class.getPackage().getName());
-  }
+//  @Before
+//  public void setUp() throws Exception {
+//    DI.clearReflectionModel();
+//    DI.activatePackages(DITest006.class.getPackage().getName());
+//  }
 
   @Test
   public void test001() throws Exception {

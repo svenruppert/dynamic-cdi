@@ -17,12 +17,11 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver.v003;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.implresolver.ClassResolver;
@@ -30,23 +29,17 @@ import org.rapidpm.ddi.implresolver.ClassResolver;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-public class ClassResolverTest002 extends DDIBaseTest {
+public class ClassResolverTest003 extends DDIBaseTest {
 
-  @Test(expected = DDIModelException.class)
+
+  @Test
   public void testProducer001() throws Exception {
-    final BusinessModule businessModule = new BusinessModule();
 
-    try {
-      DI.activateDI(businessModule);
-    } catch (Exception e) {
-      final Class<? extends Exception> aClass = e.getClass();
-      Assert.assertEquals(DDIModelException.class, aClass);
-      final String message = e.getMessage();
-      Assert.assertTrue(message.startsWith("interface with multiple implementations"));
-      Assert.assertTrue(message.contains("more as 1 ClassResolver"));
-      Assert.assertTrue(message.contains("ClassResolverTest002$Service"));
-      throw e;
-    }
+    final BusinessModule businessModule = new BusinessModule();
+    DI.activateDI(businessModule);
+    Assert.assertNotNull(businessModule);
+    Assert.assertNotNull(businessModule.service);
+    Assert.assertEquals(ServiceImplB.class, businessModule.service.getClass());
   }
 
   public interface Service {
@@ -74,7 +67,7 @@ public class ClassResolverTest002 extends DDIBaseTest {
   }
 
   public static class BusinessModule {
-    @Inject Service service;
+    @Inject ServiceImplB service; //Here the concrete Class
 
     public String work(String txt) {
       return service.work(txt);
@@ -92,11 +85,12 @@ public class ClassResolverTest002 extends DDIBaseTest {
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
-    }    @Override
+    }
+
+    @Override
     public SubService getSubService() {
       return subService;
     }
-
 
 
     public boolean isPostconstructed() {
@@ -113,10 +107,11 @@ public class ClassResolverTest002 extends DDIBaseTest {
     @PostConstruct
     public void postconstruct() {
       postconstructed = true;
-    }    public String work(String txt) {
-      return subService.work(txt);
     }
 
+    public String work(String txt) {
+      return subService.work(txt);
+    }
 
 
     @Override

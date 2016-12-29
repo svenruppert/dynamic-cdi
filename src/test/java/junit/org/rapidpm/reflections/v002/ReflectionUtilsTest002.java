@@ -43,15 +43,15 @@ public class ReflectionUtilsTest002 {
     subTypesOfService.add(ServiceImplBB.class);
 
 
-    utils.removeInterfacesAndGeneratedFromSubTypes(subTypesOfService);
+    final Set<Class<? extends Service>> cleared = utils.removeInterfacesAndGeneratedFromSubTypes(subTypesOfService);
 
-    Assert.assertFalse(subTypesOfService.contains(Service.class));
-    Assert.assertFalse(subTypesOfService.contains(ServiceA.class));
-    Assert.assertFalse(subTypesOfService.contains(ServiceB.class));
-    Assert.assertFalse(subTypesOfService.contains(ServiceImplA.class));
-    Assert.assertFalse(subTypesOfService.contains(ServiceImplB.class));
-    Assert.assertTrue(subTypesOfService.contains(ServiceImplAB.class));
-    Assert.assertTrue(subTypesOfService.contains(ServiceImplBB.class));
+    Assert.assertFalse(cleared.contains(Service.class));
+    Assert.assertFalse(cleared.contains(ServiceA.class));
+    Assert.assertFalse(cleared.contains(ServiceB.class));
+    Assert.assertFalse(cleared.contains(ServiceImplA.class));
+    Assert.assertFalse(cleared.contains(ServiceImplB.class));
+    Assert.assertTrue(cleared.contains(ServiceImplAB.class));
+    Assert.assertTrue(cleared.contains(ServiceImplBB.class));
 
     final Set<Class<? extends A>> subTypesOfA = new HashSet<>();
     subTypesOfA.add(A.class);
@@ -59,13 +59,13 @@ public class ReflectionUtilsTest002 {
     subTypesOfA.add(C.class);
     subTypesOfA.add(D.class);
     subTypesOfA.add(E.class);
-    utils.removeInterfacesAndGeneratedFromSubTypes(subTypesOfA);
+    final Set<Class<? extends A>> clearedB = utils.removeInterfacesAndGeneratedFromSubTypes(subTypesOfA);
 
-    Assert.assertTrue(subTypesOfA.contains(A.class));
-    Assert.assertTrue(subTypesOfA.contains(B.class));
-    Assert.assertFalse(subTypesOfA.contains(C.class));
-    Assert.assertFalse(subTypesOfA.contains(D.class));
-    Assert.assertTrue(subTypesOfA.contains(E.class));
+    Assert.assertTrue(clearedB.contains(A.class));
+    Assert.assertTrue(clearedB.contains(B.class));
+    Assert.assertFalse(clearedB.contains(C.class));
+    Assert.assertFalse(clearedB.contains(D.class));
+    Assert.assertTrue(clearedB.contains(E.class));
 
   }
 

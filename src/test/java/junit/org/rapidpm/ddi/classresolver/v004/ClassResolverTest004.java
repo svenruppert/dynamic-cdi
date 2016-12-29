@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver.v004;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
@@ -29,28 +29,21 @@ import org.rapidpm.ddi.implresolver.ClassResolver;
 
 import javax.inject.Inject;
 
-public class ClassResolverTest005 extends DDIBaseTest {
-
+public class ClassResolverTest004 extends DDIBaseTest {
 
   @Test(expected = DDIModelException.class)
-  public void test001() throws Exception {
+  public void testProducer001() throws Exception {
+
+    final BusinessModule businessModule = new BusinessModule();
     try {
-      DI.checkActiveModel();
+      DI.activateDI(businessModule);
     } catch (DDIModelException e) {
       final String message = e.getMessage();
-      Assert.assertTrue(message.contains("Found ClassResolver without @ResponsibleFor annotation"));
+      Assert.assertTrue(message.contains("interface with multiple implementations and more as 1 ClassResolver"));
       throw e;
     }
+
     Assert.fail();
-  }
-
-  @Test
-  public void test002() throws Exception {
-    final BusinessModule businessModule = new BusinessModule();
-    DI.activateDI(businessModule);
-
-    Assert.assertEquals(ServiceImplA.class, businessModule.service.getClass());
-
   }
 
   public interface Service {
@@ -61,10 +54,11 @@ public class ClassResolverTest005 extends DDIBaseTest {
   public static class ServiceClassResolverA implements ClassResolver<Service> {
     @Override
     public Class<? extends Service> resolve(final Class<Service> interf) {
-      return ServiceImplA.class;
+      return null;
     }
   }
 
+  @ResponsibleFor(Service.class)
   public static class ServiceClassResolverB implements ClassResolver<Service> {
     @Override
     public Class<? extends Service> resolve(final Class<Service> interf) {

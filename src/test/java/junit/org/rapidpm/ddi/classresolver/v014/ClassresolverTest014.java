@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver.v014;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,7 @@ import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.implresolver.ClassResolver;
 
-public class ClassresolverTest014 {
+public class ClassresolverTest014 extends DDIBaseTest {
 
   public static Boolean toggle = true;
 

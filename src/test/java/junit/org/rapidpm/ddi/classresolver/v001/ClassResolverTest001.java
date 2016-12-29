@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver.v001;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;

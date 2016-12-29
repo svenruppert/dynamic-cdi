@@ -17,32 +17,44 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver.v006;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
+import org.junit.Assert;
 import org.junit.Test;
+import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 
 import javax.inject.Inject;
 
-public class ClassResolverTest012 {
+public class ClassResolverTest006 extends DDIBaseTest {
 
 
-  @Test(expected = RuntimeException.class)
-  public void test001() throws Exception {
-    Service service = new Service();
-    DI.activateDI(service);
+  @Test(expected = DDIModelException.class)
+  public void testProducer001() throws Exception {
+
+    final BusinessModule businessModule = new BusinessModule();
+    try {
+      DI.activateDI(businessModule);
+    } catch (DDIModelException e) {
+      final String message = e.getMessage();
+      System.out.println("message = " + message);
+      Assert.assertTrue(message.contains("only interfaces found for interface"));
+      throw e;
+    }
+    Assert.fail();
   }
 
-  public interface SubService {
+  public interface Service {
+    String work(String txt);
   }
 
-  public static class Service {
-    @Inject SubService subService;
-  }
+  public static class BusinessModule {
+    @Inject Service service;
 
-  public static class FaultySubService implements SubService {
-    public FaultySubService() {
-      throw new RuntimeException("OOPS");
+    public String work(String txt) {
+      return service.work(txt);
     }
   }
+
 }

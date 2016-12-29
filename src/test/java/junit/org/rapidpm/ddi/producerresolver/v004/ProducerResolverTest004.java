@@ -32,13 +32,10 @@ import javax.inject.Inject;
 
 public class ProducerResolverTest004 extends DDIBaseTest{
 
-
-  @Inject MyService myService;
-
   @Test(expected = DDIModelException.class)
   public void test001() throws Exception {
     try {
-      DI.activateDI(this);
+      DI.activateDI(MyService.class);
     } catch (Exception e) {
       Assert.assertTrue(e instanceof DDIModelException);
       Assert.assertTrue(e.getMessage().contains("to many Producer and no ProducerResolver found for interface"));

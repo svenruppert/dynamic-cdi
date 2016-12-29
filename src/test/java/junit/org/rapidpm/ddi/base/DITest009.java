@@ -19,13 +19,14 @@
 
 package junit.org.rapidpm.ddi.base;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 
 import javax.inject.Inject;
 
-public class DITest009 {
+public class DITest009 extends DDIBaseTest {
 
   @Test(expected = DDIModelException.class)
   public void test001() throws Exception {

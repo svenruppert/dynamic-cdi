@@ -19,6 +19,7 @@
 
 package junit.org.rapidpm.ddi.base;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,15 +27,9 @@ import org.rapidpm.ddi.DI;
 
 import javax.inject.Inject;
 
-public class DITest005 {
+public class DITest005 extends DDIBaseTest {
 
   @Inject Service service;
-
-  @Before
-  public void setUp() throws Exception {
-    DI.clearReflectionModel();
-    DI.activateDI(this);
-  }
 
   @Test
   public void test001() throws Exception {

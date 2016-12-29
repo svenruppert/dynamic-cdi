@@ -20,6 +20,7 @@
 package org.rapidpm.ddi.reflections;
 
 import org.rapidpm.ddi.DDIModelException;
+import org.rapidpm.dependencies.core.stream.ImmutableSetCollector;
 import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
 import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
 import org.rapidpm.proxybuilder.staticgenerated.annotations.IsLoggingProxy;
@@ -30,9 +31,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class ReflectionUtils extends org.reflections.ReflectionUtils {
 
@@ -94,18 +95,18 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
   }
 
 
-  public <I> void removeInterfacesAndGeneratedFromSubTypes(final Set<Class<? extends I>> subTypesOf) {
-    final Iterator<Class<? extends I>> iteratorOfSubTypes = subTypesOf.iterator();
-    while (iteratorOfSubTypes.hasNext()) {
-      final Class<? extends I> next = iteratorOfSubTypes.next();
-      if (next.isInterface()
-          || next.isAnnotationPresent(IsStaticObjectAdapter.class)
-          || next.isAnnotationPresent(IsGeneratedProxy.class)
-          || next.isAnnotationPresent(IsMetricsProxy.class)
-          || next.isAnnotationPresent(IsLoggingProxy.class)
-          ) iteratorOfSubTypes.remove();
-    }
+  private final Predicate<Class> filter = (c) -> !(
+      c.isInterface()
+          || c.isAnnotationPresent(IsStaticObjectAdapter.class)
+          || c.isAnnotationPresent(IsGeneratedProxy.class)
+          || c.isAnnotationPresent(IsMetricsProxy.class)
+          || c.isAnnotationPresent(IsLoggingProxy.class));
 
+  public <T> Set<Class<? extends T>> removeInterfacesAndGeneratedFromSubTypes(final Set<Class<? extends T>> subTypesOf) {
+    return subTypesOf
+        .stream()
+        .filter(filter)
+        .collect(ImmutableSetCollector.toImmutableSet());
   }
 
 

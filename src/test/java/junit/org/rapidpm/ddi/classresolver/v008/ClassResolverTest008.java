@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver.v008;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
@@ -28,7 +29,7 @@ import org.rapidpm.ddi.producer.Producer;
 
 import javax.inject.Inject;
 
-public class ClassResolverTest008 {
+public class ClassResolverTest008 extends DDIBaseTest {
 
   /**
    * no Anonymous Class inside the create() Method.. compare to ClassResolverTest007

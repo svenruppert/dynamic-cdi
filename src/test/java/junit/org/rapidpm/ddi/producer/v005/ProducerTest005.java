@@ -31,12 +31,10 @@ import javax.inject.Inject;
 
 public class ProducerTest005 extends DDIBaseTest {
 
-  @Inject Service service;
-
   @Test(expected = DDIModelException.class)
   public void test001() throws Exception {
     try {
-      DI.activateDI(this);
+      DI.activateDI(Service.class);
     } catch (Exception e) {
       Assert.assertTrue(e instanceof DDIModelException);
       final String message = e.getMessage();

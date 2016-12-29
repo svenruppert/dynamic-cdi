@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package junit.org.rapidpm.ddi.classresolver;
+package junit.org.rapidpm.ddi.classresolver.v007;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DDIModelException;
@@ -27,7 +28,7 @@ import org.rapidpm.ddi.Proxy;
 
 import javax.inject.Inject;
 
-public class ClassResolverTest007 {
+public class ClassResolverTest007 extends DDIBaseTest {
 
 
   /**

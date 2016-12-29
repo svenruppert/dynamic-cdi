@@ -32,6 +32,7 @@ public class DDIBaseTest {
     DI.activatePackages("org.rapidpm");
     final String name = this.getClass().getPackage().getName();
     DI.activatePackages(name);
+    DI.activateDI(this);
   }
 
   @After
