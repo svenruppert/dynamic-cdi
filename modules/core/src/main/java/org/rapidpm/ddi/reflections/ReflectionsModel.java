@@ -161,7 +161,8 @@ public class ReflectionsModel {
 
     final ClassLoader[] classLoaders = reflections.getConfiguration().getClassLoaders();
 
-    final Collection<String> metricProxyClassNames = reflections.getStore()
+    final Collection<String> metricProxyClassNames = reflections
+        .getStore()
         .get(index(StaticMetricsProxyScanner.class))
         .get(type.getName());
 

@@ -22,11 +22,13 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <packaging>pom</packaging>
+
 
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.3.2-SNAPSHOT</version>
   </parent>
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
@@ -74,94 +76,28 @@
     </license>
   </licenses>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.rapidpm</groupId>
-      <artifactId>rapidpm-dependencies-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-builder</artifactId>
-    </dependency>
-    <!--using Annotation Processing Object Adapter -->
-    <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-processors</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-annotations</artifactId>
-    </dependency>
-    <!--using Annotation Processing Static Proxies Generated-->
-    <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-static-generated-annotations</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-static-generated-processors</artifactId>
-    </dependency>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <scope>test</scope>
+  <modules>
+    <module>bom</module>
+    <module>modules</module>
+  </modules>
 
-    </dependency>
 
-  </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.rapidpm.proxybuilder</groupId>
+        <artifactId>rapidpm-proxybuilder-bom</artifactId>
+        <version>0.7.0-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-              </transformers>
-              <dependencyReducedPomLocation>${project.build.directory}/reduced-pom.xml</dependencyReducedPomLocation>
-              <minimizeJar>false</minimizeJar>
-              <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
-              <createSourcesJar>true</createSourcesJar>
-              <shadeSourcesContent>false</shadeSourcesContent>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-              <artifactSet>
-                <excludes>
-                  <exclude>junit:junit</exclude>
-                  <exclude>jmock:*</exclude>
-                  <exclude>org.openjdk.jmh:*</exclude>
-                  <exclude>*:xml-apis</exclude>
-                  <exclude>org.apache.maven:lib:tests</exclude>
-                  <exclude>log4j:log4j:jar:</exclude>
-                </excludes>
-              </artifactSet>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
-    </plugins>
-  </build>
+
+
 
   <repositories>
     <repository>

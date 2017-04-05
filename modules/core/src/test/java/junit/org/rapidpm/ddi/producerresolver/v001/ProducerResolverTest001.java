@@ -38,7 +38,6 @@ public class ProducerResolverTest001 extends DDIBaseTest{
 
   @Test
   public void test001() throws Exception {
-    DI.activateDI(this);
     Assert.assertNotNull(myService);
     final String s = "Hello";
     Assert.assertEquals(MyServiceImpl_A.class.getSimpleName() + s, myService.doWork(s));
