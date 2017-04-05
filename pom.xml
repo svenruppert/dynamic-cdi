@@ -82,6 +82,7 @@
     <module>modules</module>
   </modules>
 
+  <!--Change BOM too !!-->
   <properties>
     <rapidpm-dynamic-cdi.version>0.7.0-SNAPSHOT</rapidpm-dynamic-cdi.version>
     <rapidpm-proxybuilder.version>0.7.0-SNAPSHOT</rapidpm-proxybuilder.version>
