@@ -17,4 +17,17 @@
   </modules>
 
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.rapidpm.proxybuilder</groupId>
+        <artifactId>rapidpm-proxybuilder-bom</artifactId>
+        <version>${rapidpm-proxybuilder.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+
+  </dependencyManagement>
+
 </project>
