@@ -28,7 +28,7 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.3.2-SNAPSHOT</version>
+    <version>3.4.0</version>
   </parent>
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
@@ -85,7 +85,7 @@
   <!--Change BOM too !!-->
   <properties>
     <rapidpm-dynamic-cdi.version>0.7.0-SNAPSHOT</rapidpm-dynamic-cdi.version>
-    <rapidpm-proxybuilder.version>0.7.0-SNAPSHOT</rapidpm-proxybuilder.version>
+    <rapidpm-proxybuilder.version>0.7.0</rapidpm-proxybuilder.version>
   </properties>
 
 
