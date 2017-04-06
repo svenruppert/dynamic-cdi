@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -56,6 +57,7 @@ public class DI {
   //  private static final ImplementingClassResolver IMPLEMENTING_CLASS_RESOLVER = new ImplementingClassResolver();
   private static final Set<String> METRICS_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
   private static final Set<String> LOGGING_ACTIVATED = Collections.synchronizedSet(new HashSet<>());
+  public static final String ORG_RAPIDPM_DDI_PACKAGESFILE = "org.rapidpm.ddi.packagesfile";
   private static ReflectionsModel reflectionsModel = new ReflectionsModel();
   private static boolean bootstrapedNeeded = true;
 
@@ -75,9 +77,28 @@ public class DI {
 //    reflectionsModel = new ReflectionsModel();
     ImplementingClassResolver.clearCache();
     if (bootstrapedNeeded) {
-      reflectionsModel.rescann("");
+
+      String packageFilePath = System.getProperty(ORG_RAPIDPM_DDI_PACKAGESFILE);
+      if (packageFilePath == null || packageFilePath.isEmpty()) {
+        reflectionsModel.rescann("");
+      } else {
+        rescanPackagesFromFile(packageFilePath);
+      }
     }
     bootstrapedNeeded = false;
+  }
+
+  private static void rescanPackagesFromFile(String fileToScan) {
+    String line;
+    try (InputStream packageFileStream = new FileInputStream(fileToScan);
+         BufferedReader packageFileReader = new BufferedReader(new InputStreamReader(packageFileStream))) {
+      while ((line = packageFileReader.readLine()) != null) {
+        reflectionsModel.rescann(line);
+      }
+    } catch (IOException e) {
+      LOGGER.error(String.format("Error loading file <%s> <%s>", fileToScan, e.getMessage()));
+      throw new DDIModelException("Unable to load packages from file", e);
+    }
   }
 
   public static synchronized void clearReflectionModel() {
