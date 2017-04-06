@@ -33,7 +33,7 @@
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
-  <version>0.7.0-SNAPSHOT</version>
+  <version>0.7.0</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
@@ -84,7 +84,7 @@
 
   <!--Change BOM too !!-->
   <properties>
-    <rapidpm-dynamic-cdi.version>0.7.0-SNAPSHOT</rapidpm-dynamic-cdi.version>
+    <rapidpm-dynamic-cdi.version>0.7.0</rapidpm-dynamic-cdi.version>
     <rapidpm-proxybuilder.version>0.7.0</rapidpm-proxybuilder.version>
   </properties>
 
