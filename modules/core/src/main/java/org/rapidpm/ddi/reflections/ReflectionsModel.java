@@ -19,7 +19,6 @@
 
 package org.rapidpm.ddi.reflections;
 
-import com.google.common.base.Predicate;
 import org.rapidpm.dependencies.core.basepattern.multiple.Pair;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
@@ -29,6 +28,7 @@ import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
+import repacked.com.google.common.base.Predicate;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
