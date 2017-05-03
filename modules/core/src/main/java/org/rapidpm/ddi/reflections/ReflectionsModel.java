@@ -19,7 +19,7 @@
 
 package org.rapidpm.ddi.reflections;
 
-import org.rapidpm.dependencies.core.basepattern.multiple.Pair;
+import org.rapidpm.frp.model.Pair;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.Scanner;
