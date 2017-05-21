@@ -19,11 +19,7 @@
 
 package org.rapidpm.ddi.implresolver;
 
-import org.rapidpm.ddi.DDIModelException;
-import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.ResponsibleFor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
 
 import java.util.List;
 import java.util.Map;
@@ -31,7 +27,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
+import org.rapidpm.ddi.DDIModelException;
+import org.rapidpm.ddi.DI;
+import org.rapidpm.ddi.ResponsibleFor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * one subtype - will return this class
@@ -48,11 +48,9 @@ public class ImplementingClassResolver {
 
 
   //here only if you have 1 interface and multiple implementations - here the ClassResolver
-//  private final Map<Class, Class> resolverCacheForClass2Class = new ConcurrentHashMap<>();
   private final Map<Class, Class<? extends ClassResolver>> resolverCacheForClass2ClassResolver = new ConcurrentHashMap<>();
 
   public static void clearCache() {
-//    INSTANCE.resolverCacheForClass2Class.clear();
     INSTANCE.resolverCacheForClass2ClassResolver.clear();
   }
 

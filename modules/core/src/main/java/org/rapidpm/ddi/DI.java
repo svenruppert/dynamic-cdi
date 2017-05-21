@@ -74,7 +74,6 @@ public class DI {
   }
 
   public static synchronized void bootstrap() {
-//    reflectionsModel = new ReflectionsModel();
     ImplementingClassResolver.clearCache();
     if (bootstrapedNeeded) {
       final String packageFilePath = System.getProperty(ORG_RAPIDPM_DDI_PACKAGESFILE);
@@ -89,7 +88,7 @@ public class DI {
 
   private static void bootstrapFromResource(String path) {
     try (InputStream is = ClassLoader.getSystemResourceAsStream(path)) {
-      loadJarResource(is);
+      bootstrapFromResource(is);
     } catch (IOException e) {
       loadFilesystemResource(path, e);
     }
@@ -97,20 +96,10 @@ public class DI {
 
   private static void loadFilesystemResource(String path, IOException e) {
     try (InputStream is = new FileInputStream(path)) {
-      if (is != null) {
-        bootstrapFromResource(is);
-      }
+      bootstrapFromResource(is);
     } catch (IOException e1) {
       LOGGER.error(String.format("Error loading file <%s> <%s>", path, e.getMessage()));
       throw new DDIModelException("Unable to load packages from file", e1);
-    }
-  }
-
-  private static void loadJarResource(InputStream is) throws IOException {
-    if (is != null) {
-      bootstrapFromResource(is);
-    } else {
-      throw new IOException();
     }
   }
 
@@ -121,7 +110,7 @@ public class DI {
         reflectionsModel.rescann(line);
       }
     } catch (IOException e) {
-      LOGGER.error(String.format("Error loading packages"));
+      LOGGER.error("Error loading packages");
       throw new DDIModelException("Unable to load packages from file", e);
     }
   }
