@@ -118,7 +118,7 @@ public class ReflectionModelTest006 {
     workOn(DI.activateDI(serviceClass));
     postCheck(serviceClass, 0);
 
-    //check Imple
+    //check Impl
 
     DI.activateMetrics(serviceClass);
     preCheckAndGetMetrics(serviceClass);

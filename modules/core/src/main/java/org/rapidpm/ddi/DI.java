@@ -77,26 +77,51 @@ public class DI {
 //    reflectionsModel = new ReflectionsModel();
     ImplementingClassResolver.clearCache();
     if (bootstrapedNeeded) {
-
-      String packageFilePath = System.getProperty(ORG_RAPIDPM_DDI_PACKAGESFILE);
-      if (packageFilePath == null || packageFilePath.isEmpty()) {
-        reflectionsModel.rescann("");
+      final String packageFilePath = System.getProperty(ORG_RAPIDPM_DDI_PACKAGESFILE);
+      if (packageFilePath != null && !packageFilePath.isEmpty()) {
+        bootstrapFromResource(packageFilePath);
       } else {
-        rescanPackagesFromFile(packageFilePath);
+        reflectionsModel.rescann("");
       }
     }
     bootstrapedNeeded = false;
   }
 
-  private static void rescanPackagesFromFile(String fileToScan) {
+  private static void bootstrapFromResource(String path) {
+    try (InputStream is = ClassLoader.getSystemResourceAsStream(path)) {
+      loadJarResource(is);
+    } catch (IOException e) {
+      loadFilesystemResource(path, e);
+    }
+  }
+
+  private static void loadFilesystemResource(String path, IOException e) {
+    try (InputStream is = new FileInputStream(path)) {
+      if (is != null) {
+        bootstrapFromResource(is);
+      }
+    } catch (IOException e1) {
+      LOGGER.error(String.format("Error loading file <%s> <%s>", path, e.getMessage()));
+      throw new DDIModelException("Unable to load packages from file", e1);
+    }
+  }
+
+  private static void loadJarResource(InputStream is) throws IOException {
+    if (is != null) {
+      bootstrapFromResource(is);
+    } else {
+      throw new IOException();
+    }
+  }
+
+  private static void bootstrapFromResource(InputStream inputStream) {
     String line;
-    try (InputStream packageFileStream = new FileInputStream(fileToScan);
-         BufferedReader packageFileReader = new BufferedReader(new InputStreamReader(packageFileStream))) {
-      while ((line = packageFileReader.readLine()) != null) {
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+      while ((line = reader.readLine()) != null) {
         reflectionsModel.rescann(line);
       }
     } catch (IOException e) {
-      LOGGER.error(String.format("Error loading file <%s> <%s>", fileToScan, e.getMessage()));
+      LOGGER.error(String.format("Error loading packages"));
       throw new DDIModelException("Unable to load packages from file", e);
     }
   }
@@ -351,14 +376,14 @@ public class DI {
     //just now, only dynamic version is created..
     if (virtual) {
       value = DynamicProxyGenerator.newBuilder()
-              .withSubject(targetType)
-              .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
+          .withSubject(targetType)
+          .withCreationStrategy(CreationStrategy.NO_DUPLICATES)
 //                .withServiceFactory(new DDIServiceFactory<>(realClass)) //TODO Test it
-              .withServiceFactory(new DDIServiceFactory<>(targetType)) //TODO Test it
-              .withCreationStrategy(creationStrategy)
+          .withServiceFactory(new DDIServiceFactory<>(targetType)) //TODO Test it
+          .withCreationStrategy(creationStrategy)
 //                .withServiceStrategyFactory(new ServiceStrategyFactoryNotThreadSafe<>())
-              .build()
-              .make();
+          .build()
+          .make();
     } else {
 //            value = new InstanceCreator().instantiate(realClass); // TODO Test it
       value = new InstanceCreator().instantiate(targetType); // TODO Test it //TODO DI.activate
@@ -406,7 +431,7 @@ public class DI {
 
   private static void invokeMethodWithAnnotation(Class clazz, final Object instance,
                                                  final Class<? extends Annotation> annotationClass)
-          throws IllegalStateException, SecurityException {
+      throws IllegalStateException, SecurityException {
 
     final Set<Method> methodsAnnotatedWith = reflectionsModel.getMethodsAnnotatedWith(clazz, new PostConstruct() {
       @Override

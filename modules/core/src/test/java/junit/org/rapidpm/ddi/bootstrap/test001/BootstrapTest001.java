@@ -58,7 +58,6 @@ public class BootstrapTest001 {
 
   @Test(expected = DDIModelException.class)
   public void test004() throws Exception {
-
     System.setProperty(DI.ORG_RAPIDPM_DDI_PACKAGESFILE, "");
     DI.bootstrap();
     Service service = DI.activateDI(Service.class);
@@ -69,5 +68,13 @@ public class BootstrapTest001 {
     System.setProperty(DI.ORG_RAPIDPM_DDI_PACKAGESFILE, "NO_FILE");
     DI.bootstrap();
     Service service = DI.activateDI(Service.class);
+  }
+
+  @Test
+  public void test006() throws Exception {
+    System.setProperty(DI.ORG_RAPIDPM_DDI_PACKAGESFILE, BootstrapTest001.class.getPackage().getName().replace(".", "/") + "/good.packages");
+    DI.bootstrap();
+    Service service = DI.activateDI(Service.class);
+    Assert.assertEquals("done", service.doWork());
   }
 }
