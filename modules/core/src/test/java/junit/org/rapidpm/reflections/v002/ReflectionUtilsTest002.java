@@ -2,12 +2,7 @@ package junit.org.rapidpm.reflections.v002;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.reflections.ReflectionUtils;
-import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsLoggingProxy;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,8 +43,8 @@ public class ReflectionUtilsTest002 {
     Assert.assertFalse(cleared.contains(Service.class));
     Assert.assertFalse(cleared.contains(ServiceA.class));
     Assert.assertFalse(cleared.contains(ServiceB.class));
-    Assert.assertFalse(cleared.contains(ServiceImplA.class));
-    Assert.assertFalse(cleared.contains(ServiceImplB.class));
+    Assert.assertTrue(cleared.contains(ServiceImplA.class));
+    Assert.assertTrue(cleared.contains(ServiceImplB.class));
     Assert.assertTrue(cleared.contains(ServiceImplAB.class));
     Assert.assertTrue(cleared.contains(ServiceImplBB.class));
 
@@ -63,8 +58,8 @@ public class ReflectionUtilsTest002 {
 
     Assert.assertTrue(clearedB.contains(A.class));
     Assert.assertTrue(clearedB.contains(B.class));
-    Assert.assertFalse(clearedB.contains(C.class));
-    Assert.assertFalse(clearedB.contains(D.class));
+    Assert.assertTrue(clearedB.contains(C.class));
+    Assert.assertTrue(clearedB.contains(D.class));
     Assert.assertTrue(clearedB.contains(E.class));
 
   }
@@ -78,11 +73,11 @@ public class ReflectionUtilsTest002 {
   public interface ServiceB extends ServiceA {
   }
 
-  @IsGeneratedProxy
+//  @IsGeneratedProxy
   public static class ServiceImplA implements Service {
   }
 
-  @IsMetricsProxy
+//  @IsMetricsProxy
   public static class ServiceImplB implements ServiceA {
   }
 
@@ -98,11 +93,11 @@ public class ReflectionUtilsTest002 {
   public static class B extends A implements Service {
   }
 
-  @IsStaticObjectAdapter
+//  @IsStaticObjectAdapter
   public static class C extends B {
   }
 
-  @IsLoggingProxy
+//  @IsLoggingProxy
   public static class D extends A implements ServiceA {
   }
 

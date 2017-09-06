@@ -21,10 +21,10 @@ package org.rapidpm.ddi.reflections;
 
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.dependencies.core.stream.ImmutableSetCollector;
-import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsLoggingProxy;
-import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
+//import org.rapidpm.proxybuilder.objectadapter.annotations.staticobjectadapter.IsStaticObjectAdapter;
+//import org.rapidpm.proxybuilder.staticgenerated.annotations.IsGeneratedProxy;
+//import org.rapidpm.proxybuilder.staticgenerated.annotations.IsLoggingProxy;
+//import org.rapidpm.proxybuilder.staticgenerated.annotations.IsMetricsProxy;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -96,11 +96,11 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
 
 
   private final Predicate<Class> filter = (c) -> !(
-      c.isInterface()
-          || c.isAnnotationPresent(IsStaticObjectAdapter.class)
-          || c.isAnnotationPresent(IsGeneratedProxy.class)
-          || c.isAnnotationPresent(IsMetricsProxy.class)
-          || c.isAnnotationPresent(IsLoggingProxy.class));
+      c.isInterface());
+//          || c.isAnnotationPresent(IsStaticObjectAdapter.class)
+//          || c.isAnnotationPresent(IsGeneratedProxy.class)
+//          || c.isAnnotationPresent(IsMetricsProxy.class)
+//          || c.isAnnotationPresent(IsLoggingProxy.class));
 
   public <T> Set<Class<? extends T>> removeInterfacesAndGeneratedFromSubTypes(final Set<Class<? extends T>> subTypesOf) {
     return subTypesOf

@@ -91,13 +91,13 @@ public class ReflectionsModel {
   }
 
   private Scanner[] createScanners() {
-    final Scanner[] sccannerArray = new Scanner[6];
+    final Scanner[] sccannerArray = new Scanner[4];
     sccannerArray[0] = new SubTypesScanner();
     sccannerArray[1] = new TypeAnnotationsScanner();
     sccannerArray[2] = new MethodAnnotationsScanner();
     sccannerArray[3] = new PkgTypesScanner();
-    sccannerArray[4] = new StaticMetricsProxyScanner();
-    sccannerArray[5] = new StaticLoggingProxyScanner();
+//    sccannerArray[4] = new StaticMetricsProxyScanner();
+//    sccannerArray[5] = new StaticLoggingProxyScanner();
     return sccannerArray;
   }
 
@@ -156,30 +156,30 @@ public class ReflectionsModel {
     return Collections.unmodifiableCollection(clsNames);
   }
 
-  //TODO to complex for performance
-  public <T> Set<Class<? extends T>> getStaticMetricProxiesFor(final Class<T> type) {
-
-    final ClassLoader[] classLoaders = reflections.getConfiguration().getClassLoaders();
-
-    final Collection<String> metricProxyClassNames = reflections
-        .getStore()
-        .get(index(StaticMetricsProxyScanner.class))
-        .get(type.getName());
-
-    final List<Class<? extends T>> classes = ReflectionUtils.forNames(metricProxyClassNames, classLoaders);
-    return unmodifiableSet(new HashSet<>(classes));
-
-  }
-
-  public <T> Set<Class<? extends T>> getStaticLoggingProxiesFor(final Class<T> type) {
-    final ClassLoader[] classLoaders = reflections.getConfiguration().getClassLoaders();
-    final Collection<String> loggingProxyClassNames = reflections.getStore()
-        .get(index(StaticLoggingProxyScanner.class))
-        .get(type.getName());
-
-    final List<Class<? extends T>> classes = ReflectionUtils.forNames(loggingProxyClassNames, classLoaders);
-    return unmodifiableSet(new HashSet<>(classes));
-  }
+//  //TODO to complex for performance
+//  public <T> Set<Class<? extends T>> getStaticMetricProxiesFor(final Class<T> type) {
+//
+//    final ClassLoader[] classLoaders = reflections.getConfiguration().getClassLoaders();
+//
+//    final Collection<String> metricProxyClassNames = reflections
+//        .getStore()
+//        .get(index(StaticMetricsProxyScanner.class))
+//        .get(type.getName());
+//
+//    final List<Class<? extends T>> classes = ReflectionUtils.forNames(metricProxyClassNames, classLoaders);
+//    return unmodifiableSet(new HashSet<>(classes));
+//
+//  }
+//
+//  public <T> Set<Class<? extends T>> getStaticLoggingProxiesFor(final Class<T> type) {
+//    final ClassLoader[] classLoaders = reflections.getConfiguration().getClassLoaders();
+//    final Collection<String> loggingProxyClassNames = reflections.getStore()
+//        .get(index(StaticLoggingProxyScanner.class))
+//        .get(type.getName());
+//
+//    final List<Class<? extends T>> classes = ReflectionUtils.forNames(loggingProxyClassNames, classLoaders);
+//    return unmodifiableSet(new HashSet<>(classes));
+//  }
 
   //delegated methods
 
