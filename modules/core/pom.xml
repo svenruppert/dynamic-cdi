@@ -20,36 +20,11 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <!--<optional>true</optional>-->
-      <!-- case: when no json de/serialization -->
     </dependency>
     <dependency>
       <groupId>org.rapidpm</groupId>
       <artifactId>rapidpm-dependencies-core-reflections</artifactId>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>org.rapidpm.proxybuilder</groupId>-->
-      <!--<artifactId>rapidpm-proxybuilder-modules-builder</artifactId>-->
-    <!--</dependency>-->
-    <!--&lt;!&ndash;using Annotation Processing Object Adapter &ndash;&gt;-->
-    <!--<dependency>-->
-      <!--<groupId>org.rapidpm.proxybuilder</groupId>-->
-      <!--<artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-processors</artifactId>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.rapidpm.proxybuilder</groupId>-->
-      <!--<artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-annotations</artifactId>-->
-    <!--</dependency>-->
-    <!--&lt;!&ndash;using Annotation Processing Static Proxies Generated&ndash;&gt;-->
-    <!--<dependency>-->
-      <!--<groupId>org.rapidpm.proxybuilder</groupId>-->
-      <!--<artifactId>rapidpm-proxybuilder-modules-static-generated-annotations</artifactId>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.rapidpm.proxybuilder</groupId>-->
-      <!--<artifactId>rapidpm-proxybuilder-modules-static-generated-processors</artifactId>-->
-    <!--</dependency>-->
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -58,9 +33,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
-
     </dependency>
-
   </dependencies>
 
 
@@ -80,7 +53,7 @@
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>
               <dependencyReducedPomLocation>${project.build.directory}/reduced-pom.xml</dependencyReducedPomLocation>
-              <minimizeJar>false</minimizeJar>
+              <minimizeJar>true</minimizeJar>
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
               <createSourcesJar>true</createSourcesJar>
               <shadeSourcesContent>false</shadeSourcesContent>

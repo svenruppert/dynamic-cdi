@@ -15,19 +15,11 @@
   <!--Change parent pom too !!-->
   <properties>
     <rapidpm-dynamic-cdi.version>0.9.0-SNAPSHOT</rapidpm-dynamic-cdi.version>
-    <rapidpm-proxybuilder.version>0.9.0-SNAPSHOT</rapidpm-proxybuilder.version>
   </properties>
 
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.rapidpm.proxybuilder</groupId>
-        <artifactId>rapidpm-proxybuilder-bom</artifactId>
-        <version>${rapidpm-proxybuilder.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
       <dependency>
         <groupId>org.rapidpm.dynamic-cdi</groupId>
         <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
