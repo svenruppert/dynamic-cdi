@@ -19,6 +19,7 @@
 
 package org.rapidpm.ddi.reflections;
 
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.Set;
 
@@ -48,6 +49,7 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
     return subTypesOf
         .stream()
         .filter((c) -> ! (c.isInterface()))
+        .filter((c) -> ! (Modifier.isAbstract(c.getModifiers())))
         .collect(ImmutableSetCollector.toImmutableSet());
   }
 
