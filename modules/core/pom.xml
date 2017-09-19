@@ -5,7 +5,7 @@
   <parent>
     <artifactId>rapidpm-dynamic-cdi-modules</artifactId>
     <groupId>org.rapidpm.dynamic-cdi</groupId>
-    <version>0.8.1</version>
+    <version>0.9.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -17,30 +17,14 @@
       <groupId>org.rapidpm</groupId>
       <artifactId>rapidpm-dependencies-core</artifactId>
     </dependency>
-
     <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-builder</artifactId>
-    </dependency>
-    <!--using Annotation Processing Object Adapter -->
-    <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-processors</artifactId>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-annotations</artifactId>
+      <groupId>org.rapidpm</groupId>
+      <artifactId>rapidpm-dependencies-core-reflections</artifactId>
     </dependency>
-    <!--using Annotation Processing Static Proxies Generated-->
-    <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-static-generated-annotations</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-static-generated-processors</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -49,9 +33,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
-
     </dependency>
-
   </dependencies>
 
 
@@ -71,7 +53,7 @@
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>
               <dependencyReducedPomLocation>${project.build.directory}/reduced-pom.xml</dependencyReducedPomLocation>
-              <minimizeJar>false</minimizeJar>
+              <minimizeJar>true</minimizeJar>
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
               <createSourcesJar>true</createSourcesJar>
               <shadeSourcesContent>false</shadeSourcesContent>
@@ -90,6 +72,8 @@
                   <exclude>junit:junit</exclude>
                   <exclude>jmock:*</exclude>
                   <exclude>org.openjdk.jmh:*</exclude>
+                  <exclude>org.jacoco:*</exclude>
+                  <exclude>org.objectweb:*</exclude>
                   <exclude>*:xml-apis</exclude>
                   <exclude>org.apache.maven:lib:tests</exclude>
                   <exclude>log4j:log4j:jar:</exclude>

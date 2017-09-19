@@ -24,7 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
-import org.rapidpm.ddi.Proxy;
 import org.rapidpm.ddi.producer.Producer;
 
 import javax.inject.Inject;
@@ -59,7 +58,7 @@ public class ClassResolverTest009 extends DDIBaseTest {
 
     Assert.assertNotNull(instance.service);
 
-    Assert.assertTrue(java.lang.reflect.Proxy.isProxyClass(instance.service.getClass()));
+//    Assert.assertTrue(java.lang.reflect.Proxy.isProxyClass(instance.service.getClass()));
     final String hello = instance.service.doWork("Hello");
     Assert.assertNotNull(hello);
     Assert.assertEquals("created by Producer", hello);
@@ -79,7 +78,7 @@ public class ClassResolverTest009 extends DDIBaseTest {
   }
 
   public static class BusinessModulVirtual {
-    @Inject @Proxy(virtual = true) Service service;
+    @Inject Service service;
 
     public String work(String str) {
       return service.doWork(str);

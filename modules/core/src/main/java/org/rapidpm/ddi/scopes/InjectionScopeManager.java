@@ -129,9 +129,7 @@ public class InjectionScopeManager {
 
   public static String scopeForClass(final Class clazz) {
     final String clazzName = clazz.getName();
-    if (CLASS_NAME_2_SCOPENAME_MAP.containsKey(clazzName)) {
-      return CLASS_NAME_2_SCOPENAME_MAP.get(clazzName);
-    } else return "PER INJECT";
+    return CLASS_NAME_2_SCOPENAME_MAP.getOrDefault(clazzName , "PER INJECT");
   }
 
   public static Set<String> listAllActiveScopeNames() {

@@ -24,7 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.Proxy;
 
 import javax.inject.Inject;
 
@@ -53,7 +52,7 @@ public class ClassResolverTest007 extends DDIBaseTest {
   }
 
   public static class BusinessModulVirtual {
-    @Inject @Proxy(virtual = true) Service service;
+    @Inject Service service;
 
     public String work(String str) {
       return service.doWork(str);
