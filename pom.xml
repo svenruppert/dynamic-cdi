@@ -33,7 +33,7 @@
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
-  <version>0.9.0</version>
+  <version>1.0.0-SNAPSHOT</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
