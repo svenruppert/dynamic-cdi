@@ -14,7 +14,7 @@
 
   <!--Change parent pom too !!-->
   <properties>
-    <rapidpm-dynamic-cdi.version>0.9.0</rapidpm-dynamic-cdi.version>
+    <rapidpm-dynamic-cdi.version>1.0.0-SNAPSHOT</rapidpm-dynamic-cdi.version>
   </properties>
 
 
