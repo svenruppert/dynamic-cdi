@@ -27,6 +27,7 @@ import org.rapidpm.ddi.scopes.InjectionScopeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
@@ -98,7 +99,7 @@ public class InstanceCreator {
           //find Producer for Impl
           final Set<Class<?>> producersForImpl = findProducersFor(clazz);
           if (producersForImpl.isEmpty()) {
-            result = (T) clazz.newInstance();
+            result = (T) clazz.getDeclaredConstructor().newInstance();
 //            DI.activateDI(result);
 //            putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
           } else if (producersForImpl.size() > 1) {
@@ -112,9 +113,9 @@ public class InstanceCreator {
               throw new DDIModelException("no producersResolver for Impl " + clazz + " and n Producers - > " + producersForImpl);
             } else {
               Class<? extends ProducerResolver> producerResolverClass = (Class<? extends ProducerResolver>) producerResolverClasses.toArray()[0];
-              final ProducerResolver producerResolver = producerResolverClass.newInstance();
+              final ProducerResolver producerResolver = producerResolverClass.getDeclaredConstructor().newInstance();
               final Class<Producer<T>> producerClass = producerResolver.resolve(clazz);
-              final Producer<T> tProducer = producerClass.newInstance();
+              final Producer<T> tProducer = producerClass.getDeclaredConstructor().newInstance();
               DI.activateDI(tProducer);
               result = tProducer.create();
 //              DI.activateDI(result);
@@ -122,14 +123,14 @@ public class InstanceCreator {
 //            throw new DDIModelException("to many producers for Impl " + clazz + " - > " + producersForImpl);
           } else {
             final Class<Producer<T>> producerClass = (Class<Producer<T>>) producersForImpl.toArray()[0];
-            final Producer<T> tProducer = producerClass.newInstance();
+            final Producer<T> tProducer = producerClass.getDeclaredConstructor().newInstance();
             DI.activateDI(tProducer);
             result = tProducer.create();
 //            DI.activateDI(result);
           }
           putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
           return result;
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 
           throw new DDIModelException(e);
         }
@@ -141,12 +142,12 @@ public class InstanceCreator {
 
   private <T> T createInstanceWithThisProducer(final Class cls) {
     try {
-      Producer<T> producer = (Producer<T>) cls.newInstance();
+      Producer<T> producer = (Producer<T>) cls.getDeclaredConstructor().newInstance();
       DI.activateDI(producer);
       final T instance = producer.create();
 //      return DI.activateDI(instance);
       return instance;
-    } catch (InstantiationException | IllegalAccessException e) {
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
       LOGGER.error("could not create instance ", e);
       throw new DDIModelException(e);
     }
@@ -167,12 +168,12 @@ public class InstanceCreator {
       final Class<? extends ProducerResolver> producerResolverClass
           = (Class<? extends ProducerResolver>) producerResolverClasses.toArray()[0];
       try {
-        final ProducerResolver producerResolver = producerResolverClass.newInstance();
+        final ProducerResolver producerResolver = producerResolverClass.getDeclaredConstructor().newInstance();
         DI.activateDI(producerResolver);
         final T result = createInstanceWithThisProducer(producerResolver.resolve(resolverTarget));
         putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
         return result;
-      } catch (InstantiationException | IllegalAccessException e) {
+      } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
         throw new DDIModelException(e);
       }
     } else if (producerResolverClasses.size() > 1) {

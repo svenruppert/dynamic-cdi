@@ -19,16 +19,17 @@
 
 package org.rapidpm.ddi.scopes;
 
-import org.rapidpm.ddi.DI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import org.rapidpm.ddi.DI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class InjectionScopeManager {
@@ -57,11 +58,11 @@ public class InjectionScopeManager {
   }
 
 
-  public static <T> void manageInstance(Class<T> targetClass, T instance) {
+  public static <T> void manageInstance(Class<T> targetClass , T instance) {
     final String targetName = targetClass.getName();
     if (CLASS_NAME_2_SCOPENAME_MAP.containsKey(targetName)) {
       final InjectionScope injectionScope = INJECTION_SCOPE_MAP.get(CLASS_NAME_2_SCOPENAME_MAP.get(targetName));
-      injectionScope.storeInstance(targetClass, instance);
+      injectionScope.storeInstance(targetClass , instance);
     }
   }
 
@@ -77,18 +78,18 @@ public class InjectionScopeManager {
 
   private static void registerNewScopes(Set<Class<? extends InjectionScope>> scopeClasses) {
     scopeClasses
-            .stream()
-            .map(c -> {
-              try {
-                return c.newInstance();
-              } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error("could not create an instance ", e);
-              }
-              return null;
-            })
-            .filter(Objects::nonNull)
-            .filter(scope -> !INJECTION_SCOPE_MAP.containsKey(scope.getScopeName()))
-            .forEach((injectionScope) -> INJECTION_SCOPE_MAP.put(injectionScope.getScopeName(), injectionScope));
+        .stream()
+        .map(c -> {
+          try {
+            return c.getDeclaredConstructor().newInstance();
+          } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            LOGGER.error("could not create an instance " , e);
+          }
+          return null;
+        })
+        .filter(Objects::nonNull)
+        .filter(scope -> ! INJECTION_SCOPE_MAP.containsKey(scope.getScopeName()))
+        .forEach((injectionScope) -> INJECTION_SCOPE_MAP.put(injectionScope.getScopeName() , injectionScope));
   }
 
   private static void removeOldScopes(Set<Class<? extends InjectionScope>> scopeClasses) {
@@ -96,28 +97,29 @@ public class InjectionScopeManager {
     final Set<String> scopeNamesFromReflectionModel = getNamesFromScopes(scopeClasses);
 
     INJECTION_SCOPE_MAP.keySet().stream()
-            .filter(scope -> !scopeNamesFromReflectionModel.contains(scope))
-            .forEach(InjectionScopeManager::removeScope);
+                       .filter(scope -> ! scopeNamesFromReflectionModel.contains(scope))
+                       .forEach(InjectionScopeManager::removeScope);
   }
 
   private static Set<String> getNamesFromScopes(Set<Class<? extends InjectionScope>> scopes) {
     return scopes.stream()
-            .map(c -> {
-              try {
-                return c.newInstance();
-              } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error("could not create new instance ", e);
-              }
-              return null;
-            })
-            .filter(Objects::nonNull)
-            .map(InjectionScope::getScopeName)
-            .collect(Collectors.toSet());
+                 .map(c -> {
+                   try { //TODO CheckedFunction
+                     return c.getDeclaredConstructor().newInstance();
+                   } catch (InstantiationException | IllegalAccessException
+                       | NoSuchMethodException | InvocationTargetException e) {
+                     LOGGER.error("could not create new instance " , e);
+                   }
+                   return null;
+                 })
+                 .filter(Objects::nonNull)
+                 .map(InjectionScope::getScopeName)
+                 .collect(Collectors.toSet());
   }
 
-  public static void registerClassForScope(final Class clazz, final String scopeName) {
+  public static void registerClassForScope(final Class clazz , final String scopeName) {
     if (INJECTION_SCOPE_MAP.containsKey(scopeName)) {
-      CLASS_NAME_2_SCOPENAME_MAP.putIfAbsent(clazz.getName(), scopeName);
+      CLASS_NAME_2_SCOPENAME_MAP.putIfAbsent(clazz.getName() , scopeName);
     }
   }
 
@@ -137,7 +139,7 @@ public class InjectionScopeManager {
   }
 
   public static void clearScope(final String scopeName) {
-    INJECTION_SCOPE_MAP.computeIfPresent(scopeName, (s, injectionScope) -> {
+    INJECTION_SCOPE_MAP.computeIfPresent(scopeName , (s , injectionScope) -> {
       injectionScope.clear();
       return injectionScope;
     });
@@ -147,12 +149,12 @@ public class InjectionScopeManager {
   private static void removeScope(final String scopeName) {
     final Set<String> keySet = CLASS_NAME_2_SCOPENAME_MAP.keySet();
     INJECTION_SCOPE_MAP
-            .computeIfPresent(scopeName, (s, injectionScope) -> {
-              injectionScope.clear();
-              keySet.forEach(k -> CLASS_NAME_2_SCOPENAME_MAP
-                      .computeIfPresent(k, (classname, scope) -> (scope.equals(scopeName)) ? null : scope));
-              return null;
-            });
+        .computeIfPresent(scopeName , (s , injectionScope) -> {
+          injectionScope.clear();
+          keySet.forEach(k -> CLASS_NAME_2_SCOPENAME_MAP
+              .computeIfPresent(k , (classname , scope) -> (scope.equals(scopeName)) ? null : scope));
+          return null;
+        });
   }
 
   public static void reInitAllScopes() {
@@ -162,10 +164,11 @@ public class InjectionScopeManager {
     final Set<Class<? extends InjectionScope>> subTypesOf = DI.getSubTypesOf(InjectionScope.class);
     for (Class<? extends InjectionScope> aClass : subTypesOf) {
       try {
-        final InjectionScope injectionScope = aClass.newInstance();
-        INJECTION_SCOPE_MAP.put(injectionScope.getScopeName(), injectionScope);
-      } catch (InstantiationException | IllegalAccessException e) {
-        LOGGER.error("could not create an instance ", e);
+        final InjectionScope injectionScope = aClass.getDeclaredConstructor().newInstance();
+        INJECTION_SCOPE_MAP.put(injectionScope.getScopeName() , injectionScope);
+      } catch (InstantiationException | IllegalAccessException
+          | NoSuchMethodException | InvocationTargetException e) {
+        LOGGER.error("could not create an instance " , e);
       }
     }
 

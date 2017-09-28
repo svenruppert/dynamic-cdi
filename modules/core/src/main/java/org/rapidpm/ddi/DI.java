@@ -86,9 +86,7 @@ public class DI {
 
   private static void loadFilesystemResource(String path , IOException e) {
     try (InputStream is = new FileInputStream(path)) {
-      if (is != null) {
         bootstrapFromResource(is);
-      }
     } catch (IOException e1) {
       LOGGER.error(String.format("Error loading file <%s> <%s>" , path , e.getMessage()));
       throw new DDIModelException("Unable to load packages from file" , e1);

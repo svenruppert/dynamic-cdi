@@ -21,6 +21,7 @@ package org.rapidpm.ddi.implresolver;
 
 import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -120,9 +121,12 @@ public class ImplementingClassResolver {
 
   private <I> Class<? extends I> handleOneResolver(final Class<I> interf, final Class<? extends ClassResolver> classResolverClass) {
     try {
-      final ClassResolver<I> classResolver = classResolverClass.newInstance();
+      final ClassResolver<I> classResolver = classResolverClass.getDeclaredConstructor().newInstance();
       return classResolver.resolve(interf);
-    } catch (InstantiationException | IllegalAccessException e) {
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+      LOGGER.error("could not create instance ", e);
+      throw new DDIModelException(interf + " -- " + e);
+    } catch (InvocationTargetException e) {
       LOGGER.error("could not create instance ", e);
       throw new DDIModelException(interf + " -- " + e);
     }
