@@ -28,14 +28,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.rapidpm.ddi.DI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.rapidpm.dependencies.core.logger.Logger;
+import org.rapidpm.dependencies.core.logger.LoggingService;
 
 
 public class InjectionScopeManager {
 
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(InjectionScopeManager.class);
+  private static final LoggingService LOGGER = Logger.getLogger(InjectionScopeManager.class);
   private static final Map<String, String> CLASS_NAME_2_SCOPENAME_MAP = new ConcurrentHashMap<>();
   private static final Map<String, InjectionScope> INJECTION_SCOPE_MAP = new ConcurrentHashMap<>();
 
@@ -83,7 +83,7 @@ public class InjectionScopeManager {
           try {
             return c.getDeclaredConstructor().newInstance();
           } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            LOGGER.error("could not create an instance " , e);
+            LOGGER.warning("could not create an instance " , e);
           }
           return null;
         })
@@ -108,7 +108,7 @@ public class InjectionScopeManager {
                      return c.getDeclaredConstructor().newInstance();
                    } catch (InstantiationException | IllegalAccessException
                        | NoSuchMethodException | InvocationTargetException e) {
-                     LOGGER.error("could not create new instance " , e);
+                     LOGGER.warning("could not create new instance " , e);
                    }
                    return null;
                  })
@@ -168,7 +168,7 @@ public class InjectionScopeManager {
         INJECTION_SCOPE_MAP.put(injectionScope.getScopeName() , injectionScope);
       } catch (InstantiationException | IllegalAccessException
           | NoSuchMethodException | InvocationTargetException e) {
-        LOGGER.error("could not create an instance " , e);
+        LOGGER.warning("could not create an instance " , e);
       }
     }
 

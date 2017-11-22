@@ -41,7 +41,6 @@ public class ClassResolverTest001 extends DDIBaseTest {
     Assert.assertEquals(ServiceImplB.class, businessModule.service.getClass());
   }
 
-
   public interface Service {
     String work(String txt);
 

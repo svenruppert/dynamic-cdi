@@ -44,12 +44,12 @@ import org.rapidpm.ddi.producer.InstanceCreator;
 import org.rapidpm.ddi.producer.ProducerLocator;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
 import org.rapidpm.ddi.scopes.InjectionScopeManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.rapidpm.dependencies.core.logger.Logger;
+import org.rapidpm.dependencies.core.logger.LoggingService;
 
 public class DI {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DI.class);
+  private static final LoggingService LOGGER = Logger.getLogger(DI.class);
   public static final String ORG_RAPIDPM_DDI_PACKAGESFILE = "org.rapidpm.ddi.packagesfile";
   private static ReflectionsModel reflectionsModel = new ReflectionsModel();
   private static boolean bootstrapedNeeded = true;
@@ -86,9 +86,9 @@ public class DI {
 
   private static void loadFilesystemResource(String path , IOException e) {
     try (InputStream is = new FileInputStream(path)) {
-        bootstrapFromResource(is);
+      bootstrapFromResource(is);
     } catch (IOException e1) {
-      LOGGER.error(String.format("Error loading file <%s> <%s>" , path , e.getMessage()));
+      LOGGER.warning(String.format("Error loading file <%s> <%s>" , path , e.getMessage()));
       throw new DDIModelException("Unable to load packages from file" , e1);
     }
   }
@@ -108,7 +108,7 @@ public class DI {
         reflectionsModel.rescann(line);
       }
     } catch (IOException e) {
-      LOGGER.error(String.format("Error loading packages"));
+      LOGGER.warning(String.format("Error loading packages"));
       throw new DDIModelException("Unable to load packages from file" , e);
     }
   }
@@ -236,7 +236,7 @@ public class DI {
         field.set(instance , target);
         return null; // return nothing...
       } catch (IllegalArgumentException | IllegalAccessException ex) {
-        LOGGER.error("Cannot set field: " , ex);
+        LOGGER.warning("Cannot set field: " , ex);
         throw new IllegalStateException("Cannot set field: " + field , ex);
       } finally {
         field.setAccessible(wasAccessible);
@@ -267,7 +267,7 @@ public class DI {
         m.invoke(instance);
         m.setAccessible(accessible);
       } catch (IllegalAccessException | InvocationTargetException e) {
-        LOGGER.error("method could not invoked " , e);
+        LOGGER.warning("method could not invoked " , e);
       }
     });
   }

@@ -19,42 +19,42 @@
 
 package org.rapidpm.ddi.producer;
 
+import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
+
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.producerresolver.ProducerResolver;
 import org.rapidpm.ddi.producerresolver.ProducerResolverLocator;
 import org.rapidpm.ddi.scopes.InjectionScopeManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
-
-import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
+import org.rapidpm.dependencies.core.logger.Logger;
+import org.rapidpm.dependencies.core.logger.LoggingService;
 
 public class InstanceCreator {
-  private static final Logger LOGGER = LoggerFactory.getLogger(InstanceCreator.class);
+  private static final LoggingService LOGGER = Logger.getLogger(InstanceCreator.class);
 
   public <T> T instantiate(Class<T> clazz) {
 
     T newInstance;
     if (clazz.isInterface()) {
       final Class<? extends T> resolve = DI.resolveImplementingClass(clazz);
-      newInstance = createNewInstance(clazz, resolve);
+      newInstance = createNewInstance(clazz , resolve);
     } else {
-      newInstance = createNewInstance(clazz, clazz);
+      newInstance = createNewInstance(clazz , clazz);
     }
     return newInstance;
   }
 
-  private <T> T createNewInstance(final Class classOrInterf, final Class clazz) {
+  private <T> T createNewInstance(final Class classOrInterf , final Class clazz) {
     final Class resolverTarget;
     //explicite all combinations
-    if (classOrInterf.isInterface() && !clazz.isInterface()) {
+    if (classOrInterf.isInterface() && ! clazz.isInterface()) {
       resolverTarget = clazz;
-    } else if (!classOrInterf.isInterface() && clazz.isInterface()) {
+    } else if (! classOrInterf.isInterface() && clazz.isInterface()) {
       resolverTarget = classOrInterf;
-    } else if (!classOrInterf.isInterface() && !clazz.isInterface()) {
+    } else if (! classOrInterf.isInterface() && ! clazz.isInterface()) {
       resolverTarget = classOrInterf;
     } else { // classOrInterf.isInterface() &&  clazz.isInterface()
       resolverTarget = classOrInterf;
@@ -81,10 +81,10 @@ public class InstanceCreator {
     if (producerClassses.size() == 1) {
       final Class cls = (Class) producerClassses.toArray()[0];
       final T result = createInstanceWithThisProducer(cls);
-      putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
+      putToScope(classOrInterf , clazz , managedByMeTarget , managedByMeImpl , result);
       return result;
     } else if (producerClassses.size() > 1) {
-      return createInstanceWithProducers(classOrInterf, clazz, resolverTarget, managedByMeTarget, managedByMeImpl, producerClassses);
+      return createInstanceWithProducers(classOrInterf , clazz , resolverTarget , managedByMeTarget , managedByMeImpl , producerClassses);
     } else if (producerClassses.isEmpty()) {
 
       if (clazz.isInterface()) {
@@ -128,7 +128,7 @@ public class InstanceCreator {
             result = tProducer.create();
 //            DI.activateDI(result);
           }
-          putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
+          putToScope(classOrInterf , clazz , managedByMeTarget , managedByMeImpl , result);
           return result;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 
@@ -148,20 +148,20 @@ public class InstanceCreator {
 //      return DI.activateDI(instance);
       return instance;
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-      LOGGER.error("could not create instance ", e);
+      LOGGER.warning("could not create instance " , e);
       throw new DDIModelException(e);
     }
   }
 
-  private <T> void putToScope(final Class classOrInterf, final Class clazz, final boolean managedByMeTarget, final boolean managedByMeImpl, final T result) {
+  private <T> void putToScope(final Class classOrInterf , final Class clazz , final boolean managedByMeTarget , final boolean managedByMeImpl , final T result) {
     if (managedByMeTarget && managedByMeImpl) {
-      InjectionScopeManager.manageInstance(classOrInterf, result);
+      InjectionScopeManager.manageInstance(classOrInterf , result);
     } else if (managedByMeTarget) {
-      InjectionScopeManager.manageInstance(classOrInterf, result);
-    } else if (managedByMeImpl) InjectionScopeManager.manageInstance(clazz, result);
+      InjectionScopeManager.manageInstance(classOrInterf , result);
+    } else if (managedByMeImpl) InjectionScopeManager.manageInstance(clazz , result);
   }
 
-  private <T> T createInstanceWithProducers(final Class classOrInterf, final Class clazz, final Class resolverTarget, final boolean managedByMeTarget, final boolean managedByMeImpl, final Set<Class<?>> producerClassses) {
+  private <T> T createInstanceWithProducers(final Class classOrInterf , final Class clazz , final Class resolverTarget , final boolean managedByMeTarget , final boolean managedByMeImpl , final Set<Class<?>> producerClassses) {
     final Set<Class<? extends ProducerResolver>> producerResolverClasses
         = new ProducerResolverLocator().findProducersResolverFor(resolverTarget);
     if (producerResolverClasses.size() == 1) {
@@ -171,7 +171,7 @@ public class InstanceCreator {
         final ProducerResolver producerResolver = producerResolverClass.getDeclaredConstructor().newInstance();
         DI.activateDI(producerResolver);
         final T result = createInstanceWithThisProducer(producerResolver.resolve(resolverTarget));
-        putToScope(classOrInterf, clazz, managedByMeTarget, managedByMeImpl, result);
+        putToScope(classOrInterf , clazz , managedByMeTarget , managedByMeImpl , result);
         return result;
       } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
         throw new DDIModelException(e);
