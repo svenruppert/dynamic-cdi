@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.rapidpm.dynamic-cdi</groupId>
     <artifactId>rapidpm-dynamic-cdi</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -14,7 +14,7 @@
 
   <!--Change parent pom too !!-->
   <properties>
-    <rapidpm-dynamic-cdi.version>1.0.0</rapidpm-dynamic-cdi.version>
+    <rapidpm-dynamic-cdi.version>1.0.1-SNAPSHOT</rapidpm-dynamic-cdi.version>
     <rapidpm-functional-reactive.version>0.1.0</rapidpm-functional-reactive.version>
   </properties>
 
