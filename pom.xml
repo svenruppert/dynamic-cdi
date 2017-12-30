@@ -60,8 +60,8 @@
     </developer>
   </developers>
   <issueManagement>
-    <system>Youtrack</system>
-    <url>https://issues.rapidpm.org/issues?q=project%3A+DynamicDependencyInjection</url>
+    <system>Github</system>
+    <url>https://github.com/Dynamic-Dependency-Injection/dynamic-cdi/issues</url>
   </issueManagement>
   <ciManagement>
     <system>TeamCity</system>
