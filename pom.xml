@@ -109,7 +109,7 @@
       <!--for development of features/develop branch-->
       <distributionManagement>
         <repository>
-          <id>sonatype-nexus-snapshots</id>
+          <id>sonatype-nexus</id>
           <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
