@@ -106,19 +106,17 @@
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
-      <!--for development of features/develop branch-->
       <distributionManagement>
         <repository>
           <id>sonatype-nexus</id>
-          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+          <url>${sonatype-nexus-url}</url>
         </repository>
         <snapshotRepository>
           <id>sonatype-nexus-snapshots</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+          <url>${sonatype-nexus-snapshots-url}</url>
         </snapshotRepository>
       </distributionManagement>
     </profile>
-
   </profiles>
 
 </project>
