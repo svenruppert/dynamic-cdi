@@ -63,10 +63,10 @@
     <system>Github</system>
     <url>https://github.com/Dynamic-Dependency-Injection/dynamic-cdi/issues</url>
   </issueManagement>
-  <ciManagement>
-    <system>TeamCity</system>
-    <url>https://build.rapidpm.org/</url>
-  </ciManagement>
+  <!--<ciManagement>-->
+    <!--<system>TeamCity</system>-->
+    <!--<url>https://build.rapidpm.org/</url>-->
+  <!--</ciManagement>-->
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
