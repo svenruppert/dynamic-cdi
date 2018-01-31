@@ -81,13 +81,13 @@ public class ReflectionModelTest002 {
   public void test002_a() throws Exception {
     final String aPackageName = checkPkgIsNotActivated();
 
-    DI.activatePackages(true, aPackageName, urls);
+    DI.activatePackages(aPackageName, urls);
     Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     DI.clearReflectionModel();
     Assertions.assertFalse(DI.isPkgPrefixActivated(aPackageName));
 
-    DI.activatePackages(true, aPackageName, ClasspathHelper.forClass(Service.class));
+    DI.activatePackages(aPackageName, ClasspathHelper.forClass(Service.class));
     Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);
@@ -97,7 +97,7 @@ public class ReflectionModelTest002 {
   public void test002_b() throws Exception {
     final String aPackageName = checkPkgIsNotActivated();
 
-    DI.activatePackages(false, aPackageName, urls);
+    DI.activatePackages( aPackageName, urls);
     Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);
@@ -108,7 +108,7 @@ public class ReflectionModelTest002 {
     final String aPackageName = checkPkgIsNotActivated();
 
 
-    DI.activatePackages(false, aPackageName);
+    DI.activatePackages(aPackageName);
     Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);
@@ -118,7 +118,7 @@ public class ReflectionModelTest002 {
   public void test003_b() throws Exception {
     final String aPackageName = checkPkgIsNotActivated();
 
-    DI.activatePackages(true, aPackageName);
+    DI.activatePackages(aPackageName);
     Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);

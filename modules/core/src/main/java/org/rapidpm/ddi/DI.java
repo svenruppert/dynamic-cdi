@@ -151,26 +151,29 @@ public class DI {
     bootstrapedNeeded = false;
   }
 
-  public static synchronized void activatePackages(boolean parallelExecutors , String pkg) {
-    reflectionsModel.setParallelExecutors(parallelExecutors);
-    reflectionsModel.rescann(pkg);
-    clearCaches();
-    bootstrapedNeeded = false;
-  }
-
-  public static synchronized void activatePackages(boolean parallelExecutors , String pkg , URL... urls) {
-    reflectionsModel.setParallelExecutors(parallelExecutors);
-    reflectionsModel.rescann(pkg , urls);
-    clearCaches();
-    bootstrapedNeeded = false;
-  }
-
-  public static synchronized void activatePackages(boolean parallelExecutors , String pkg , Collection<URL> urls) {
-    reflectionsModel.setParallelExecutors(parallelExecutors);
-    reflectionsModel.rescann(pkg , urls);
-    clearCaches();
-    bootstrapedNeeded = false;
-  }
+//  @Deprecated
+//  public static synchronized void activatePackages(boolean parallelExecutors , String pkg) {
+//    reflectionsModel.setParallelExecutors(false);
+//    reflectionsModel.rescann(pkg);
+//    clearCaches();
+//    bootstrapedNeeded = false;
+//  }
+//
+//  @Deprecated
+//  public static synchronized void activatePackages(boolean parallelExecutors , String pkg , URL... urls) {
+//    reflectionsModel.setParallelExecutors(false);
+//    reflectionsModel.rescann(pkg , urls);
+//    clearCaches();
+//    bootstrapedNeeded = false;
+//  }
+//
+//  @Deprecated
+//  public static synchronized void activatePackages(boolean parallelExecutors , String pkg , Collection<URL> urls) {
+//    reflectionsModel.setParallelExecutors(false);
+//    reflectionsModel.rescann(pkg , urls);
+//    clearCaches();
+//    bootstrapedNeeded = false;
+//  }
 
   public static synchronized <T> T activateDI(T instance) {
     if (bootstrapedNeeded) bootstrap();
