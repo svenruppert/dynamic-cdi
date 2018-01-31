@@ -21,7 +21,6 @@
       <id>central</id>
       <name>central</name>
       <url>http://nexus-server:8081/repository/maven-public/</url>
-      <!--<url>${mirror-url}</url>-->
       <mirrorOf>*</mirrorOf>
     </mirror>
   </mirrors>
@@ -33,10 +32,22 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <!--<mirror-url>http://nexus-server:8081/repository/maven-public/</mirror-url>-->
         <sonatype-nexus-url>http://nexus-server:8081/repository/maven-releases/</sonatype-nexus-url>
         <sonatype-nexus-snapshots-url>http://nexus-server:8081/repository/maven-snapshots/</sonatype-nexus-snapshots-url>
       </properties>
+      <repositories>
+        <repository>
+          <id>build-snapshots-repo</id>
+          <url>${sonatype-nexus-snapshots-url}</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+          </snapshots>
+        </repository>
+      </repositories>
     </profile>
   </profiles>
 
