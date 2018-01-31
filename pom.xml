@@ -85,7 +85,6 @@
   <!--Change BOM too !!-->
   <properties>
     <rapidpm-dynamic-cdi.version>1.0.2-SNAPSHOT</rapidpm-dynamic-cdi.version>
-    <!--<rapidpm-proxybuilder.version>0.9.0</rapidpm-proxybuilder.version>-->
   </properties>
 
   <dependencyManagement>
@@ -93,7 +92,7 @@
       <dependency>
         <groupId>org.rapidpm</groupId>
         <artifactId>rapidpm-functional-reactive</artifactId>
-        <version>0.5.0-SNAPSHOT</version>
+        <version>0.5.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
