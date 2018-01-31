@@ -4,8 +4,7 @@ workspace:
 
 pipeline:
   build:
-    image: maven:${JDK_VERSION}
-#    image: maven:3.5-jdk-8
+    image: ${JDK_VERSION}
     pull: true
     commands:
       - mkdir /root/.m2
