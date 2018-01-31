@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.scopes.v001;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.scopes.InjectionScope;
 import org.rapidpm.ddi.scopes.InjectionScopeManager;
@@ -37,9 +37,9 @@ public class ScopesTest001 extends DDIBaseTest {
     final SingletonTestClass singletonTestClassA = DI.activateDI(SingletonTestClass.class);
     final SingletonTestClass singletonTestClassB = DI.activateDI(SingletonTestClass.class);
 
-    Assert.assertNotNull(singletonTestClassA);
-    Assert.assertNotNull(singletonTestClassB);
-    Assert.assertNotEquals(singletonTestClassA, singletonTestClassB);
+    Assertions.assertNotNull(singletonTestClassA);
+    Assertions.assertNotNull(singletonTestClassB);
+    Assertions.assertNotEquals(singletonTestClassA, singletonTestClassB);
 
 
     DI.registerClassForScope(SingletonTestClass.class, JVMSingletonInjectionScope.class.getSimpleName());
@@ -47,28 +47,28 @@ public class ScopesTest001 extends DDIBaseTest {
     final SingletonTestClass singletonTestClassC = DI.activateDI(SingletonTestClass.class);
     final SingletonTestClass singletonTestClassD = DI.activateDI(SingletonTestClass.class);
 
-    Assert.assertNotNull(singletonTestClassC);
-    Assert.assertNotNull(singletonTestClassD);
+    Assertions.assertNotNull(singletonTestClassC);
+    Assertions.assertNotNull(singletonTestClassD);
 
-    Assert.assertNotEquals(singletonTestClassA, singletonTestClassC);
-    Assert.assertNotEquals(singletonTestClassA, singletonTestClassD);
+    Assertions.assertNotEquals(singletonTestClassA, singletonTestClassC);
+    Assertions.assertNotEquals(singletonTestClassA, singletonTestClassD);
 
-    Assert.assertNotEquals(singletonTestClassB, singletonTestClassC);
-    Assert.assertNotEquals(singletonTestClassB, singletonTestClassD);
+    Assertions.assertNotEquals(singletonTestClassB, singletonTestClassC);
+    Assertions.assertNotEquals(singletonTestClassB, singletonTestClassD);
 
-    Assert.assertEquals(singletonTestClassC, singletonTestClassD);
+    Assertions.assertEquals(singletonTestClassC, singletonTestClassD);
 
 
     final String scopeForClass = InjectionScopeManager.scopeForClass(SingletonTestClass.class);
-    Assert.assertEquals(JVMSingletonInjectionScope.class.getSimpleName(), scopeForClass);
+    Assertions.assertEquals(JVMSingletonInjectionScope.class.getSimpleName(), scopeForClass);
 
 
     DI.deRegisterClassForScope(SingletonTestClass.class);
     final SingletonTestClass singletonTestClassE = DI.activateDI(SingletonTestClass.class);
-    Assert.assertNotEquals(singletonTestClassE, singletonTestClassA);
-    Assert.assertNotEquals(singletonTestClassE, singletonTestClassB);
-    Assert.assertNotEquals(singletonTestClassE, singletonTestClassC);
-    Assert.assertNotEquals(singletonTestClassE, singletonTestClassD);
+    Assertions.assertNotEquals(singletonTestClassE, singletonTestClassA);
+    Assertions.assertNotEquals(singletonTestClassE, singletonTestClassB);
+    Assertions.assertNotEquals(singletonTestClassE, singletonTestClassC);
+    Assertions.assertNotEquals(singletonTestClassE, singletonTestClassD);
 
   }
 
@@ -77,10 +77,10 @@ public class ScopesTest001 extends DDIBaseTest {
   public void test002() throws Exception {
     DI.registerClassForScope(SingletonTestClass.class, JVMSingletonInjectionScope.class.getSimpleName());
 
-    Assert.assertTrue(InjectionScopeManager.isManagedByMe(SingletonTestClass.class));
-    Assert.assertFalse(InjectionScopeManager.isManagedByMe(NonSingletonTestClass.class));
+    Assertions.assertTrue(InjectionScopeManager.isManagedByMe(SingletonTestClass.class));
+    Assertions.assertFalse(InjectionScopeManager.isManagedByMe(NonSingletonTestClass.class));
 
-    Assert.assertEquals("PER INJECT", InjectionScopeManager.scopeForClass(NonSingletonTestClass.class));
+    Assertions.assertEquals("PER INJECT", InjectionScopeManager.scopeForClass(NonSingletonTestClass.class));
   }
 
   @Test
@@ -89,27 +89,27 @@ public class ScopesTest001 extends DDIBaseTest {
     final String singeltonScopeName = JVMSingletonInjectionScope.class.getSimpleName();
     DI.registerClassForScope(SingletonTestClass.class, singeltonScopeName);
 
-    Assert.assertTrue(InjectionScopeManager.isManagedByMe(SingletonTestClass.class));
-    Assert.assertFalse(InjectionScopeManager.isManagedByMe(NonSingletonTestClass.class));
+    Assertions.assertTrue(InjectionScopeManager.isManagedByMe(SingletonTestClass.class));
+    Assertions.assertFalse(InjectionScopeManager.isManagedByMe(NonSingletonTestClass.class));
 
-    Assert.assertEquals("PER INJECT", InjectionScopeManager.scopeForClass(NonSingletonTestClass.class));
+    Assertions.assertEquals("PER INJECT", InjectionScopeManager.scopeForClass(NonSingletonTestClass.class));
 
     final Set<String> strings = InjectionScopeManager.listAllActiveScopeNames();
-    Assert.assertTrue(strings.contains(TestScope.class.getSimpleName()));
+    Assertions.assertTrue(strings.contains(TestScope.class.getSimpleName()));
 
     final SingletonTestClass singletonTestClassA = DI.activateDI(SingletonTestClass.class);
 
     InjectionScopeManager.clearScope(singeltonScopeName);
 
     final SingletonTestClass singletonTestClassB = DI.activateDI(SingletonTestClass.class);
-    Assert.assertNotEquals(singletonTestClassA, singletonTestClassB);
+    Assertions.assertNotEquals(singletonTestClassA, singletonTestClassB);
 
     final SingletonTestClass singletonTestClassC = DI.activateDI(SingletonTestClass.class);
-    Assert.assertNotEquals(singletonTestClassA, singletonTestClassB);
-    Assert.assertNotEquals(singletonTestClassA, singletonTestClassC);
+    Assertions.assertNotEquals(singletonTestClassA, singletonTestClassB);
+    Assertions.assertNotEquals(singletonTestClassA, singletonTestClassC);
 
 
-    Assert.assertEquals(singletonTestClassB, singletonTestClassC);
+    Assertions.assertEquals(singletonTestClassB, singletonTestClassC);
 
   }
 

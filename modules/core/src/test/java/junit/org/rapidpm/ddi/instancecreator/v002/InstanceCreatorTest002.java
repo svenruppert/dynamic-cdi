@@ -1,8 +1,8 @@
 package junit.org.rapidpm.ddi.instancecreator.v002;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
@@ -32,9 +32,9 @@ public class InstanceCreatorTest002 extends DDIBaseTest {
   public void test001() throws Exception {
     try {
       final ServiceImpl instantiate = new InstanceCreator().instantiate(ServiceImpl.class);
-      Assert.fail();
+      Assertions.fail("too bad..");
     } catch (DDIModelException e) {
-      Assert.assertTrue(e.getMessage().contains("to many Producer and no Produce"));
+      Assertions.assertTrue(e.getMessage().contains("to many Producer and no Produce"));
     }
   }
 

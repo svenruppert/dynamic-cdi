@@ -17,8 +17,8 @@
 package junit.org.rapidpm.ddi.base;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 import javax.inject.Inject;
@@ -31,10 +31,10 @@ public class DITest002 extends DDIBaseTest {
     Service service = new Service();
     DI.activateDI(service);
 
-    Assert.assertNotNull(service.subService);
-    Assert.assertNotNull(service.subService.subSubService);
+    Assertions.assertNotNull(service.subService);
+    Assertions.assertNotNull(service.subService.subSubService);
 
-    Assert.assertEquals("SubSubService test", service.work("test"));
+    Assertions.assertEquals("SubSubService test", service.work("test"));
 
   }
 

@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.scopes.v003;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.scopes.InjectionScope;
 
@@ -32,10 +32,10 @@ public class ScopesTest003 extends DDIBaseTest {
   @Test
   public void test001() throws Exception {
     final Set<String> scopes = DI.listAllActiveScopes();
-    Assert.assertNotNull(scopes);
-    Assert.assertFalse(scopes.isEmpty());
-    Assert.assertTrue(scopes.contains(TestScopeB.class.getSimpleName()));
-    Assert.assertFalse(scopes.contains(TestScopeA.class.getSimpleName()));
+    Assertions.assertNotNull(scopes);
+    Assertions.assertFalse(scopes.isEmpty());
+    Assertions.assertTrue(scopes.contains(TestScopeB.class.getSimpleName()));
+    Assertions.assertFalse(scopes.contains(TestScopeA.class.getSimpleName()));
   }
 
 

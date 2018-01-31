@@ -1,8 +1,8 @@
 package junit.org.rapidpm.ddi.scopes.v006;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.scopes.InjectionScopeManager;
 
 /**
@@ -24,7 +24,7 @@ public class ScopeTest006 extends DDIBaseTest {
   @Test
   public void test001() throws Exception {
     final Service instance = InjectionScopeManager.getInstance(Service.class);
-    Assert.assertNull(instance);
+    Assertions.assertNull(instance);
   }
 
   public static class Service {}

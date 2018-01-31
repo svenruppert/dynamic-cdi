@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.classresolver.v005;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
@@ -32,16 +32,16 @@ import javax.inject.Inject;
 public class ClassResolverTest005 extends DDIBaseTest {
 
 
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void test001() throws Exception {
     try {
       DI.checkActiveModel();
+      Assertions.fail("too bad..");
     } catch (DDIModelException e) {
       final String message = e.getMessage();
-      Assert.assertTrue(message.contains("Found ClassResolver without @ResponsibleFor annotation"));
-      throw e;
+      Assertions.assertTrue(message.contains("Found ClassResolver without @ResponsibleFor annotation"));
     }
-    Assert.fail();
+
   }
 
   @Test
@@ -49,7 +49,7 @@ public class ClassResolverTest005 extends DDIBaseTest {
     final BusinessModule businessModule = new BusinessModule();
     DI.activateDI(businessModule);
 
-    Assert.assertEquals(ServiceImplA.class, businessModule.service.getClass());
+    Assertions.assertEquals(ServiceImplA.class, businessModule.service.getClass());
 
   }
 

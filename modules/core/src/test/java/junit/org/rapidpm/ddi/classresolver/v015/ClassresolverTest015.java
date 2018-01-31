@@ -1,8 +1,8 @@
 package junit.org.rapidpm.ddi.classresolver.v015;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 /**
@@ -23,7 +23,7 @@ public class ClassresolverTest015 {
 
   public static Boolean toggle = true;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
@@ -32,9 +32,9 @@ public class ClassresolverTest015 {
 
   @Test
   public void test001() throws Exception {
-    Assert.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
-    Assert.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
-    Assert.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
     DI.clearReflectionModel();
   }
 

@@ -1,8 +1,8 @@
 package junit.org.rapidpm.ddi.classresolver.v018;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.implresolver.ClassResolver;
@@ -27,7 +27,7 @@ public class ClassResolverTest018 extends DDIBaseTest {
 
   @Test
   public void test001() {
-    Assert.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
   }
 
   @ResponsibleFor(Service.class)

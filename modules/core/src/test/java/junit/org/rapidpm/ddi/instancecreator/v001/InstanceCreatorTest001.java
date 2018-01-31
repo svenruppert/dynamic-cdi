@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.instancecreator.v001;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.producer.InstanceCreator;
 
@@ -31,7 +31,7 @@ public class InstanceCreatorTest001 extends DDIBaseTest {
   @Test
   public void test001() throws Exception {
     final Service instantiate = new InstanceCreator().instantiate(Service.class);
-    Assert.assertNotNull(instantiate);
+    Assertions.assertNotNull(instantiate);
   }
 
 

@@ -1,9 +1,9 @@
 package junit.org.rapidpm.ddi.classresolver.v016;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 /**
@@ -23,21 +23,21 @@ import org.rapidpm.ddi.DI;
 public class ClassresolverTest016 {
 
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
     DI.activatePackages(this.getClass());
   }
 
-  @After
+  @AfterEach
   public void tearDown() throws Exception {
     DI.clearReflectionModel();
   }
 
   @Test
   public void test001() throws Exception {
-    Assert.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
   }
 
 }

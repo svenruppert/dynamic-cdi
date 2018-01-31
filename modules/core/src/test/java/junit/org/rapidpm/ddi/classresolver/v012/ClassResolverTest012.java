@@ -20,7 +20,8 @@
 package junit.org.rapidpm.ddi.classresolver.v012;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 import javax.inject.Inject;
@@ -28,10 +29,10 @@ import javax.inject.Inject;
 public class ClassResolverTest012 extends DDIBaseTest {
 
 
-  @Test(expected = RuntimeException.class)
+  @Test()
   public void test001() throws Exception {
     Service service = new Service();
-    DI.activateDI(service);
+    Assertions.assertThrows(RuntimeException.class, ()-> DI.activateDI(service));
   }
 
   public interface SubService {

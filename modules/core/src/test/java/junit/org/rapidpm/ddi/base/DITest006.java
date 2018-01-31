@@ -20,9 +20,9 @@
 package junit.org.rapidpm.ddi.base;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +34,7 @@ public class DITest006 extends DDIBaseTest {
   static boolean postconstructB1;
   static boolean postconstructB2;
 
-//  @Before
+//  @BeforeEach
 //  public void setUp() throws Exception {
 //    DI.clearReflectionModel();
 //    DI.activatePackages(DITest006.class.getPackage().getName());
@@ -42,18 +42,18 @@ public class DITest006 extends DDIBaseTest {
 
   @Test
   public void test001() throws Exception {
-    Assert.assertFalse(postconstructA1);
-    Assert.assertFalse(postconstructA2);
-    Assert.assertFalse(postconstructB1);
-    Assert.assertFalse(postconstructB2);
+    Assertions.assertFalse(postconstructA1);
+    Assertions.assertFalse(postconstructA2);
+    Assertions.assertFalse(postconstructB1);
+    Assertions.assertFalse(postconstructB2);
 
     final BusinessModule businessModule = new BusinessModule();
     DI.activateDI(businessModule);
 
-    Assert.assertTrue(postconstructA1);
-    Assert.assertTrue(postconstructA2);
-    Assert.assertTrue(postconstructB1);
-    Assert.assertTrue(postconstructB2);
+    Assertions.assertTrue(postconstructA1);
+    Assertions.assertTrue(postconstructA2);
+    Assertions.assertTrue(postconstructB1);
+    Assertions.assertTrue(postconstructB2);
 
 
   }
@@ -70,13 +70,13 @@ public class DITest006 extends DDIBaseTest {
 
     @PostConstruct
     public void post001() {
-      if (postconstructA1 == true) Assert.fail();
+      if (postconstructA1 == true) Assertions.fail("too bad..");
       postconstructA1 = true;
     }
 
     @PostConstruct
     public void post002() {
-      if (postconstructA2 == true) Assert.fail();
+      if (postconstructA2 == true) Assertions.fail("too bad..");
       postconstructA2 = true;
     }
   }
@@ -86,13 +86,13 @@ public class DITest006 extends DDIBaseTest {
 
     @PostConstruct
     public void post001() {
-      if (postconstructB1 == true) Assert.fail();
+      if (postconstructB1 == true) Assertions.fail("too bad..");
       postconstructB1 = true;
     }
 
     @PostConstruct
     public void post002() {
-      if (postconstructB2 == true) Assert.fail();
+      if (postconstructB2 == true) Assertions.fail("too bad..");
       postconstructB2 = true;
     }
 

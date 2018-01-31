@@ -19,29 +19,22 @@
 
 package junit.org.rapidpm.ddi.producerresolver.v005;
 
-import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
 import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.producer.Producer;
 import org.rapidpm.ddi.producerresolver.ProducerResolver;
-
-import javax.inject.Inject;
+import junit.org.rapidpm.ddi.DDIBaseTest;
 
 public class ProducerResolverTest005 extends DDIBaseTest {
 
 
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void test001() throws Exception {
-    try {
-      DI.activateDI(MyService.class);
-    } catch (Exception e) {
-      Assert.assertTrue(e instanceof DDIModelException);
-      throw e;
-    }
+    Assertions.assertThrows(DDIModelException.class , () -> DI.activateDI(MyService.class));
   }
 
   public interface MyService {

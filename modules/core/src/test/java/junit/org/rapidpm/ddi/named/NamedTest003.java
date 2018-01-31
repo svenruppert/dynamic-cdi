@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.named;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 import javax.annotation.PostConstruct;
@@ -35,13 +35,13 @@ public class NamedTest003 extends DDIBaseTest {
     BusinessModule businessModule = new BusinessModule();
 
     DI.activateDI(businessModule);
-    Assert.assertNotNull(businessModule.service);
-    Assert.assertTrue(businessModule.service.isPostconstructed());
+    Assertions.assertNotNull(businessModule.service);
+    Assertions.assertTrue(businessModule.service.isPostconstructed());
 
-    Assert.assertNotNull(businessModule.service.getSubService());
-    Assert.assertTrue(businessModule.service.getSubService().postconstructed);
+    Assertions.assertNotNull(businessModule.service.getSubService());
+    Assertions.assertTrue(businessModule.service.getSubService().postconstructed);
 
-    Assert.assertEquals("SubSubService test", businessModule.work("test"));
+    Assertions.assertEquals("SubSubService test", businessModule.work("test"));
   }
 
 

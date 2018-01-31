@@ -20,9 +20,9 @@
 package junit.org.rapidpm.ddi.base;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 public class DITest010 extends DDIBaseTest {
@@ -33,12 +33,12 @@ public class DITest010 extends DDIBaseTest {
     DI.clearReflectionModel();
     DI.activatePackages(this.getClass());
     final Service service = DI.activateDI(Service.class);
-    Assert.assertNotNull(service);
-    Assert.assertEquals(ServiceImpl.class, service.getClass());
+    Assertions.assertNotNull(service);
+    Assertions.assertEquals(ServiceImpl.class, service.getClass());
   }
 
 
-  @After
+  @AfterEach
   public void tearDown() throws Exception {
     DI.clearReflectionModel();
   }

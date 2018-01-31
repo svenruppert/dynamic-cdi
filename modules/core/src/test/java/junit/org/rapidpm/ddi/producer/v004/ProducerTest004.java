@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.producer.v004;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
 import org.rapidpm.ddi.producer.Producer;
@@ -37,8 +37,8 @@ public class ProducerTest004 extends DDIBaseTest {
   @Test
   public void test001() throws Exception {
     DI.activateDI(this);
-    Assert.assertEquals(service.getClass(), ServiceImpl.class);
-    Assert.assertEquals(true, producerUssed);
+    Assertions.assertEquals(service.getClass(), ServiceImpl.class);
+    Assertions.assertEquals(true, producerUssed);
   }
 
   public interface Service{}

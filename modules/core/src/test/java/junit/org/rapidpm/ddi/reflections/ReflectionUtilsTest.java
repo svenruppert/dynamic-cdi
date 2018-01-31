@@ -1,9 +1,9 @@
 package junit.org.rapidpm.ddi.reflections;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.reflections.ReflectionUtils;
 
 /**
@@ -15,11 +15,11 @@ import org.rapidpm.ddi.reflections.ReflectionUtils;
  */
 public class ReflectionUtilsTest {
 
-  @Before
+  @BeforeEach
   public void before() throws Exception {
   }
 
-  @After
+  @AfterEach
   public void after() throws Exception {
   }
 
@@ -31,24 +31,24 @@ public class ReflectionUtilsTest {
 
     final ReflectionUtils utils = new ReflectionUtils();
 
-    Assert.assertTrue(utils.checkInterface(ServiceImpl_A.class, Service.class));
-    Assert.assertFalse(utils.checkInterface(Service.class, ServiceImpl_A.class));
+    Assertions.assertTrue(utils.checkInterface(ServiceImpl_A.class, Service.class));
+    Assertions.assertFalse(utils.checkInterface(Service.class, ServiceImpl_A.class));
 
-    Assert.assertFalse(utils.checkInterface(ServiceImpl_A.class, NoService.class));
-    Assert.assertFalse(utils.checkInterface(NoService.class, ServiceImpl_A.class));
+    Assertions.assertFalse(utils.checkInterface(ServiceImpl_A.class, NoService.class));
+    Assertions.assertFalse(utils.checkInterface(NoService.class, ServiceImpl_A.class));
 
 
-    Assert.assertFalse(utils.checkInterface(NoService.class, Service.class));
-    Assert.assertFalse(utils.checkInterface(Service.class, NoService.class));
+    Assertions.assertFalse(utils.checkInterface(NoService.class, Service.class));
+    Assertions.assertFalse(utils.checkInterface(Service.class, NoService.class));
 
-    Assert.assertFalse(utils.checkInterface(Service.class, ServiceLev2.class));
-    Assert.assertTrue(utils.checkInterface(ServiceLev2.class, Service.class));
+    Assertions.assertFalse(utils.checkInterface(Service.class, ServiceLev2.class));
+    Assertions.assertTrue(utils.checkInterface(ServiceLev2.class, Service.class));
 
-    Assert.assertTrue(utils.checkInterface(ServiceImpl_B.class, Service.class));
-    Assert.assertFalse(utils.checkInterface(Service.class, ServiceImpl_B.class));
+    Assertions.assertTrue(utils.checkInterface(ServiceImpl_B.class, Service.class));
+    Assertions.assertFalse(utils.checkInterface(Service.class, ServiceImpl_B.class));
 
-    Assert.assertFalse(utils.checkInterface(ServiceImpl_B.class, NoService.class));
-    Assert.assertFalse(utils.checkInterface(NoService.class, ServiceImpl_B.class));
+    Assertions.assertFalse(utils.checkInterface(ServiceImpl_B.class, NoService.class));
+    Assertions.assertFalse(utils.checkInterface(NoService.class, ServiceImpl_B.class));
 
   }
 

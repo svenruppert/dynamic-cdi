@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.producer.v005;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
@@ -31,16 +31,15 @@ import javax.inject.Inject;
 
 public class ProducerTest005 extends DDIBaseTest {
 
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void test001() throws Exception {
     try {
       DI.activateDI(Service.class);
     } catch (Exception e) {
-      Assert.assertTrue(e instanceof DDIModelException);
+      Assertions.assertTrue(e instanceof DDIModelException);
       final String message = e.getMessage();
       System.out.println("message = " + message);
-      Assert.assertTrue(message.contains("interface with multiple implementations and no ClassResolver and n Producers f the interface"));
-      throw e;
+      Assertions.assertTrue(message.contains("interface with multiple implementations and no ClassResolver and n Producers f the interface"));
     }
   }
 

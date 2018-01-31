@@ -19,7 +19,7 @@
 
 package junit.org.rapidpm.ddi.reflectionmodel.v003;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 public class ReflectionModelTest003 {

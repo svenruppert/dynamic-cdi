@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.producer.v002;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
@@ -31,7 +31,7 @@ import javax.inject.Inject;
 
 public class ProducerTest002 extends DDIBaseTest {
 
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void testProducer001() throws Exception {
     final BusinessModul businessModul = new BusinessModul();
     try {
@@ -39,10 +39,8 @@ public class ProducerTest002 extends DDIBaseTest {
     } catch (Exception e) {
       final String msg = e.getMessage();
       System.out.println("msg = " + msg);
-      Assert.assertTrue(msg.contains("to many Producer and no ProducerResolver found for interface"));
-      throw e;
+      Assertions.assertTrue(msg.contains("to many Producer and no ProducerResolver found for interface"));
     }
-
   }
 
 

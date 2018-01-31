@@ -19,8 +19,8 @@
 
 package junit.org.rapidpm.ddi.producerresolver.v006;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
 import org.rapidpm.ddi.ResponsibleFor;
@@ -42,20 +42,20 @@ public class ProducerResolverTest006 {
     DI.activatePackages("org.rapidpm");
     DI.activatePackages(ProducerResolverTest006.class);
 
-    Assert.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
-    Assert.assertEquals(false, toggle);
-    Assert.assertEquals(true, toggleProducer);
-    Assert.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
-    Assert.assertEquals(true, toggle);
-    Assert.assertEquals(false, toggleProducer);
+    Assertions.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(false, toggle);
+    Assertions.assertEquals(true, toggleProducer);
+    Assertions.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(true, toggle);
+    Assertions.assertEquals(false, toggleProducer);
 
-    Assert.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
-    Assert.assertEquals(false, toggle);
-    Assert.assertEquals(false, toggleProducer);
+    Assertions.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(false, toggle);
+    Assertions.assertEquals(false, toggleProducer);
 
-    Assert.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
-    Assert.assertEquals(true, toggle);
-    Assert.assertEquals(true, toggleProducer);
+    Assertions.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(true, toggle);
+    Assertions.assertEquals(true, toggleProducer);
 
     DI.clearReflectionModel();
 

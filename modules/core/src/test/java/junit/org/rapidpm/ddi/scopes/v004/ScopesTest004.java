@@ -1,8 +1,8 @@
 package junit.org.rapidpm.ddi.scopes.v004;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.scopes.InjectionScopeManager;
 import org.rapidpm.ddi.scopes.provided.JVMSingletonInjectionScope;
@@ -14,10 +14,10 @@ public class ScopesTest004 extends DDIBaseTest {
     final Service serviceA = DI.activateDI(Service.class);
     final Service serviceB = DI.activateDI(Service.class);
 
-    Assert.assertNotNull(serviceA);
-    Assert.assertNotNull(serviceB);
+    Assertions.assertNotNull(serviceA);
+    Assertions.assertNotNull(serviceB);
 
-    Assert.assertNotEquals(serviceA.value(), serviceB.value());
+    Assertions.assertNotEquals(serviceA.value(), serviceB.value());
   }
 
   @Test
@@ -28,10 +28,10 @@ public class ScopesTest004 extends DDIBaseTest {
     final Service serviceA = DI.activateDI(Service.class);
     final Service serviceB = DI.activateDI(Service.class);
 
-    Assert.assertNotNull(serviceA);
-    Assert.assertNotNull(serviceB);
+    Assertions.assertNotNull(serviceA);
+    Assertions.assertNotNull(serviceB);
 
-    Assert.assertEquals(serviceA.value(), serviceB.value());
+    Assertions.assertEquals(serviceA.value(), serviceB.value());
   }
 
   @Test
@@ -43,10 +43,10 @@ public class ScopesTest004 extends DDIBaseTest {
     final Service serviceA = DI.activateDI(Service.class);
     final Service serviceB = DI.activateDI(Service.class);
 
-    Assert.assertNotNull(serviceA);
-    Assert.assertNotNull(serviceB);
+    Assertions.assertNotNull(serviceA);
+    Assertions.assertNotNull(serviceB);
 
-    Assert.assertEquals(serviceA.value(), serviceB.value());
+    Assertions.assertEquals(serviceA.value(), serviceB.value());
   }
 
   @Test
@@ -55,15 +55,15 @@ public class ScopesTest004 extends DDIBaseTest {
     DI.registerClassForScope(SingleResource.class, JVMSingletonInjectionScope.class.getSimpleName());
     final String scopeAfter = InjectionScopeManager.scopeForClass(SingleResource.class);
 
-    Assert.assertNotEquals(scopeBefore, scopeAfter);
+    Assertions.assertNotEquals(scopeBefore, scopeAfter);
 
     final Service serviceA = DI.activateDI(Service.class);
     final Service serviceB = DI.activateDI(Service.class);
 
-    Assert.assertNotNull(serviceA);
-    Assert.assertNotNull(serviceB);
+    Assertions.assertNotNull(serviceA);
+    Assertions.assertNotNull(serviceB);
 
-    Assert.assertEquals(serviceA.value(), serviceB.value());
+    Assertions.assertEquals(serviceA.value(), serviceB.value());
   }
 
 }

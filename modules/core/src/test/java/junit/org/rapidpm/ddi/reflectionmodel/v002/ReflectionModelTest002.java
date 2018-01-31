@@ -20,10 +20,10 @@
 package junit.org.rapidpm.ddi.reflectionmodel.v002;
 
 import junit.org.rapidpm.ddi.reflectionmodel.v002.api.Service;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.reflections.util.ClasspathHelper;
 
@@ -36,13 +36,13 @@ public class ReflectionModelTest002 {
 
   private static final Collection<URL> urls = ClasspathHelper.forClassLoader();
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
   }
 
-  @After
+  @AfterEach
   public void tearDown() throws Exception {
     DI.clearReflectionModel();
   }
@@ -52,13 +52,13 @@ public class ReflectionModelTest002 {
     final String aPackageName = checkPkgIsNotActivated();
 
     DI.activatePackages(aPackageName, urls);
-    Assert.assertTrue(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     DI.clearReflectionModel();
-    Assert.assertFalse(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertFalse(DI.isPkgPrefixActivated(aPackageName));
 
     DI.activatePackages(aPackageName, ClasspathHelper.forClass(Service.class));
-    Assert.assertTrue(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);
   }
@@ -67,14 +67,14 @@ public class ReflectionModelTest002 {
     final Package aPackage = Service.class.getPackage();
     final String aPackageName = aPackage.getName();
     System.out.println("aPackage = " + aPackageName);
-    Assert.assertFalse(DI.isPkgPrefixActivated(aPackageName));
-    Assert.assertFalse(urls.isEmpty());
+    Assertions.assertFalse(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertFalse(urls.isEmpty());
     return aPackageName;
   }
 
   private void checkTimestamp(final String aPackageName) {
     final LocalDateTime pkgPrefixActivatedTimestamp = DI.getPkgPrefixActivatedTimestamp(aPackageName);
-    Assert.assertTrue(pkgPrefixActivatedTimestamp.isBefore(LocalDateTime.now().plusSeconds(1)));
+    Assertions.assertTrue(pkgPrefixActivatedTimestamp.isBefore(LocalDateTime.now().plusSeconds(1)));
   }
 
   @Test
@@ -82,13 +82,13 @@ public class ReflectionModelTest002 {
     final String aPackageName = checkPkgIsNotActivated();
 
     DI.activatePackages(true, aPackageName, urls);
-    Assert.assertTrue(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     DI.clearReflectionModel();
-    Assert.assertFalse(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertFalse(DI.isPkgPrefixActivated(aPackageName));
 
     DI.activatePackages(true, aPackageName, ClasspathHelper.forClass(Service.class));
-    Assert.assertTrue(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);
   }
@@ -98,7 +98,7 @@ public class ReflectionModelTest002 {
     final String aPackageName = checkPkgIsNotActivated();
 
     DI.activatePackages(false, aPackageName, urls);
-    Assert.assertTrue(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);
   }
@@ -109,7 +109,7 @@ public class ReflectionModelTest002 {
 
 
     DI.activatePackages(false, aPackageName);
-    Assert.assertTrue(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);
   }
@@ -119,7 +119,7 @@ public class ReflectionModelTest002 {
     final String aPackageName = checkPkgIsNotActivated();
 
     DI.activatePackages(true, aPackageName);
-    Assert.assertTrue(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);
 

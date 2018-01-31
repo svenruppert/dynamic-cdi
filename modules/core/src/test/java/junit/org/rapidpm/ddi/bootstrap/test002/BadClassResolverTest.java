@@ -1,6 +1,7 @@
 package junit.org.rapidpm.ddi.bootstrap.test002;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.implresolver.ClassResolver;
@@ -20,8 +21,8 @@ public class BadClassResolverTest extends DDIBaseTest {
     }
   }
 
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void test001() throws Exception {
-    DI.checkActiveModel();
+    Assertions.assertThrows(DDIModelException.class, DI::checkActiveModel);
   }
 }

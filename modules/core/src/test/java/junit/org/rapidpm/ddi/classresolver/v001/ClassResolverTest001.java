@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.classresolver.v001;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.implresolver.ClassResolver;
@@ -36,9 +36,9 @@ public class ClassResolverTest001 extends DDIBaseTest {
 
     final BusinessModule businessModule = new BusinessModule();
     DI.activateDI(businessModule);
-    Assert.assertNotNull(businessModule);
-    Assert.assertNotNull(businessModule.service);
-    Assert.assertEquals(ServiceImplB.class, businessModule.service.getClass());
+    Assertions.assertNotNull(businessModule);
+    Assertions.assertNotNull(businessModule.service);
+    Assertions.assertEquals(ServiceImplB.class, businessModule.service.getClass());
   }
 
   public interface Service {

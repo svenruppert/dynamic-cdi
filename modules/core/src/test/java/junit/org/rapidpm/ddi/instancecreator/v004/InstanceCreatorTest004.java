@@ -1,8 +1,8 @@
 package junit.org.rapidpm.ddi.instancecreator.v004;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
 import org.rapidpm.ddi.ResponsibleFor;
@@ -32,7 +32,7 @@ public class InstanceCreatorTest004 extends DDIBaseTest {
     DI.activateDI("org.rapidpm");
     DI.activateDI("junit.org.rapidpm");
       final ServiceImpl instantiate = new InstanceCreator().instantiate(ServiceImpl.class);
-    Assert.assertNotNull(instantiate);
+    Assertions.assertNotNull(instantiate);
   }
 
   public static class ServiceImpl {

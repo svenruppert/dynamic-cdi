@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.producer.v001;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
 import org.rapidpm.ddi.producer.Producer;
@@ -36,10 +36,10 @@ public class ProducerTest001 extends DDIBaseTest {
     final BusinessModul businessModul = new BusinessModul();
     DI.activateDI(businessModul);
 
-    Assert.assertNotNull(businessModul);
-    Assert.assertNotNull(businessModul.service);
-    Assert.assertNotNull(businessModul.service.workOn("AEAE"));
-    Assert.assertEquals("AEAE_" + ServiceProducer.class.getSimpleName(), businessModul.service.workOn("AEAE"));
+    Assertions.assertNotNull(businessModul);
+    Assertions.assertNotNull(businessModul.service);
+    Assertions.assertNotNull(businessModul.service.workOn("AEAE"));
+    Assertions.assertEquals("AEAE_" + ServiceProducer.class.getSimpleName(), businessModul.service.workOn("AEAE"));
 
   }
 

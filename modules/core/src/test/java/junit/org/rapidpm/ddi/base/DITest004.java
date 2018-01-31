@@ -17,8 +17,8 @@
 package junit.org.rapidpm.ddi.base;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 import javax.annotation.PostConstruct;
@@ -30,16 +30,16 @@ public class DITest004 extends DDIBaseTest {
   public void testInjection001() throws Exception {
     Service service = new Service();
 
-    Assert.assertFalse(service.postconstructed);
-    Assert.assertNull(service.subService);
+    Assertions.assertFalse(service.postconstructed);
+    Assertions.assertNull(service.subService);
     DI.activateDI(service);
-    Assert.assertTrue(service.postconstructed);
+    Assertions.assertTrue(service.postconstructed);
 
-    Assert.assertNotNull(service.subService);
-    Assert.assertTrue(service.subService.postconstructed);
+    Assertions.assertNotNull(service.subService);
+    Assertions.assertTrue(service.subService.postconstructed);
 
-    Assert.assertNotNull(service.subService.subSubService);
-    Assert.assertEquals("SubSubService test", service.work("test"));
+    Assertions.assertNotNull(service.subService.subSubService);
+    Assertions.assertEquals("SubSubService test", service.work("test"));
   }
 
   public static class Service {

@@ -23,8 +23,8 @@ import junit.org.rapidpm.ddi.reflectionmodel.v004.api.DemoAnnotation;
 import junit.org.rapidpm.ddi.reflectionmodel.v004.api.Service;
 import junit.org.rapidpm.ddi.reflectionmodel.v004.model001.ServiceImplA;
 import junit.org.rapidpm.ddi.reflectionmodel.v004.model002.ServiceImplB;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 import java.lang.annotation.Annotation;
@@ -39,9 +39,9 @@ public class ReflectionModelTest004 {
 
     DI.activatePackages(ServiceImplA.class.getPackage().getName());
 
-    Assert.assertFalse(DI.getTypesAnnotatedWith(DemoAnnotation.class).isEmpty());
-    Assert.assertFalse(DI.getTypesAnnotatedWith(DemoAnnotation.class,false).isEmpty());
-    Assert.assertFalse(DI.getTypesAnnotatedWith(DemoAnnotation.class,true).isEmpty());
+    Assertions.assertFalse(DI.getTypesAnnotatedWith(DemoAnnotation.class).isEmpty());
+    Assertions.assertFalse(DI.getTypesAnnotatedWith(DemoAnnotation.class,false).isEmpty());
+    Assertions.assertFalse(DI.getTypesAnnotatedWith(DemoAnnotation.class,true).isEmpty());
   }
 
   private void preCheck() {
@@ -50,13 +50,13 @@ public class ReflectionModelTest004 {
     DI.activatePackages("org.rapidpm");
     DI.activatePackages(checkPkgIsNotActivated());
 
-    Assert.assertTrue(DI.getTypesAnnotatedWith(DemoAnnotation.class).isEmpty());
+    Assertions.assertTrue(DI.getTypesAnnotatedWith(DemoAnnotation.class).isEmpty());
   }
 
   private String checkPkgIsNotActivated() {
     final Package aPackage = Service.class.getPackage();
     final String aPackageName = aPackage.getName();
-    Assert.assertFalse(DI.isPkgPrefixActivated(aPackageName));
+    Assertions.assertFalse(DI.isPkgPrefixActivated(aPackageName));
     return aPackageName;
   }
 
@@ -67,9 +67,9 @@ public class ReflectionModelTest004 {
     DI.activatePackages(ServiceImplA.class.getPackage().getName());
 
     Annotation annotation = () -> DemoAnnotation.class;
-    Assert.assertFalse(DI.getTypesAnnotatedWith(annotation).isEmpty());
-    Assert.assertFalse(DI.getTypesAnnotatedWith(annotation,false).isEmpty());
-    Assert.assertFalse(DI.getTypesAnnotatedWith(annotation,true).isEmpty());
+    Assertions.assertFalse(DI.getTypesAnnotatedWith(annotation).isEmpty());
+    Assertions.assertFalse(DI.getTypesAnnotatedWith(annotation,false).isEmpty());
+    Assertions.assertFalse(DI.getTypesAnnotatedWith(annotation,true).isEmpty());
   }
 
   @Test
@@ -78,19 +78,19 @@ public class ReflectionModelTest004 {
 
     DI.activatePackages(ServiceImplB.class.getPackage().getName());
 
-    Assert.assertTrue(DI.getTypesAnnotatedWith(DemoAnnotation.class).isEmpty());
-    Assert.assertTrue(DI.getTypesAnnotatedWith(DemoAnnotation.class,false).isEmpty());
-    Assert.assertTrue(DI.getTypesAnnotatedWith(DemoAnnotation.class,true).isEmpty());
+    Assertions.assertTrue(DI.getTypesAnnotatedWith(DemoAnnotation.class).isEmpty());
+    Assertions.assertTrue(DI.getTypesAnnotatedWith(DemoAnnotation.class,false).isEmpty());
+    Assertions.assertTrue(DI.getTypesAnnotatedWith(DemoAnnotation.class,true).isEmpty());
 
     DI.activatePackages(ServiceImplA.class.getPackage().getName());
-    Assert.assertFalse(DI.getTypesAnnotatedWith(DemoAnnotation.class).isEmpty());
+    Assertions.assertFalse(DI.getTypesAnnotatedWith(DemoAnnotation.class).isEmpty());
     final Set<Class<?>> withInherit = DI.getTypesAnnotatedWith(DemoAnnotation.class, false);
-    Assert.assertFalse(withInherit.isEmpty());
-    Assert.assertEquals(withInherit.size(), 2);
+    Assertions.assertFalse(withInherit.isEmpty());
+    Assertions.assertEquals(withInherit.size(), 2);
 
     final Set<Class<?>> withoutInherit = DI.getTypesAnnotatedWith(DemoAnnotation.class, true);
-    Assert.assertEquals(withoutInherit.size(), 1);
-    Assert.assertFalse(withoutInherit.isEmpty());
+    Assertions.assertEquals(withoutInherit.size(), 1);
+    Assertions.assertFalse(withoutInherit.isEmpty());
   }
 
   @Test
@@ -101,18 +101,18 @@ public class ReflectionModelTest004 {
 
     Annotation annotation = () -> DemoAnnotation.class;
 
-    Assert.assertTrue(DI.getTypesAnnotatedWith(annotation).isEmpty());
-    Assert.assertTrue(DI.getTypesAnnotatedWith(annotation,false).isEmpty());
-    Assert.assertTrue(DI.getTypesAnnotatedWith(annotation,true).isEmpty());
+    Assertions.assertTrue(DI.getTypesAnnotatedWith(annotation).isEmpty());
+    Assertions.assertTrue(DI.getTypesAnnotatedWith(annotation,false).isEmpty());
+    Assertions.assertTrue(DI.getTypesAnnotatedWith(annotation,true).isEmpty());
 
     DI.activatePackages(ServiceImplA.class.getPackage().getName());
-    Assert.assertFalse(DI.getTypesAnnotatedWith(annotation).isEmpty());
+    Assertions.assertFalse(DI.getTypesAnnotatedWith(annotation).isEmpty());
     final Set<Class<?>> withInherit = DI.getTypesAnnotatedWith(annotation, false);
-    Assert.assertFalse(withInherit.isEmpty());
-    Assert.assertEquals(withInherit.size(), 2);
+    Assertions.assertFalse(withInherit.isEmpty());
+    Assertions.assertEquals(withInherit.size(), 2);
 
     final Set<Class<?>> withoutInherit = DI.getTypesAnnotatedWith(annotation, true);
-    Assert.assertEquals(withoutInherit.size(), 1);
-    Assert.assertFalse(withoutInherit.isEmpty());
+    Assertions.assertEquals(withoutInherit.size(), 1);
+    Assertions.assertFalse(withoutInherit.isEmpty());
   }
 }

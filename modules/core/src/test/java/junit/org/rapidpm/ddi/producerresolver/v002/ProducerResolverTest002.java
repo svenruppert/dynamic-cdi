@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.producerresolver.v002;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
 import org.rapidpm.ddi.ResponsibleFor;
@@ -40,11 +40,11 @@ public class ProducerResolverTest002 extends DDIBaseTest {
   @Test
   public void test001() throws Exception {
     DI.activateDI(this);
-    Assert.assertNotNull(myService);
+    Assertions.assertNotNull(myService);
     final String s = "Hello";
-    Assert.assertEquals(MyServiceImpl_A.class.getSimpleName() + s, myService.doWork(s));
-    Assert.assertFalse(producer_a_1);
-    Assert.assertTrue(producer_a_2);
+    Assertions.assertEquals(MyServiceImpl_A.class.getSimpleName() + s, myService.doWork(s));
+    Assertions.assertFalse(producer_a_1);
+    Assertions.assertTrue(producer_a_2);
 
   }
 

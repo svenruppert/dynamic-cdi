@@ -19,8 +19,8 @@
 
 package junit.org.rapidpm.ddi.reflectionmodel;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 
@@ -28,20 +28,16 @@ import javax.inject.Inject;
 
 public class ReflectionModelTest001 {
 
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void test001() throws Exception {
     DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
     try {
       DI.activateDI(new BusinessModule());
-    } catch (Exception e) {
-      if (e instanceof DDIModelException) {
+      Assertions.fail("to baad....");
+    } catch (DDIModelException e) {
         final String message = e.getMessage();
-        Assert.assertTrue(message.contains("only interfaces found for interface"));
-        throw e;
-      } else {
-        Assert.fail();
-      }
+        Assertions.assertTrue(message.contains("only interfaces found for interface"));
     }
   }
 
@@ -51,6 +47,8 @@ public class ReflectionModelTest001 {
     DI.clearReflectionModel();
     DI.activatePackages("junit.org.rapidpm");
     final BusinessModule businessModule = DI.activateDI(new BusinessModule());
+    Assertions.assertNotNull(businessModule);
+    Assertions.assertNotNull(businessModule.service);
   }
 
 

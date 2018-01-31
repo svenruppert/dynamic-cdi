@@ -20,7 +20,8 @@
 package junit.org.rapidpm.ddi.base;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 
@@ -28,10 +29,10 @@ import javax.inject.Inject;
 
 public class DITest009 extends DDIBaseTest {
 
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void test001() throws Exception {
     Service service = new Service();
-    DI.activateDI(service);
+    Assertions.assertThrows(DDIModelException.class, ()-> DI.activateDI(service));
 
   }
 

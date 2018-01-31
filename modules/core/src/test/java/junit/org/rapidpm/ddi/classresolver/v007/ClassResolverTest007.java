@@ -19,31 +19,30 @@
 
 package junit.org.rapidpm.ddi.classresolver.v007;
 
-import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import javax.inject.Inject;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
-
-import javax.inject.Inject;
+import junit.org.rapidpm.ddi.DDIBaseTest;
 
 public class ClassResolverTest007 extends DDIBaseTest {
 
 
   /**
    * Anonymous Class inside the create() Method.. will be removed
-   *
+   * <p>
    * 1 Interface , 1 Impl -> Impl ServiceA will be used
    *
    * @throws Exception
    */
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void testProxy001() throws Exception {
     final BusinessModulVirtual instance = new BusinessModulVirtual();
-    Assert.assertNotNull(instance);
-    Assert.assertNull(instance.service);
-    DI.activateDI(instance);
-    Assert.assertEquals("created by Anonymous", instance.work(""));
+    Assertions.assertNotNull(instance);
+    Assertions.assertNull(instance.service);
+    Assertions.assertThrows(DDIModelException.class, ()->DI.activateDI(instance));
   }
 
 

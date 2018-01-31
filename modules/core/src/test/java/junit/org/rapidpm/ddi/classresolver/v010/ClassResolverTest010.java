@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.classresolver.v010;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 import javax.inject.Inject;
@@ -39,7 +39,7 @@ public class ClassResolverTest010 extends DDIBaseTest {
       System.out.println("aClass.isInterface() = " + aClass.isInterface());
     }
     //DI.activateDI(this);
-    Assert.assertNotNull(service);
+    Assertions.assertNotNull(service);
 
   }
 

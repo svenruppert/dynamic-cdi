@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.scopes.v002;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.scopes.InjectionScope;
 import org.rapidpm.ddi.scopes.provided.JVMSingletonInjectionScope;
@@ -35,12 +35,12 @@ public class ScopesTest002 extends DDIBaseTest {
     final Service serviceA = DI.activateDI(Service.class);
     final Service serviceB = DI.activateDI(Service.class);
 
-    Assert.assertNotNull(serviceA);
-    Assert.assertNotNull(serviceB);
-    Assert.assertTrue(serviceA instanceof SingletonTestClass);
-    Assert.assertTrue(serviceB instanceof SingletonTestClass);
+    Assertions.assertNotNull(serviceA);
+    Assertions.assertNotNull(serviceB);
+    Assertions.assertTrue(serviceA instanceof SingletonTestClass);
+    Assertions.assertTrue(serviceB instanceof SingletonTestClass);
 
-    Assert.assertEquals(serviceA, serviceB); // Singleton at impl level
+    Assertions.assertEquals(serviceA, serviceB); // Singleton at impl level
 
   }
 
@@ -51,12 +51,12 @@ public class ScopesTest002 extends DDIBaseTest {
     final Service serviceA = DI.activateDI(Service.class);
     final Service serviceB = DI.activateDI(Service.class);
 
-    Assert.assertNotNull(serviceA);
-    Assert.assertNotNull(serviceB);
-    Assert.assertTrue(serviceA instanceof SingletonTestClass);
-    Assert.assertTrue(serviceB instanceof SingletonTestClass);
+    Assertions.assertNotNull(serviceA);
+    Assertions.assertNotNull(serviceB);
+    Assertions.assertTrue(serviceA instanceof SingletonTestClass);
+    Assertions.assertTrue(serviceB instanceof SingletonTestClass);
 
-    Assert.assertEquals(serviceA, serviceB); // Singleton at impl level
+    Assertions.assertEquals(serviceA, serviceB); // Singleton at impl level
 
   }
 

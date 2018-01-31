@@ -19,31 +19,29 @@
 
 package junit.org.rapidpm.ddi.classresolver.v004;
 
-import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import javax.inject.Inject;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.implresolver.ClassResolver;
-
-import javax.inject.Inject;
+import junit.org.rapidpm.ddi.DDIBaseTest;
 
 public class ClassResolverTest004 extends DDIBaseTest {
 
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void testProducer001() throws Exception {
 
     final BusinessModule businessModule = new BusinessModule();
     try {
       DI.activateDI(businessModule);
+      Assertions.fail("too bad..");
     } catch (DDIModelException e) {
       final String message = e.getMessage();
-      Assert.assertTrue(message.contains("interface with multiple implementations and more as 1 ClassResolver"));
-      throw e;
+      Assertions.assertTrue(message.contains("interface with multiple implementations and more as 1 ClassResolver"));
     }
-
-    Assert.fail();
   }
 
   public interface Service {

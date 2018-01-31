@@ -1,6 +1,6 @@
 package junit.org.rapidpm.ddi.classresolver.v017;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,13 +34,13 @@ public class ClassresolverTest017 {
   @Test
   void test001() {
     final Service service = DI.activateDI(Service.class);
-    Assert.assertEquals(service.getClass() , ServiceImpl.class);
+    Assertions.assertEquals(service.getClass() , ServiceImpl.class);
   }
 
   @Test
   void test002() {
     final Service service = DI.activateDI(ServiceImpl.class);
-    Assert.assertEquals(service.getClass() , ServiceImpl.class);
+    Assertions.assertEquals(service.getClass() , ServiceImpl.class);
   }
 
 

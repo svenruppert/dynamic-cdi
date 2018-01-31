@@ -19,14 +19,14 @@
 
 package junit.org.rapidpm.ddi;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.rapidpm.ddi.DI;
 
 public class DDIBaseTest {
 
 
-  @Before
+  @BeforeEach
   public void setUpDDI() throws Exception {
     DI.clearReflectionModel();
     DI.activatePackages("org.rapidpm");
@@ -35,7 +35,7 @@ public class DDIBaseTest {
     DI.activateDI(this);
   }
 
-  @After
+  @AfterEach
   public void tearDownDDI() throws Exception {
     DI.clearReflectionModel();
   }

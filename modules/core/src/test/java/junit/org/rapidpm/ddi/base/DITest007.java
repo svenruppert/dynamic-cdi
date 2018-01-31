@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.base;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 
 import javax.annotation.PostConstruct;
@@ -34,9 +34,9 @@ public class DITest007 extends DDIBaseTest {
   @Test
   public void test001() throws Exception {
     Service service = new Service();
-    Assert.assertEquals(null, service.test);
+    Assertions.assertEquals(null, service.test);
     DI.activateDI(service);
-    Assert.assertEquals(TEST_STRING, service.test);
+    Assertions.assertEquals(TEST_STRING, service.test);
   }
 
   public static class Service {

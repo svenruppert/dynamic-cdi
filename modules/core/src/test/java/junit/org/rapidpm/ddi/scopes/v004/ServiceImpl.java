@@ -1,6 +1,6 @@
 package junit.org.rapidpm.ddi.scopes.v004;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -16,7 +16,7 @@ public class ServiceImpl implements Service {
   private void postConstruct() {
     //HikariDataSource dataSource = ((this.pools == null) ? this.pools = new JDBCConnectionPools() : this.pools).getDataSource(poolname);
     if(singleResource == null){
-      Assert.fail();
+      Assertions.fail("too bad..");
     }
   }
 

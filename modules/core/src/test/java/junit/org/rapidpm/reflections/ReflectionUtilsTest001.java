@@ -19,8 +19,8 @@
 
 package junit.org.rapidpm.reflections;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.reflections.ReflectionUtils;
 
 
@@ -32,27 +32,27 @@ public class ReflectionUtilsTest001 {
 
     ReflectionUtils utils = new ReflectionUtils();
 
-    Assert.assertTrue(Service.class.isInterface());
-    Assert.assertTrue(ServiceA.class.isInterface());
+    Assertions.assertTrue(Service.class.isInterface());
+    Assertions.assertTrue(ServiceA.class.isInterface());
 
-    Assert.assertNull(ServiceA.class.getSuperclass());
+    Assertions.assertNull(ServiceA.class.getSuperclass());
 
-    Assert.assertTrue(utils.checkInterface(Service.class, Service.class));
-    Assert.assertTrue(utils.checkInterface(ServiceA.class, Service.class));
-    Assert.assertTrue(utils.checkInterface(ServiceB.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(Service.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(ServiceA.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(ServiceB.class, Service.class));
 //
-    Assert.assertTrue(utils.checkInterface(ServiceImplA.class, Service.class));
-    Assert.assertTrue(utils.checkInterface(ServiceImplB.class, Service.class));
-    Assert.assertTrue(utils.checkInterface(ServiceImplAB.class, Service.class));
-    Assert.assertTrue(utils.checkInterface(ServiceImplBB.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(ServiceImplA.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(ServiceImplB.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(ServiceImplAB.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(ServiceImplBB.class, Service.class));
 
-    Assert.assertFalse(utils.checkInterface(A.class, Service.class));
-    Assert.assertTrue(utils.checkInterface(B.class, Service.class));
-    Assert.assertTrue(utils.checkInterface(C.class, Service.class));
-    Assert.assertTrue(utils.checkInterface(D.class, Service.class));
-    Assert.assertTrue(utils.checkInterface(E.class, Service.class));
+    Assertions.assertFalse(utils.checkInterface(A.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(B.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(C.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(D.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(E.class, Service.class));
 
-    Assert.assertTrue(utils.checkInterface(F.class, Service.class));
+    Assertions.assertTrue(utils.checkInterface(F.class, Service.class));
   }
 
 

@@ -20,10 +20,10 @@
 package junit.org.rapidpm.ddi.reflectionmodel.v007;
 
 import junit.org.rapidpm.ddi.reflectionmodel.v007.pkg.PkgServiceA;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.reflections.ReflectionsModel;
 
@@ -34,14 +34,14 @@ import java.util.Set;
 public class ReflectionModelTest007 {
 
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     DI.clearReflectionModel();
     DI.activatePackages(this.getClass());
   }
 
 
-  @After
+  @AfterEach
   public void tearDown() throws Exception {
     DI.clearReflectionModel();
   }
@@ -54,13 +54,13 @@ public class ReflectionModelTest007 {
     declaredField.setAccessible(true);
     final ReflectionsModel reflectionModel = (ReflectionsModel) declaredField.get(null);
     final Collection<String> classesForPkg = reflectionModel.getClassesForPkg(PkgServiceA.class.getPackage().getName());
-    Assert.assertFalse(classesForPkg.isEmpty());
-    Assert.assertEquals(2, classesForPkg.size());
+    Assertions.assertFalse(classesForPkg.isEmpty());
+    Assertions.assertEquals(2, classesForPkg.size());
 
 
     final Set<String> activatedPkgs = reflectionModel.getActivatedPkgs();
-    Assert.assertFalse(activatedPkgs.isEmpty());
-    Assert.assertEquals(2, activatedPkgs.size());
+    Assertions.assertFalse(activatedPkgs.isEmpty());
+    Assertions.assertEquals(2, activatedPkgs.size());
 
   }
 }

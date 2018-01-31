@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.classresolver.v006;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DDIModelException;
 import org.rapidpm.ddi.DI;
 
@@ -30,19 +30,19 @@ import javax.inject.Inject;
 public class ClassResolverTest006 extends DDIBaseTest {
 
 
-  @Test(expected = DDIModelException.class)
+  @Test()
   public void testProducer001() throws Exception {
 
     final BusinessModule businessModule = new BusinessModule();
     try {
       DI.activateDI(businessModule);
+      Assertions.fail("too bad..");
     } catch (DDIModelException e) {
       final String message = e.getMessage();
       System.out.println("message = " + message);
-      Assert.assertTrue(message.contains("only interfaces found for interface"));
-      throw e;
+      Assertions.assertTrue(message.contains("only interfaces found for interface"));
     }
-    Assert.fail();
+
   }
 
   public interface Service {

@@ -20,8 +20,8 @@
 package junit.org.rapidpm.ddi.classresolver.v009;
 
 import junit.org.rapidpm.ddi.DDIBaseTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.Produces;
 import org.rapidpm.ddi.producer.Producer;
@@ -38,30 +38,30 @@ public class ClassResolverTest009 extends DDIBaseTest {
   @Test
   public void testProxy001() throws Exception {
     final BusinessModul instance = new BusinessModul();
-    Assert.assertNotNull(instance);
-    Assert.assertNull(instance.service);
+    Assertions.assertNotNull(instance);
+    Assertions.assertNull(instance.service);
     DI.activateDI(instance);
 
-    Assert.assertNotNull(instance.service);
+    Assertions.assertNotNull(instance.service);
 
     final String hello = instance.service.doWork("Hello");
-    Assert.assertNotNull(hello);
-    Assert.assertEquals("created by Producer", hello);
+    Assertions.assertNotNull(hello);
+    Assertions.assertEquals("created by Producer", hello);
   }
 
   @Test
   public void testProxy002() throws Exception {
     final BusinessModulVirtual instance = new BusinessModulVirtual();
-    Assert.assertNotNull(instance);
-    Assert.assertNull(instance.service);
+    Assertions.assertNotNull(instance);
+    Assertions.assertNull(instance.service);
     DI.activateDI(instance);
 
-    Assert.assertNotNull(instance.service);
+    Assertions.assertNotNull(instance.service);
 
-//    Assert.assertTrue(java.lang.reflect.Proxy.isProxyClass(instance.service.getClass()));
+//    Assertions.assertTrue(java.lang.reflect.Proxy.isProxyClass(instance.service.getClass()));
     final String hello = instance.service.doWork("Hello");
-    Assert.assertNotNull(hello);
-    Assert.assertEquals("created by Producer", hello);
+    Assertions.assertNotNull(hello);
+    Assertions.assertEquals("created by Producer", hello);
   }
 
 
