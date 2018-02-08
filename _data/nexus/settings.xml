@@ -33,12 +33,12 @@
       </activation>
       <properties>
         <sonatype-nexus-url>http://nexus.rapidpm.org:8081/repository/maven-releases/</sonatype-nexus-url>
-        <sonatype-nexus-snapshots-url>http://nexus.rapm.org:8081/repository/maven-snapshots/</sonatype-nexus-snapshots-url>
+        <sonatype-nexus-snapshots-url>http://nexus.rapidpm.org:8081/repository/maven-snapshots/</sonatype-nexus-snapshots-url>
       </properties>
       <repositories>
         <repository>
           <id>build-snapshots-repo</id>
-          <url>http://nexus.ram.org:8081/repository/maven-snapshots/</url>
+          <url>http://nexus.rapidpm.org:8081/repository/maven-snapshots/</url>
           <releases>
             <enabled>false</enabled>
           </releases>
