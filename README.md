@@ -50,5 +50,3 @@ if you write ``@Inject Impl.``
 
 * Impl. -> will use the Impl.
 * Impl., 1 Producer -> will use the Producer for the Impl.
-
-You can combine all with a ``@Proxy(virtual=true)`` and it will use the same solution, but only as VirtualProxy.
