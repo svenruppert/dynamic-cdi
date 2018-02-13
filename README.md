@@ -1,48 +1,17 @@
 # Welcome to the Project Dynamic CDI
 
-[![Join the chat at https://gitter.im/RapidPM/dynamic-cdi](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/RapidPM/dynamic-cdi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![](https://build.rapidpm.org/app/rest/builds/buildType:id:RapidPM_Develop_DynamicDependencyInjection_Snapshot/statusIcon)](https://build.rapidpm.org/viewType.html?buildTypeId=RapidPM_Develop_DynamicDependencyInjection_Snapshot&guest=1)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.rapidpm.dynamic-cdi/rapidpm-dynamic-cdi/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.rapidpm.dynamic-cdi/rapidpm-dynamic-cdi)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1b039c89fb9f4baa91f5d7b906bf13f6)](https://www.codacy.com/app/sven-ruppert/dynamic-cdi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Dynamic-Dependency-Injection/dynamic-cdi&amp;utm_campaign=Badge_Grade)
+[![](http://drone.rapidpm.org:8000/api/badges/RapidPM/dynamic-cdi/status.svg?branch=develop)](http://drone.rapidpm.org:8000/api/badges/RapidPM/dynamic-cdi/status.svg?branch=develop)
 
 
 Here we will start with an more dynamic version of the default cdi implementations.
-This project is based on the project ***ProxyBuilder***.
 
 Please check out the HomePage for detailed informations. [www.dynamic-dependency-injection.org/](http://www.dynamic-dependency-injection.org/)
 
-
-This project could be used alone, but is developed for the project rapidpm-microservice. To get the full stack please check out the following projects.
-
 for SNAPSHOTS
 + https://github.com/RapidPM/rapidpm-dependencies (develop branch : clean install)
-+ https://github.com/RapidPM/proxybuilder (develop branch : clean install)
 + https://github.com/RapidPM/dynamic-cdi (develop branch : clean install)
-+ https://github.com/RapidPM/rapidpm-microservice (develop branch : clean install)
-+ https://github.com/RapidPM/rapidpm-microservice-examples (develop branch : clean install)
-
-## SNAPSHOTS
-If you are using maven you could add the following to your settings.xml to get the snapshots.
-
-```
-   <profile>
-      <id>allow-snapshots</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <repositories>
-        <repository>
-          <id>snapshots-repo</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-          <releases>
-            <enabled>false</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-          </snapshots>
-        </repository>
-      </repositories>
-    </profile>
-```
 
 ## How DDI will resolve the corresponding Implementation?
 
