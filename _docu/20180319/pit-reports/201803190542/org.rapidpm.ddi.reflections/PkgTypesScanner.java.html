@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>PkgTypesScanner.java</h1>
+
+<table class="src">
+
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_1'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_2'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_3'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * or more contributor license agreements.  See the NOTICE file</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_4'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed with this work for additional information</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_5'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * regarding copyright ownership.  The ASF licenses this file</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_6'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * to you under the Apache License, Version 2.0 (the</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_7'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#34;License&#34;); you may not use this file except in compliance</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_8'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * with the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_9'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_10'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_11'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_12'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing,</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_13'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * software distributed under the License is distributed on an</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_14'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#34;AS IS&#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_15'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * KIND, either express or implied.  See the License for the</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_16'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * specific language governing permissions and limitations</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_17'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * under the License.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_18'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_19'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_20'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.rapidpm.ddi.reflections;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_21'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_22'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.reflections.scanners.AbstractScanner;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_23'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.reflections.util.FilterBuilder;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_24'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_25'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_26'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public class PkgTypesScanner extends AbstractScanner {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_27'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_28'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  /**</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_29'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>   * created new SubTypesScanner. will exclude direct Object subtypes</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_30'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>   */</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_31'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public PkgTypesScanner() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_32'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    this(true); //exclude direct Object subtypes by default</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_33'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_34'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_35'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  /**</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_36'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>   * created new SubTypesScanner.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_37'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>   *</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_38'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>   * @param excludeObjectClass if false, include direct {@link Object} subtypes in results.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_39'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>   */</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_40'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>  public PkgTypesScanner(boolean excludeObjectClass) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_41'/>
+41
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_41'>1</a>
+<span>
+1. <init> : negated conditional &rarr; SURVIVED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>    if (excludeObjectClass) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_42'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>      filterResultsBy(new FilterBuilder().exclude(Object.class.getName())); //exclude direct Object subtypes</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_43'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_44'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_45'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_46'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @SuppressWarnings({&#34;unchecked&#34;})</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_47'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public void scan(final Object cls) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_48'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    String className = getMetadataAdapter().getClassName(cls);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_49'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_50'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    int index = className.lastIndexOf(&#34;.&#34;);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_51'/>
+51
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_51'>1</a>
+<span>
+1. scan : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    if (index != -1) {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_52'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_53'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>      final String pkgName = className.substring(0, index);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_54'/>
+54
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_54'>1</a>
+<span>
+1. scan : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>      if (acceptResult(className)) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_55'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        getStore().put(pkgName, className);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_56'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_57'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_58'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@430df350_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@430df350_59'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@430df350_41'>41</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@430df350_41'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b><init><br/><b>Killed by : </b>none</span></span> negated conditional &rarr; SURVIVED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@430df350_51'>51</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@430df350_51'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>scan<br/><b>Killed by : </b>junit.org.rapidpm.ddi.reflectionmodel.v007.ReflectionModelTest007.test001()</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@430df350_54'>54</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@430df350_54'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>scan<br/><b>Killed by : </b>junit.org.rapidpm.ddi.reflectionmodel.v007.ReflectionModelTest007.test001()</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>INCREMENTS_MUTATOR</li>
+<li class='mutator'>VOID_METHOD_CALL_MUTATOR</li>
+<li class='mutator'>RETURN_VALS_MUTATOR</li>
+<li class='mutator'>MATH_MUTATOR</li>
+<li class='mutator'>NEGATE_CONDITIONALS_MUTATOR</li>
+<li class='mutator'>INVERT_NEGS_MUTATOR</li>
+<li class='mutator'>CONDITIONALS_BOUNDARY_MUTATOR</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModelTest002.test003_a() (211 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v003.InstanceCreatorTest003.test001() (245 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v001.ProducerResolverTest001.test001() (227 ms)</li><li>junit.org.rapidpm.ddi.producer.v004.ProducerTest004.test001() (234 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.ReflectionModelTest001.test002() (150 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest001.test006() (420 ms)</li><li>junit.org.rapidpm.ddi.base.DITest003.testInjection001() (337 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v004.ProducerResolverTest004.test001() (229 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v011.ClassResolverTest011.test001() (230 ms)</li><li>junit.org.rapidpm.ddi.scopes.v004.ScopesTest004.test003() (229 ms)</li><li>junit.org.rapidpm.ddi.producer.v005.ProducerTest005.test001() (232 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest001.test004() (871 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest001.test002() (333 ms)</li><li>junit.org.rapidpm.ddi.scopes.v004.ScopesTest004.test001() (229 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v017.ClassresolverTest017.test001() (219 ms)</li><li>junit.org.rapidpm.ddi.producer.v002.ProducerTest002.testProducer001() (223 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v018.ClassResolverTest018.test001() (222 ms)</li><li>junit.org.rapidpm.ddi.scopes.v002.ScopesTest002.test002() (254 ms)</li><li>junit.org.rapidpm.ddi.named.NamedTest001.testInjection001() (240 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModelTest002.test002_a() (295 ms)</li><li>junit.org.rapidpm.ddi.base.DITest004.testInjection001() (249 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest001.testInjection001() (200 ms)</li><li>junit.org.rapidpm.ddi.base.DITest007.test001() (296 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v015.ClassresolverTest015.test001() (217 ms)</li><li>junit.org.rapidpm.ddi.base.DITest009.test001() (284 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v012.ClassResolverTest012.test001() (230 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v002.ProducerResolverTest002.test001() (236 ms)</li><li>junit.org.rapidpm.ddi.base.DITest010.test001() (468 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModelTest004.test001_b() (240 ms)</li><li>junit.org.rapidpm.ddi.named.NamedTest002.testInjection001() (243 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModelTest004.test002_b() (269 ms)</li><li>junit.org.rapidpm.ddi.scopes.v006.ScopeTest006.test001() (238 ms)</li><li>junit.org.rapidpm.ddi.scopes.v001.ScopesTest001.test001() (227 ms)</li><li>junit.org.rapidpm.ddi.scopes.v001.ScopesTest001.test003() (222 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v013.ClassresolverTest013.test001() (236 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v005.ClassResolverTest005.test002() (272 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v009.ClassResolverTest009.testProxy001() (242 ms)</li><li>junit.org.rapidpm.ddi.base.DITest005.test001() (245 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v005.ProducerResolverTest005.test001() (272 ms)</li><li>junit.org.rapidpm.ddi.producer.v001.ProducerTest001.testProducer001() (229 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.ReflectionModelTest001.test001() (163 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v003.ReflectionModelTest003.test001() (134 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v010.ClassResolverTest010.test001() (226 ms)</li><li>junit.org.rapidpm.ddi.scopes.v004.ScopesTest004.test002() (235 ms)</li><li>junit.org.rapidpm.ddi.scopes.v004.ScopesTest004.test004() (219 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v008.ClassResolverTest008.testProxy001() (246 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest001.test005() (97 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v006.ClassResolverTest006.testProducer001() (299 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v002.InstanceCreatorTest002.test001() (233 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test002.BadClassResolverTest.test001() (252 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModelTest002.test003_b() (245 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest001.test003() (294 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v006.ProducerResolverTest006.test001() (235 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v016.ClassresolverTest016.test001() (226 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v017.ClassresolverTest017.test002() (239 ms)</li><li>junit.org.rapidpm.ddi.base.DITest001.testInjection001() (830 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v004.InstanceCreatorTest004.test001() (236 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v004.ClassResolverTest004.testProducer001() (225 ms)</li><li>junit.org.rapidpm.ddi.scopes.v002.ScopesTest002.test001() (228 ms)</li><li>junit.org.rapidpm.ddi.named.NamedTest003.testInjection001() (235 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v003.ClassResolverTest003.testProducer001() (233 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModelTest002.test002_b() (254 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v014.ClassresolverTest014.test001() (481 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v007.ClassResolverTest007.testProxy001() (293 ms)</li><li>junit.org.rapidpm.ddi.base.DITest006.test001() (270 ms)</li><li>junit.org.rapidpm.ddi.producer.v008.ProducerTest008.test001() (225 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v002.ClassResolverTest002.testProducer001() (226 ms)</li><li>junit.org.rapidpm.ddi.scopes.v003.ScopesTest003.test001() (226 ms)</li><li>junit.org.rapidpm.ddi.base.DITest002.testInjection001() (284 ms)</li><li>junit.org.rapidpm.ddi.producer.v003.ProducerTest003.testProducer001() (229 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v001.ClassResolverTest001.testProducer001() (233 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v003.ProducerResolverTest003.test001() (232 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModelTest002.test001() (337 ms)</li><li>junit.org.rapidpm.ddi.producer.v006.ProducerTest006.test001() (233 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModelTest004.test001_a() (221 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModelTest004.test002_a() (265 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v005.ClassResolverTest005.test001() (236 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v007.ReflectionModelTest007.test001() (179 ms)</li><li>junit.org.rapidpm.ddi.producer.v007.ProducerTest007.test001() (226 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v001.InstanceCreatorTest001.test001() (233 ms)</li><li>junit.org.rapidpm.ddi.scopes.v001.ScopesTest001.test002() (216 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v009.ClassResolverTest009.testProxy002() (232 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='http://pitest.org'>PIT</a> 1.3.2
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReflectionsModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rapidpm-dynamic-cdi-modules-core</a> &gt; <a href="index.source.html" class="el_package">org.rapidpm.ddi.reflections</a> &gt; <span class="el_source">ReflectionsModel.java</span></div><h1>ReflectionsModel.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.rapidpm.ddi.reflections;
+
+import org.rapidpm.frp.model.Pair;
+import org.reflections.Reflections;
+import org.reflections.scanners.MethodAnnotationsScanner;
+import org.reflections.scanners.Scanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
+import repacked.com.google.common.base.Predicate;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+
+import static java.util.Collections.unmodifiableSet;
+
+
+public class ReflectionsModel {
+
+
+  //TODO refactoring to pessimistic write / concurrent read
+
+<span class="fc" id="L49">  private final Map&lt;String, LocalDateTime&gt; activatedPackagesMap = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L50">  private final Object obj = new Object();</span>
+<span class="fc" id="L51">  private final Map&lt;Pair&lt;String, String&gt;, Set&lt;Method&gt;&gt; methodsAnnotatedWithCache = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L52">  private final Map&lt;String, Set&gt; subTypeOfCache = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L53">  private final Map&lt;String, Set&gt; subTypeOfCacheWithoutInterfacesnadGenerated = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L54">  private final Map&lt;Class&lt;? extends Annotation&gt;, Set&gt; typesAnnotatedWithCache = new ConcurrentHashMap&lt;&gt;();</span>
+  private boolean parallelExecutors;
+<span class="fc" id="L56">  private final Reflections reflections = new Reflections(</span>
+<span class="fc" id="L57">      createConfigurationBuilder()</span>
+<span class="fc" id="L58">          .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(&quot;org.rapidpm&quot;)))</span>
+<span class="fc" id="L59">          .setScanners(createScanners())</span>
+  );
+
+<span class="fc" id="L62">  public ReflectionsModel() {</span>
+<span class="fc" id="L63">  }</span>
+
+  public void setParallelExecutors(final boolean parallelExecutors) {
+<span class="nc" id="L66">    this.parallelExecutors = parallelExecutors;</span>
+<span class="nc" id="L67">  }</span>
+
+  public void rescann(final String pkgPrefix) {
+<span class="fc" id="L70">    rescannImpl(createConfigurationBuilder()</span>
+<span class="fc" id="L71">        .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(pkgPrefix)))</span>
+<span class="fc" id="L72">        .setScanners(createScanners()));</span>
+<span class="fc" id="L73">    activatedPackagesMap.put(pkgPrefix, LocalDateTime.now());</span>
+<span class="fc" id="L74">  }</span>
+
+  private void rescannImpl(final ConfigurationBuilder configuration) {
+<span class="fc" id="L77">    synchronized (obj) {</span>
+<span class="fc" id="L78">      final LocalDateTime now = LocalDateTime.now();</span>
+<span class="fc" id="L79">      final Reflections reflections = new Reflections(configuration);</span>
+<span class="fc" id="L80">      this.reflections.merge(reflections);</span>
+<span class="fc" id="L81">      refreshActivatedPkgMap(now, reflections);</span>
+<span class="fc" id="L82">      clearCaches();</span>
+<span class="fc" id="L83">    }</span>
+<span class="fc" id="L84">  }</span>
+
+  private ConfigurationBuilder createConfigurationBuilder() {
+<span class="fc" id="L87">    final ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();</span>
+<span class="fc" id="L88">    configurationBuilder.setUrls(ClasspathHelper.forJavaClassPath());</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">    if (parallelExecutors) return configurationBuilder.useParallelExecutor();</span>
+<span class="fc" id="L90">    else return configurationBuilder;</span>
+  }
+
+  private Scanner[] createScanners() {
+<span class="fc" id="L94">    final Scanner[] sccannerArray = new Scanner[4];</span>
+<span class="fc" id="L95">    sccannerArray[0] = new SubTypesScanner();</span>
+<span class="fc" id="L96">    sccannerArray[1] = new TypeAnnotationsScanner();</span>
+<span class="fc" id="L97">    sccannerArray[2] = new MethodAnnotationsScanner();</span>
+<span class="fc" id="L98">    sccannerArray[3] = new PkgTypesScanner();</span>
+//    sccannerArray[4] = new StaticMetricsProxyScanner();
+//    sccannerArray[5] = new StaticLoggingProxyScanner();
+<span class="fc" id="L101">    return sccannerArray;</span>
+  }
+
+  private void refreshActivatedPkgMap(final LocalDateTime now, final Reflections reflections) {
+<span class="fc" id="L105">    reflections</span>
+<span class="fc" id="L106">        .getStore()</span>
+<span class="fc" id="L107">        .get(index(PkgTypesScanner.class))</span>
+<span class="fc" id="L108">        .keySet()</span>
+<span class="fc" id="L109">        .forEach(pkgName -&gt; activatedPackagesMap.put(pkgName, now));</span>
+<span class="fc" id="L110">  }</span>
+
+  public void clearCaches() {
+<span class="fc" id="L113">    methodsAnnotatedWithCache.clear();</span>
+<span class="fc" id="L114">    subTypeOfCache.clear();</span>
+<span class="fc" id="L115">    subTypeOfCacheWithoutInterfacesnadGenerated.clear();</span>
+<span class="fc" id="L116">    typesAnnotatedWithCache.clear();</span>
+<span class="fc" id="L117">  }</span>
+
+  private String index(Class clazz) {
+<span class="fc" id="L120">    return clazz.getSimpleName();</span>
+  }
+
+  public void rescann(String pkgPrefix, URL... urls) {
+<span class="fc" id="L124">    rescannImpl(createConfigurationBuilder()</span>
+<span class="fc" id="L125">        .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(pkgPrefix)))</span>
+<span class="fc" id="L126">        .setUrls(urls)</span>
+<span class="fc" id="L127">        .setScanners(createScanners()));</span>
+<span class="fc" id="L128">    activatedPackagesMap.put(pkgPrefix, LocalDateTime.now());</span>
+<span class="fc" id="L129">  }</span>
+
+  public void rescann(String pkgPrefix, Collection&lt;URL&gt; urls) {
+<span class="fc" id="L132">    rescannImpl(createConfigurationBuilder()</span>
+<span class="fc" id="L133">        .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(pkgPrefix)))</span>
+<span class="fc" id="L134">        .setUrls(urls)</span>
+<span class="fc" id="L135">        .setScanners(createScanners()));</span>
+<span class="fc" id="L136">    activatedPackagesMap.put(pkgPrefix, LocalDateTime.now());</span>
+<span class="fc" id="L137">  }</span>
+
+  public Set&lt;String&gt; getActivatedPkgs() {
+<span class="fc" id="L140">    return new HashSet&lt;&gt;(activatedPackagesMap.keySet());</span>
+  }
+
+  public boolean isPkgPrefixActivated(final String pkgPrefix) {
+<span class="fc" id="L144">    return activatedPackagesMap.containsKey(pkgPrefix);</span>
+  }
+
+  public LocalDateTime getPkgPrefixActivatedTimestamp(final String pkgPrefix) {
+<span class="fc" id="L148">    return activatedPackagesMap.getOrDefault(pkgPrefix, LocalDateTime.MIN);</span>
+  }
+
+  public Collection&lt;String&gt; getClassesForPkg(final String pkgName) {
+<span class="fc" id="L152">    final Collection&lt;String&gt; clsNames = reflections</span>
+<span class="fc" id="L153">        .getStore()</span>
+<span class="fc" id="L154">        .get(index(PkgTypesScanner.class))</span>
+<span class="fc" id="L155">        .get(pkgName);</span>
+<span class="fc" id="L156">    return Collections.unmodifiableCollection(clsNames);</span>
+  }
+
+//  //TODO to complex for performance
+//  public &lt;T&gt; Set&lt;Class&lt;? extends T&gt;&gt; getStaticMetricProxiesFor(final Class&lt;T&gt; type) {
+//
+//    final ClassLoader[] classLoaders = reflections.getConfiguration().getClassLoaders();
+//
+//    final Collection&lt;String&gt; metricProxyClassNames = reflections
+//        .getStore()
+//        .get(index(StaticMetricsProxyScanner.class))
+//        .get(type.getName());
+//
+//    final List&lt;Class&lt;? extends T&gt;&gt; classes = ReflectionUtils.forNames(metricProxyClassNames, classLoaders);
+//    return unmodifiableSet(new HashSet&lt;&gt;(classes));
+//
+//  }
+//
+//  public &lt;T&gt; Set&lt;Class&lt;? extends T&gt;&gt; getStaticLoggingProxiesFor(final Class&lt;T&gt; type) {
+//    final ClassLoader[] classLoaders = reflections.getConfiguration().getClassLoaders();
+//    final Collection&lt;String&gt; loggingProxyClassNames = reflections.getStore()
+//        .get(index(StaticLoggingProxyScanner.class))
+//        .get(type.getName());
+//
+//    final List&lt;Class&lt;? extends T&gt;&gt; classes = ReflectionUtils.forNames(loggingProxyClassNames, classLoaders);
+//    return unmodifiableSet(new HashSet&lt;&gt;(classes));
+//  }
+
+  //delegated methods
+
+<span class="fc" id="L186">  private final Function&lt;Set, Set&gt; newSet = (Function&lt;Set, Set&gt;) input -&gt; {</span>
+<span class="nc" id="L187">    final HashSet&lt;Set&lt;Class&lt;?&gt;&gt;&gt; hashSet = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L188">    hashSet.addAll(input);</span>
+<span class="nc" id="L189">    return hashSet;</span>
+  };
+
+  public &lt;T&gt; Set&lt;Class&lt;? extends T&gt;&gt; getSubTypesOf(final Class&lt;T&gt; type) {
+<span class="fc bfc" id="L193" title="All 2 branches covered.">    if (subTypeOfCache.containsKey(type.getName())) {</span>
+<span class="fc" id="L194">      return (Set&lt;Class&lt;? extends T&gt;&gt;) subTypeOfCache.get(type.getName());</span>
+    }
+<span class="fc" id="L196">    final Set&lt;Class&lt;? extends T&gt;&gt; subTypesOf = reflections.getSubTypesOf(type);</span>
+//    final Set&lt;Class&lt;? extends T&gt;&gt; unmodifiableSet = Collections.unmodifiableSet(subTypesOf);
+<span class="fc" id="L198">    subTypeOfCache.put(type.getName(), subTypesOf);</span>
+<span class="fc" id="L199">    return subTypesOf;</span>
+//    return reflections.getSubTypesOf(type);
+  }
+
+
+  public &lt;T&gt; Set&lt;Class&lt;? extends T&gt;&gt; getSubTypesWithoutInterfacesAndGeneratedOf(final Class&lt;T&gt; type) {
+
+
+<span class="fc bfc" id="L207" title="All 2 branches covered.">    if (subTypeOfCacheWithoutInterfacesnadGenerated.containsKey(type.getName())) {</span>
+<span class="fc" id="L208">      return (Set&lt;Class&lt;? extends T&gt;&gt;) subTypeOfCacheWithoutInterfacesnadGenerated.get(type.getName());</span>
+    }
+<span class="fc" id="L210">    final Set&lt;Class&lt;? extends T&gt;&gt; subTypesOf = reflections.getSubTypesOf(type);</span>
+<span class="fc" id="L211">    final Set&lt;Class&lt;? extends T&gt;&gt; unmodifiableSet = new ReflectionUtils().removeInterfacesAndGeneratedFromSubTypes(subTypesOf);</span>
+<span class="fc" id="L212">    subTypeOfCacheWithoutInterfacesnadGenerated.put(type.getName(), unmodifiableSet);</span>
+<span class="fc" id="L213">    return unmodifiableSet;</span>
+//    return reflections.getSubTypesOf(type);
+  }
+
+  public Set&lt;Class&lt;?&gt;&gt; getTypesAnnotatedWith(final Class&lt;? extends Annotation&gt; annotation) {
+<span class="fc bfc" id="L218" title="All 2 branches covered.">    if (typesAnnotatedWithCache.containsKey(annotation)) return (Set&lt;Class&lt;?&gt;&gt;) typesAnnotatedWithCache.get(annotation);</span>
+
+<span class="fc" id="L220">    final Set&lt;Class&lt;?&gt;&gt; typesAnnotatedWith = unmodifiableSet(reflections.getTypesAnnotatedWith(annotation));</span>
+<span class="fc" id="L221">    typesAnnotatedWithCache.put(annotation, typesAnnotatedWith);</span>
+<span class="fc" id="L222">    return typesAnnotatedWith;</span>
+//    return reflections.getTypesAnnotatedWith(annotation);
+  }
+
+  public Set&lt;Class&lt;?&gt;&gt; getTypesAnnotatedWith(final Class&lt;? extends Annotation&gt; annotation, final boolean honorInherited) {
+<span class="fc" id="L227">    return reflections.getTypesAnnotatedWith(annotation, honorInherited);</span>
+  }
+
+  public Set&lt;Class&lt;?&gt;&gt; getTypesAnnotatedWith(final Annotation annotation) {
+<span class="fc" id="L231">    return reflections.getTypesAnnotatedWith(annotation);</span>
+  }
+
+  public Set&lt;Class&lt;?&gt;&gt; getTypesAnnotatedWith(final Annotation annotation, final boolean honorInherited) {
+<span class="fc" id="L235">    return reflections.getTypesAnnotatedWith(annotation, honorInherited);</span>
+  }
+
+
+  public Set&lt;Method&gt; getMethodsAnnotatedWith(Class clazz, final Annotation annotation) {
+
+<span class="fc" id="L241">    final Pair&lt;String, String&gt; key = new Pair&lt;&gt;(clazz.getName(), annotation.annotationType().getName());</span>
+
+<span class="fc bfc" id="L243" title="All 2 branches covered.">    if (methodsAnnotatedWithCache.containsKey(key)) return methodsAnnotatedWithCache.get(key);</span>
+
+<span class="fc" id="L245">    final Set&lt;Method&gt; allMethods = ReflectionUtils.getAllMethods(clazz,</span>
+<span class="pc bpc" id="L246" title="1 of 4 branches missed.">        (Predicate&lt;Method&gt;) input -&gt; input != null &amp;&amp; input.isAnnotationPresent(annotation.annotationType()));</span>
+
+<span class="fc" id="L248">    final Set&lt;Method&gt; unmodifiableSet = unmodifiableSet(allMethods);</span>
+<span class="fc" id="L249">    methodsAnnotatedWithCache.put(key, unmodifiableSet);</span>
+<span class="fc" id="L250">    return unmodifiableSet;</span>
+  }
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

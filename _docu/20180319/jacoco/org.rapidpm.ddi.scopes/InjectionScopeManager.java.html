@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InjectionScopeManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rapidpm-dynamic-cdi-modules-core</a> &gt; <a href="index.source.html" class="el_package">org.rapidpm.ddi.scopes</a> &gt; <span class="el_source">InjectionScopeManager.java</span></div><h1>InjectionScopeManager.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.rapidpm.ddi.scopes;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+import org.rapidpm.ddi.DI;
+import org.rapidpm.dependencies.core.logger.Logger;
+import org.rapidpm.dependencies.core.logger.LoggingService;
+
+
+public class InjectionScopeManager {
+
+
+<span class="fc" id="L38">  private static final LoggingService LOGGER = Logger.getLogger(InjectionScopeManager.class);</span>
+<span class="fc" id="L39">  private static final Map&lt;String, String&gt; CLASS_NAME_2_SCOPENAME_MAP = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L40">  private static final Map&lt;String, InjectionScope&gt; INJECTION_SCOPE_MAP = new ConcurrentHashMap&lt;&gt;();</span>
+
+  static {
+<span class="fc" id="L43">    reInitAllScopes();</span>
+<span class="fc" id="L44">  }</span>
+
+  private InjectionScopeManager() {
+
+  }
+
+  public static &lt;T&gt; T getInstance(final Class&lt;T&gt; target) {
+<span class="fc" id="L51">    final String targetName = target.getName();</span>
+
+<span class="fc bfc" id="L53" title="All 2 branches covered.">    if (CLASS_NAME_2_SCOPENAME_MAP.containsKey(targetName)) {</span>
+<span class="fc" id="L54">      final InjectionScope injectionScope = INJECTION_SCOPE_MAP.get(CLASS_NAME_2_SCOPENAME_MAP.get(targetName));</span>
+<span class="fc" id="L55">      return injectionScope.getInstance(targetName);</span>
+    }
+<span class="fc" id="L57">    return null;</span>
+  }
+
+
+  public static &lt;T&gt; void manageInstance(Class&lt;T&gt; targetClass , T instance) {
+<span class="fc" id="L62">    final String targetName = targetClass.getName();</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">    if (CLASS_NAME_2_SCOPENAME_MAP.containsKey(targetName)) {</span>
+<span class="fc" id="L64">      final InjectionScope injectionScope = INJECTION_SCOPE_MAP.get(CLASS_NAME_2_SCOPENAME_MAP.get(targetName));</span>
+<span class="fc" id="L65">      injectionScope.storeInstance(targetClass , instance);</span>
+    }
+<span class="fc" id="L67">  }</span>
+
+  public static boolean isManagedByMe(Class clazz) {
+<span class="fc" id="L70">    return CLASS_NAME_2_SCOPENAME_MAP.containsKey(clazz.getName());</span>
+  }
+
+  public static synchronized void cleanUp() {
+<span class="fc" id="L74">    final Set&lt;Class&lt;? extends InjectionScope&gt;&gt; scopesFromReflectionModel = DI.getSubTypesOf(InjectionScope.class);</span>
+<span class="fc" id="L75">    registerNewScopes(scopesFromReflectionModel);</span>
+<span class="fc" id="L76">    removeOldScopes(scopesFromReflectionModel);</span>
+<span class="fc" id="L77">  }</span>
+
+  private static void registerNewScopes(Set&lt;Class&lt;? extends InjectionScope&gt;&gt; scopeClasses) {
+<span class="fc" id="L80">    scopeClasses</span>
+<span class="fc" id="L81">        .stream()</span>
+<span class="fc" id="L82">        .map(c -&gt; {</span>
+          try {
+<span class="fc" id="L84">            return c.getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L85">          } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {</span>
+<span class="fc" id="L86">            LOGGER.warning(&quot;could not create an instance &quot; , e);</span>
+          }
+<span class="fc" id="L88">          return null;</span>
+        })
+<span class="fc" id="L90">        .filter(Objects::nonNull)</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        .filter(scope -&gt; ! INJECTION_SCOPE_MAP.containsKey(scope.getScopeName()))</span>
+<span class="fc" id="L92">        .forEach((injectionScope) -&gt; INJECTION_SCOPE_MAP.put(injectionScope.getScopeName() , injectionScope));</span>
+<span class="fc" id="L93">  }</span>
+
+  private static void removeOldScopes(Set&lt;Class&lt;? extends InjectionScope&gt;&gt; scopeClasses) {
+
+<span class="fc" id="L97">    final Set&lt;String&gt; scopeNamesFromReflectionModel = getNamesFromScopes(scopeClasses);</span>
+
+<span class="fc" id="L99">    INJECTION_SCOPE_MAP.keySet().stream()</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">                       .filter(scope -&gt; ! scopeNamesFromReflectionModel.contains(scope))</span>
+<span class="fc" id="L101">                       .forEach(InjectionScopeManager::removeScope);</span>
+<span class="fc" id="L102">  }</span>
+
+  private static Set&lt;String&gt; getNamesFromScopes(Set&lt;Class&lt;? extends InjectionScope&gt;&gt; scopes) {
+<span class="fc" id="L105">    return scopes.stream()</span>
+<span class="fc" id="L106">                 .map(c -&gt; {</span>
+                   try { //TODO CheckedFunction
+<span class="fc" id="L108">                     return c.getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L109">                   } catch (InstantiationException | IllegalAccessException</span>
+                       | NoSuchMethodException | InvocationTargetException e) {
+<span class="fc" id="L111">                     LOGGER.warning(&quot;could not create new instance &quot; , e);</span>
+                   }
+<span class="fc" id="L113">                   return null;</span>
+                 })
+<span class="fc" id="L115">                 .filter(Objects::nonNull)</span>
+<span class="fc" id="L116">                 .map(InjectionScope::getScopeName)</span>
+<span class="fc" id="L117">                 .collect(Collectors.toSet());</span>
+  }
+
+  public static void registerClassForScope(final Class clazz , final String scopeName) {
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">    if (INJECTION_SCOPE_MAP.containsKey(scopeName)) {</span>
+<span class="fc" id="L122">      CLASS_NAME_2_SCOPENAME_MAP.putIfAbsent(clazz.getName() , scopeName);</span>
+    }
+<span class="fc" id="L124">  }</span>
+
+  public static void deRegisterClassForScope(final Class clazz) {
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">    if (CLASS_NAME_2_SCOPENAME_MAP.containsKey(clazz.getName())) {</span>
+<span class="fc" id="L128">      CLASS_NAME_2_SCOPENAME_MAP.remove(clazz.getName());</span>
+    }
+<span class="fc" id="L130">  }</span>
+
+  public static String scopeForClass(final Class clazz) {
+<span class="fc" id="L133">    final String clazzName = clazz.getName();</span>
+<span class="fc" id="L134">    return CLASS_NAME_2_SCOPENAME_MAP.getOrDefault(clazzName , &quot;PER INJECT&quot;);</span>
+  }
+
+  public static Set&lt;String&gt; listAllActiveScopeNames() {
+<span class="fc" id="L138">    return Collections.unmodifiableSet(INJECTION_SCOPE_MAP.keySet());</span>
+  }
+
+  public static void clearScope(final String scopeName) {
+<span class="fc" id="L142">    INJECTION_SCOPE_MAP.computeIfPresent(scopeName , (s , injectionScope) -&gt; {</span>
+<span class="fc" id="L143">      injectionScope.clear();</span>
+<span class="fc" id="L144">      return injectionScope;</span>
+    });
+<span class="fc" id="L146">  }</span>
+
+
+  private static void removeScope(final String scopeName) {
+<span class="fc" id="L150">    final Set&lt;String&gt; keySet = CLASS_NAME_2_SCOPENAME_MAP.keySet();</span>
+<span class="fc" id="L151">    INJECTION_SCOPE_MAP</span>
+<span class="fc" id="L152">        .computeIfPresent(scopeName , (s , injectionScope) -&gt; {</span>
+<span class="fc" id="L153">          injectionScope.clear();</span>
+<span class="fc" id="L154">          keySet.forEach(k -&gt; CLASS_NAME_2_SCOPENAME_MAP</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">              .computeIfPresent(k , (classname , scope) -&gt; (scope.equals(scopeName)) ? null : scope));</span>
+<span class="fc" id="L156">          return null;</span>
+        });
+<span class="fc" id="L158">  }</span>
+
+  public static void reInitAllScopes() {
+<span class="fc" id="L161">    CLASS_NAME_2_SCOPENAME_MAP.clear();</span>
+<span class="fc" id="L162">    INJECTION_SCOPE_MAP.values().forEach(InjectionScope::clear);</span>
+<span class="fc" id="L163">    INJECTION_SCOPE_MAP.clear();</span>
+<span class="fc" id="L164">    final Set&lt;Class&lt;? extends InjectionScope&gt;&gt; subTypesOf = DI.getSubTypesOf(InjectionScope.class);</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">    for (Class&lt;? extends InjectionScope&gt; aClass : subTypesOf) {</span>
+      try {
+<span class="fc" id="L167">        final InjectionScope injectionScope = aClass.getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L168">        INJECTION_SCOPE_MAP.put(injectionScope.getScopeName() , injectionScope);</span>
+<span class="nc" id="L169">      } catch (InstantiationException | IllegalAccessException</span>
+          | NoSuchMethodException | InvocationTargetException e) {
+<span class="nc" id="L171">        LOGGER.warning(&quot;could not create an instance &quot; , e);</span>
+<span class="fc" id="L172">      }</span>
+<span class="fc" id="L173">    }</span>
+
+<span class="fc" id="L175">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImplementingClassResolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rapidpm-dynamic-cdi-modules-core</a> &gt; <a href="index.source.html" class="el_package">org.rapidpm.ddi.implresolver</a> &gt; <span class="el_source">ImplementingClassResolver.java</span></div><h1>ImplementingClassResolver.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.rapidpm.ddi.implresolver;
+
+import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+import org.rapidpm.ddi.DDIModelException;
+import org.rapidpm.ddi.DI;
+import org.rapidpm.ddi.ResponsibleFor;
+import org.rapidpm.dependencies.core.logger.Logger;
+import org.rapidpm.dependencies.core.logger.LoggingService;
+
+/**
+ * one subtype - will return this class
+ * n subtypes - will search for classresolver to decide what will be the right implementation
+ * &lt;p&gt;
+ * no subtype - will return the interface itself, maybe on the fly implementations are available
+ * &lt;p&gt;
+ * Created by svenruppert on 23.07.15.
+ */
+<span class="fc" id="L45">public class ImplementingClassResolver {</span>
+
+<span class="fc" id="L47">  private static final LoggingService LOGGER = Logger.getLogger(ImplementingClassResolver.class);</span>
+<span class="fc" id="L48">  private static final ImplementingClassResolver INSTANCE = new ImplementingClassResolver();</span>
+
+
+  //here only if you have 1 interface and multiple implementations - here the ClassResolver
+<span class="fc" id="L52">  private final Map&lt;Class, Class&lt;? extends ClassResolver&gt;&gt; resolverCacheForClass2ClassResolver = new ConcurrentHashMap&lt;&gt;();</span>
+
+  public static void clearCache() {
+<span class="fc" id="L55">    INSTANCE.resolverCacheForClass2ClassResolver.clear();</span>
+<span class="fc" id="L56">  }</span>
+
+
+  public static &lt;I&gt; Class&lt;? extends I&gt; resolve(Class&lt;I&gt; interf) {
+<span class="fc" id="L60">    return INSTANCE.resolveNewForClass(interf);</span>
+  }
+
+  private &lt;I&gt; Class&lt;? extends I&gt; resolveNewForClass(final Class&lt;I&gt; interf) {
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">    if (interf.isInterface()) {</span>
+<span class="fc" id="L65">      final Set&lt;Class&lt;? extends I&gt;&gt; subTypesOf = DI.getSubTypesWithoutInterfacesAndGeneratedOf(interf);</span>
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">      if (subTypesOf.isEmpty()) return interf;</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">      else if (subTypesOf.size() == 1) {</span>
+<span class="fc" id="L69">        return handleOneSubType(interf , subTypesOf.toArray()[0]);</span>
+      } else {
+<span class="fc" id="L71">        return handleManySubTypes(interf , subTypesOf);</span>
+      }
+    } else {
+<span class="nc" id="L74">      return interf;</span>
+    }
+  }
+
+
+  //ToDo this result could be cached....
+  private &lt;I&gt; Class&lt;? extends I&gt; handleOneSubType(final Class&lt;I&gt; interf , final Object o) {
+<span class="fc" id="L81">    final Class&lt;? extends I&gt; implClass = (Class&lt;? extends I&gt;) o;</span>
+<span class="fc" id="L82">    final Set&lt;Class&lt;?&gt;&gt; producersForInterface = findProducersFor(interf);</span>
+<span class="fc" id="L83">    final Set&lt;Class&lt;?&gt;&gt; producersForImpl = findProducersFor(implClass);</span>
+    //@formatter:off
+<span class="fc bfc" id="L85" title="All 4 branches covered.">        if (!producersForInterface.isEmpty() &amp;&amp; !producersForImpl.isEmpty()) return interf;</span>
+<span class="fc bfc" id="L86" title="All 4 branches covered.">        if (producersForInterface.isEmpty()  &amp;&amp; producersForImpl.isEmpty())  return implClass;</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (producersForImpl.isEmpty())                                      return interf;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (producersForInterface.isEmpty())                                 return implClass;</span>
+        //@formatter:on
+<span class="nc" id="L90">    return null;</span>
+  }
+
+  private &lt;I&gt; Class&lt;? extends I&gt; handleManySubTypes(final Class&lt;I&gt; interf , final Set&lt;Class&lt;? extends I&gt;&gt; subTypesOf) {
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">    if (resolverCacheForClass2ClassResolver.containsKey(interf)) {</span>
+<span class="fc" id="L96">      return handleOneResolver(interf , resolverCacheForClass2ClassResolver.get(interf));</span>
+    }
+
+<span class="fc" id="L99">    final List&lt;Class&lt;? extends ClassResolver&gt;&gt; clearedListOfResolvers = DI.getSubTypesWithoutInterfacesAndGeneratedOf(ClassResolver.class)</span>
+<span class="fc" id="L100">                                                                          .stream()</span>
+<span class="fc" id="L101">                                                                          .filter(aClassResolver -&gt; aClassResolver.isAnnotationPresent(ResponsibleFor.class))</span>
+<span class="fc" id="L102">                                                                          .filter(aClassResolver -&gt; {</span>
+<span class="fc" id="L103">                                                                            final ResponsibleFor responsibleFor = aClassResolver.getAnnotation(ResponsibleFor.class);</span>
+<span class="fc" id="L104">                                                                            return interf.equals(responsibleFor.value());</span>
+                                                                          })
+<span class="fc" id="L106">                                                                          .collect(Collectors.toList());</span>
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">    if (clearedListOfResolvers.size() == 1) {</span>
+<span class="fc" id="L109">      final Class&lt;? extends ClassResolver&gt; classResolverClass = clearedListOfResolvers.get(0);</span>
+<span class="fc" id="L110">      resolverCacheForClass2ClassResolver.put(interf , classResolverClass);</span>
+<span class="fc" id="L111">      return handleOneResolver(interf , classResolverClass);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">    } else if (clearedListOfResolvers.isEmpty()) {</span>
+<span class="fc" id="L113">      return handleNoResolvers(interf , subTypesOf);</span>
+    }
+
+<span class="fc" id="L116">    final String message = &quot;interface with multiple implementations and more as 1 ClassResolver = &quot;</span>
+                           + interf
+                           + &quot; ClassResolver: &quot; + clearedListOfResolvers;
+<span class="fc" id="L119">    throw new DDIModelException(message);</span>
+  }
+
+  private &lt;I&gt; Class&lt;? extends I&gt; handleOneResolver(final Class&lt;I&gt; interf , final Class&lt;? extends ClassResolver&gt; classResolverClass) {
+    try {
+<span class="fc" id="L124">      final ClassResolver&lt;I&gt; classResolver = classResolverClass.getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L125">      return classResolver.resolve(interf);</span>
+<span class="fc" id="L126">    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {</span>
+<span class="fc" id="L127">      LOGGER.warning(&quot;could not create instance &quot; , e);</span>
+<span class="fc" id="L128">      throw new DDIModelException(interf + &quot; -- &quot; + e);</span>
+<span class="nc" id="L129">    } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L130">      LOGGER.warning(&quot;could not create instance &quot; , e);</span>
+<span class="nc" id="L131">      throw new DDIModelException(interf + &quot; -- &quot; + e);</span>
+    }
+  }
+
+  private &lt;I&gt; Class&lt;? extends I&gt; handleNoResolvers(final Class&lt;I&gt; interf , final Set&lt;Class&lt;? extends I&gt;&gt; subTypesOf) {
+<span class="fc" id="L136">    final Set&lt;Class&lt;?&gt;&gt; producersForInterface = findProducersFor(interf);</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">    if (producersForInterface.isEmpty()) {</span>
+<span class="fc" id="L138">      final StringBuilder stringBuilder = new StringBuilder(&quot;interface with multiple implementations and no ClassResolver= &quot; + interf);</span>
+<span class="fc" id="L139">      final List&lt;String&gt; implList = subTypesOf</span>
+<span class="fc" id="L140">          .stream()</span>
+<span class="fc" id="L141">          .map(c -&gt; &quot;impl. : &quot; + c.getName()).collect(Collectors.toList());</span>
+<span class="fc" id="L142">      stringBuilder.append(implList);</span>
+
+<span class="fc" id="L144">      throw new DDIModelException(stringBuilder.toString());</span>
+    }
+<span class="fc bfc" id="L146" title="All 2 branches covered.">    if (producersForInterface.size() == 1) return interf;</span>
+
+<span class="fc" id="L148">    final StringBuilder stringBuilder = new StringBuilder(&quot;interface with multiple implementations and no ClassResolver and n Producers f the interface = &quot; + interf);</span>
+
+<span class="fc" id="L150">    final List&lt;String&gt; implList = subTypesOf.stream().map(c -&gt; &quot;impl. : &quot; + c.getName()).collect(Collectors.toList());</span>
+<span class="fc" id="L151">    final List&lt;String&gt; prodList = producersForInterface.stream().map(c -&gt; &quot;producer. : &quot; + c.getName()).collect(Collectors.toList());</span>
+
+<span class="fc" id="L153">    stringBuilder.append(implList).append(prodList);</span>
+
+<span class="fc" id="L155">    throw new DDIModelException(stringBuilder.toString());</span>
+  }
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

@@ -1,0 +1,15 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi,DI.new PostConstruct() {...},0,5,0,0,0,2,0,2,0,2
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi,DI,44,343,4,18,9,117,5,41,1,34
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi,DDIModelException,10,13,0,0,4,6,2,3,2,3
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.reflections,ReflectionUtils,0,102,0,18,0,17,0,14,0,5
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.reflections,PkgTypesScanner,0,46,2,4,0,13,2,4,0,3
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.reflections,ReflectionsModel,17,411,2,12,5,93,4,28,2,23
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.bootstrap,ClassResolverCheck001,1,33,1,3,1,6,1,3,0,2
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.implresolver,ImplementingClassResolver,23,317,2,26,5,56,2,26,0,14
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.producerresolver,ProducerResolverLocator,0,31,0,0,0,10,0,4,0,4
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.producer,ProducerLocator,0,49,0,2,0,14,0,5,0,4
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.producer,InstanceCreator,24,385,4,46,3,87,4,28,0,7
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.scopes.provided,JVMSingletonInjectionScope,0,53,0,4,0,13,0,8,0,6
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.scopes,InjectionScope,0,3,0,0,0,1,0,1,0,1
+rapidpm-dynamic-cdi-modules-core,org.rapidpm.ddi.scopes,InjectionScopeManager,7,274,4,12,2,76,4,28,0,24
