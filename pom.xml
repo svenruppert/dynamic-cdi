@@ -28,12 +28,12 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.5.8</version>
+    <version>3.5.10</version>
   </parent>
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5-SNAPSHOT</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
@@ -84,8 +84,8 @@
 
   <!--Change BOM too !!-->
   <properties>
-    <rapidpm-dynamic-cdi.version>1.0.4</rapidpm-dynamic-cdi.version>
-    <rapidpm-functional-reactive.version>0.5.1</rapidpm-functional-reactive.version>
+    <rapidpm-dynamic-cdi.version>1.0.5-SNAPSHOT</rapidpm-dynamic-cdi.version>
+    <rapidpm-functional-reactive.version>0.5.3</rapidpm-functional-reactive.version>
   </properties>
 
   <dependencyManagement>
