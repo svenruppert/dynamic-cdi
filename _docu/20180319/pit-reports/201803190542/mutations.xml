@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright © 2013 Sven Ruppert (sven.ruppert@gmail.com)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <mutations>
 <mutation detected='true' status='KILLED' numberOfTestsRun='2'><sourceFile>DI.java</sourceFile><mutatedClass>org.rapidpm.ddi.DI</mutatedClass><mutatedMethod>activateDI</mutatedMethod><methodDescription>(Ljava/lang/Class;)Ljava/lang/Object;</methodDescription><lineNumber>187</lineNumber><mutator>org.pitest.mutationtest.engine.gregor.mutators.NegateConditionalsMutator</mutator><index>4</index><block>62</block><killingTest>junit.org.rapidpm.ddi.classresolver.v015.ClassresolverTest015.test001()</killingTest><description>negated conditional</description></mutation>
 <mutation detected='true' status='KILLED' numberOfTestsRun='2'><sourceFile>DI.java</sourceFile><mutatedClass>org.rapidpm.ddi.DI</mutatedClass><mutatedMethod>activateDI</mutatedMethod><methodDescription>(Ljava/lang/Class;)Ljava/lang/Object;</methodDescription><lineNumber>192</lineNumber><mutator>org.pitest.mutationtest.engine.gregor.mutators.ReturnValsMutator</mutator><index>26</index><block>63</block><killingTest>junit.org.rapidpm.ddi.classresolver.v015.ClassresolverTest015.test001()</killingTest><description>mutated return of Object value for org/rapidpm/ddi/DI::activateDI to ( if (x != null) null else throw new RuntimeException )</description></mutation>
