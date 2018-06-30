@@ -26,7 +26,7 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.6.2</version>
+    <version>3.6.3</version>
   </parent>
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
