@@ -31,7 +31,7 @@
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
-  <version>1.0.7-SNAPSHOT</version>
+  <version>1.0.7</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
@@ -82,8 +82,8 @@
 
   <!--Change BOM too !!-->
   <properties>
-    <rapidpm-dynamic-cdi.version>1.0.7-SNAPSHOT</rapidpm-dynamic-cdi.version>
-    <rapidpm-functional-reactive.version>0.6.0</rapidpm-functional-reactive.version>
+    <rapidpm-dynamic-cdi.version>1.0.7</rapidpm-dynamic-cdi.version>
+    <rapidpm-functional-reactive.version>0.6.2</rapidpm-functional-reactive.version>
   </properties>
 
   <dependencyManagement>
