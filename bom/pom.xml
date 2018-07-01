@@ -40,6 +40,11 @@
     <dependencies>
       <dependency>
         <groupId>org.rapidpm.dynamic-cdi</groupId>
+        <artifactId>rapidpm-dynamic-cdi-modules-reflection</artifactId>
+        <version>${rapidpm-dynamic-cdi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm.dynamic-cdi</groupId>
         <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
         <version>${rapidpm-dynamic-cdi.version}</version>
       </dependency>

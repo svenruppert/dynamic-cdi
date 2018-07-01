@@ -30,6 +30,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>reflection</module>
         <module>core</module>
     </modules>
 
