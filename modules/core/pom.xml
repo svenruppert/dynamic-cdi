@@ -22,7 +22,7 @@
   <parent>
     <artifactId>rapidpm-dynamic-cdi-modules</artifactId>
     <groupId>org.rapidpm.dynamic-cdi</groupId>
-    <version>1.0.7-01</version>
+    <version>1.0.8-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
