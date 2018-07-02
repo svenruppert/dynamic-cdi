@@ -4,6 +4,12 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1b039c89fb9f4baa91f5d7b906bf13f6)](https://www.codacy.com/app/sven-ruppert/dynamic-cdi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Dynamic-Dependency-Injection/dynamic-cdi&amp;utm_campaign=Badge_Grade)
 
 
+## JDK Informations
+Since version 1.1.0 this will run under JDK10 ff. The compiler is now set on Release 10.
+The version 1.0.x is based on JDK8.
+
+
+
 Here we will start with an more dynamic version of the default cdi implementations.
 
 The implementation is covered with over 90% mutation test coverage.
