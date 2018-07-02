@@ -32,7 +32,7 @@
   <!--Change parent pom too !!-->
   <properties>
     <rapidpm-dynamic-cdi.version>1.0.8-SNAPSHOT</rapidpm-dynamic-cdi.version>
-    <rapidpm-functional-reactive.version>0.6.1</rapidpm-functional-reactive.version>
+    <rapidpm-functional-reactive.version>0.7.0-SNAPSHOT</rapidpm-functional-reactive.version>
   </properties>
 
 

@@ -30,7 +30,7 @@ import java.util.Collection;
 public class ReflectionModelTest002 {
 
 
-  private static final Collection<URL> urls = ClasspathHelper.forClassLoader();
+//  private static final Collection<URL> urls = ClasspathHelper.forClassLoader();
 
   @BeforeEach
   public void setUp() throws Exception {
@@ -47,7 +47,7 @@ public class ReflectionModelTest002 {
   public void test001() throws Exception {
     final String aPackageName = checkPkgIsNotActivated();
 
-    DI.activatePackages(aPackageName, urls);
+    DI.activatePackages(aPackageName, ClasspathHelper.forClassLoader());
     Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     DI.clearReflectionModel();
@@ -62,9 +62,7 @@ public class ReflectionModelTest002 {
   private String checkPkgIsNotActivated() {
     final Package aPackage = Service.class.getPackage();
     final String aPackageName = aPackage.getName();
-    System.out.println("aPackage = " + aPackageName);
     Assertions.assertFalse(DI.isPkgPrefixActivated(aPackageName));
-    Assertions.assertFalse(urls.isEmpty());
     return aPackageName;
   }
 
@@ -77,7 +75,7 @@ public class ReflectionModelTest002 {
   public void test002_a() throws Exception {
     final String aPackageName = checkPkgIsNotActivated();
 
-    DI.activatePackages(aPackageName, urls);
+    DI.activatePackages(aPackageName, ClasspathHelper.forClassLoader());
     Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     DI.clearReflectionModel();
@@ -93,7 +91,7 @@ public class ReflectionModelTest002 {
   public void test002_b() throws Exception {
     final String aPackageName = checkPkgIsNotActivated();
 
-    DI.activatePackages( aPackageName, urls);
+    DI.activatePackages( aPackageName, ClasspathHelper.forClassLoader());
     Assertions.assertTrue(DI.isPkgPrefixActivated(aPackageName));
 
     checkTimestamp(aPackageName);

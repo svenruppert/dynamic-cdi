@@ -26,7 +26,7 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.6.3</version>
+    <version>4.0.0-SNAPSHOT</version>
   </parent>
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
@@ -62,8 +62,8 @@
     <url>https://github.com/Dynamic-Dependency-Injection/dynamic-cdi/issues</url>
   </issueManagement>
   <!--<ciManagement>-->
-    <!--<system>TeamCity</system>-->
-    <!--<url>https://build.rapidpm.org/</url>-->
+  <!--<system>TeamCity</system>-->
+  <!--<url>https://build.rapidpm.org/</url>-->
   <!--</ciManagement>-->
   <licenses>
     <license>
@@ -82,8 +82,14 @@
 
   <!--Change BOM too !!-->
   <properties>
+
+
+    <maven.compiler.target>10</maven.compiler.target>
+    <maven.compiler.source>10</maven.compiler.source>
+
+
     <rapidpm-dynamic-cdi.version>1.0.8-SNAPSHOT</rapidpm-dynamic-cdi.version>
-    <rapidpm-functional-reactive.version>0.6.1</rapidpm-functional-reactive.version>
+    <rapidpm-functional-reactive.version>0.7.0-SNAPSHOT</rapidpm-functional-reactive.version>
   </properties>
 
   <dependencyManagement>
@@ -97,7 +103,24 @@
     </dependencies>
   </dependencyManagement>
 
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <release>10</release>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>6.2</version> <!-- Use newer version of ASM -->
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
 
   <profiles>
     <profile>

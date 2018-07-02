@@ -31,6 +31,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.rapidpm.dynamic-cdi</groupId>
       <artifactId>rapidpm-dynamic-cdi-modules-reflection</artifactId>
       <version>${rapidpm-dynamic-cdi.version}</version>
@@ -54,56 +59,56 @@
       <groupId>org.rapidpm</groupId>
       <artifactId>rapidpm-functional-reactive</artifactId>
     </dependency>
-
   </dependencies>
-
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-              </transformers>
-              <dependencyReducedPomLocation>${project.build.directory}/reduced-pom.xml</dependencyReducedPomLocation>
-              <minimizeJar>true</minimizeJar>
-              <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
-              <createSourcesJar>true</createSourcesJar>
-              <shadeSourcesContent>false</shadeSourcesContent>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-              <artifactSet>
-                <excludes>
-                  <exclude>junit:junit</exclude>
-                  <exclude>jmock:*</exclude>
-                  <exclude>org.openjdk.jmh:*</exclude>
-                  <exclude>org.jacoco:*</exclude>
-                  <exclude>org.objectweb:*</exclude>
-                  <exclude>*:xml-apis</exclude>
-                  <exclude>org.apache.maven:lib:tests</exclude>
-                  <exclude>log4j:log4j:jar:</exclude>
-                </excludes>
-              </artifactSet>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+
+
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-shade-plugin</artifactId>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<phase>package</phase>-->
+            <!--<goals>-->
+              <!--<goal>shade</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+              <!--<transformers>-->
+                <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>-->
+              <!--</transformers>-->
+              <!--<dependencyReducedPomLocation>${project.build.directory}/reduced-pom.xml</dependencyReducedPomLocation>-->
+              <!--<minimizeJar>true</minimizeJar>-->
+              <!--<promoteTransitiveDependencies>true</promoteTransitiveDependencies>-->
+              <!--<createSourcesJar>true</createSourcesJar>-->
+              <!--<shadeSourcesContent>false</shadeSourcesContent>-->
+              <!--<filters>-->
+                <!--<filter>-->
+                  <!--<artifact>*:*</artifact>-->
+                  <!--<excludes>-->
+                    <!--<exclude>META-INF/*.SF</exclude>-->
+                    <!--<exclude>META-INF/*.DSA</exclude>-->
+                    <!--<exclude>META-INF/*.RSA</exclude>-->
+                  <!--</excludes>-->
+                <!--</filter>-->
+              <!--</filters>-->
+              <!--<artifactSet>-->
+                <!--<excludes>-->
+                  <!--<exclude>junit:junit</exclude>-->
+                  <!--<exclude>jmock:*</exclude>-->
+                  <!--<exclude>org.openjdk.jmh:*</exclude>-->
+                  <!--<exclude>org.jacoco:*</exclude>-->
+                  <!--<exclude>org.objectweb:*</exclude>-->
+                  <!--<exclude>*:xml-apis</exclude>-->
+                  <!--<exclude>org.apache.maven:lib:tests</exclude>-->
+                  <!--<exclude>log4j:log4j:jar:</exclude>-->
+                <!--</excludes>-->
+              <!--</artifactSet>-->
+            <!--</configuration>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
 
     </plugins>
   </build>
