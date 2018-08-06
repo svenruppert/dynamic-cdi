@@ -26,12 +26,12 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.4</version>
   </parent>
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.1</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
@@ -83,13 +83,11 @@
   <!--Change BOM too !!-->
   <properties>
 
-
     <maven.compiler.target>10</maven.compiler.target>
     <maven.compiler.source>10</maven.compiler.source>
 
-
-    <rapidpm-dynamic-cdi.version>1.1.1-SNAPSHOT</rapidpm-dynamic-cdi.version>
-    <rapidpm-functional-reactive.version>0.7.0</rapidpm-functional-reactive.version>
+    <rapidpm-dynamic-cdi.version>1.1.1</rapidpm-dynamic-cdi.version>
+    <rapidpm-functional-reactive.version>0.7.3</rapidpm-functional-reactive.version>
   </properties>
 
   <dependencyManagement>
@@ -105,20 +103,20 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <release>10</release>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>6.2</version> <!-- Use newer version of ASM -->
-          </dependency>
-        </dependencies>
-      </plugin>
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-compiler-plugin</artifactId>-->
+        <!--<configuration>-->
+          <!--<release>10</release>-->
+        <!--</configuration>-->
+        <!--<dependencies>-->
+          <!--<dependency>-->
+            <!--<groupId>org.ow2.asm</groupId>-->
+            <!--<artifactId>asm</artifactId>-->
+            <!--<version>6.2.1</version> &lt;!&ndash; Use newer version of ASM &ndash;&gt;-->
+          <!--</dependency>-->
+        <!--</dependencies>-->
+      <!--</plugin>-->
     </plugins>
   </build>
 
