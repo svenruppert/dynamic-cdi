@@ -15,14 +15,5 @@
 # limitations under the License.
 #
 
-
-docker run \
-       --rm \
-       --name compile \
-       -v "$(pwd)":/usr/src/mymaven \
-       -w /usr/src/mymaven \
-       svenruppert/maven-3.6.1-openjdk:1.13.0-25 \
-       mvn clean install
-
-
-#       svenruppert/maven-3.6.1-adopt:1.8.212-04 \
+docker rm deploy
+docker-compose up

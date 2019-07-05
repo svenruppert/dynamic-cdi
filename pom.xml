@@ -26,12 +26,12 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>4.0.4</version>
+    <version>04.01.02-RPM</version>
   </parent>
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>01.02.00-RPM</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
@@ -43,9 +43,9 @@
   <description>Dynamic Dependency Injection with different ways to manage the resolver-strategy</description>
 
   <scm>
-    <url>https://github.com/Dynamic-Dependency-Injection/dynamic-cdi</url>
-    <connection>scm:git:https://github.com/Dynamic-Dependency-Injection/dynamic-cdi.git</connection>
-    <developerConnection>scm:git:https://github.com/Dynamic-Dependency-Injection/dynamic-cdi.git</developerConnection>
+    <url>https://github.com/svenruppert/dynamic-cdi</url>
+    <connection>scm:git:https://github.com/svenruppert/dynamic-cdi.git</connection>
+    <developerConnection>scm:git:https://github.com/svenruppert/dynamic-cdi.git</developerConnection>
   </scm>
   <developers>
     <developer>
@@ -59,7 +59,7 @@
   </developers>
   <issueManagement>
     <system>Github</system>
-    <url>https://github.com/Dynamic-Dependency-Injection/dynamic-cdi/issues</url>
+    <url>https://github.com/svenruppert/dynamic-cdi/issues</url>
   </issueManagement>
   <!--<ciManagement>-->
   <!--<system>TeamCity</system>-->
@@ -76,49 +76,32 @@
 
 
   <modules>
-    <module>bom</module>
     <module>modules</module>
   </modules>
 
-  <!--Change BOM too !!-->
   <properties>
+    <rapidpm-dynamic-cdi.version>1.2.0</rapidpm-dynamic-cdi.version>
 
-    <maven.compiler.target>10</maven.compiler.target>
-    <maven.compiler.source>10</maven.compiler.source>
+    <!--<maven.compiler.release>8</maven.compiler.release> &lt;!&ndash;release makes source and target&ndash;&gt;-->
+    <maven.compiler.source>8</maven.compiler.source> <!--redundant, but IntelliJ doesn't-->
+    <maven.compiler.target>8</maven.compiler.target> <!--use release when importing-->
 
-    <rapidpm-dynamic-cdi.version>1.1.2-SNAPSHOT</rapidpm-dynamic-cdi.version>
-    <rapidpm-functional-reactive.version>0.7.3</rapidpm-functional-reactive.version>
+    <minimum-maven.version>3.3.9</minimum-maven.version>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.rapidpm</groupId>
-        <artifactId>rapidpm-functional-reactive</artifactId>
-        <!--change in bom too-->
-        <version>${rapidpm-functional-reactive.version}</version>
+        <groupId>org.rapidpm.dynamic-cdi</groupId>
+        <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
+        <version>${rapidpm-dynamic-cdi.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
 
-  <build>
-    <plugins>
-      <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-compiler-plugin</artifactId>-->
-        <!--<configuration>-->
-          <!--<release>10</release>-->
-        <!--</configuration>-->
-        <!--<dependencies>-->
-          <!--<dependency>-->
-            <!--<groupId>org.ow2.asm</groupId>-->
-            <!--<artifactId>asm</artifactId>-->
-            <!--<version>6.2.1</version> &lt;!&ndash; Use newer version of ASM &ndash;&gt;-->
-          <!--</dependency>-->
-        <!--</dependencies>-->
-      <!--</plugin>-->
-    </plugins>
-  </build>
 
   <profiles>
     <profile>

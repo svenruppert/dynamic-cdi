@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.rapidpm.dependencies.core.stream.ImmutableSetCollector;
 
-public class ReflectionUtils extends org.reflections.ReflectionUtils {
+public class ReflectionUtils extends org.reflections8.ReflectionUtils {
 
   public boolean checkInterface(final Type aClass , Class targetInterface) {
     if (aClass.equals(targetInterface)) return true;

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.rapidpm.ddi.DI;
-import org.reflections.util.ClasspathHelper;
+import org.reflections8.util.ClasspathHelper;
 
 import java.net.URL;
 import java.time.LocalDateTime;

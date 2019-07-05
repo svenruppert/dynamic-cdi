@@ -16,15 +16,14 @@
 package org.rapidpm.ddi.reflections;
 
 import org.rapidpm.frp.model.Pair;
-import org.reflections.Reflections;
-import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.scanners.Scanner;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
-import repacked.com.google.common.base.Predicate;
+import org.reflections8.Reflections;
+import org.reflections8.scanners.MethodAnnotationsScanner;
+import org.reflections8.scanners.Scanner;
+import org.reflections8.scanners.SubTypesScanner;
+import org.reflections8.scanners.TypeAnnotationsScanner;
+import org.reflections8.util.ClasspathHelper;
+import org.reflections8.util.ConfigurationBuilder;
+import org.reflections8.util.FilterBuilder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -33,6 +32,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static java.util.Collections.unmodifiableSet;
 

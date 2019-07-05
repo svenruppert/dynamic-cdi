@@ -5,12 +5,9 @@
 
 
 ## JDK Informations
-Since version 1.1.0 this will run under JDK10 ff. The compiler is now set on Release 10.
+Actual version is running from JDK8 up to JDK13.
 The version 1.0.x is based on JDK8.
 
-
-
-Here we will start with an more dynamic version of the default cdi implementations.
 
 The implementation is covered with over 90% mutation test coverage.
 The last report you can find under **_docu/**

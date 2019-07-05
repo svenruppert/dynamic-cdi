@@ -15,8 +15,9 @@
  */
 package org.rapidpm.ddi.reflections;
 
-import org.reflections.scanners.AbstractScanner;
-import org.reflections.util.FilterBuilder;
+import org.reflections8.scanners.AbstractScanner;
+import org.reflections8.util.FilterBuilder;
+import org.reflections8.util.SetMultimap;
 
 
 public class PkgTypesScanner extends AbstractScanner {
@@ -48,7 +49,8 @@ public class PkgTypesScanner extends AbstractScanner {
 
       final String pkgName = className.substring(0, index);
       if (acceptResult(className)) {
-        getStore().put(pkgName, className);
+        final SetMultimap<String, String> store = getStore();
+        store.putSingle(pkgName, className);
       }
     }
   }
