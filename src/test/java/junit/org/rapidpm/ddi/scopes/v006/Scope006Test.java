@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package junit.org.rapidpm.ddi.classresolver.v015;
+package junit.org.rapidpm.ddi.scopes.v006;
 
-import org.rapidpm.ddi.ResponsibleFor;
-import org.rapidpm.ddi.implresolver.ClassResolver;
+import junit.org.rapidpm.ddi.DDIBaseTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.rapidpm.ddi.scopes.InjectionScopeManager;
 
 /**
  * Copyright (C) 2010 RapidPM
@@ -30,14 +32,17 @@ import org.rapidpm.ddi.implresolver.ClassResolver;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Created by RapidPM - Team on 02.06.16.
+ * Created by RapidPM - Team on 02.08.16.
  */
-@ResponsibleFor(Service.class)
-public class ServiceClassResolver implements ClassResolver<Service> {
-  @Override
-  public Class<? extends Service> resolve(final Class<Service> interf) {
-    Classresolver015Test.toggle = !Classresolver015Test.toggle;
-    System.out.println("toggle = " + Classresolver015Test.toggle);
-    return (Classresolver015Test.toggle) ? ServiceA.class : ServiceB.class;
+public class Scope006Test
+    extends DDIBaseTest {
+
+  @Test
+  public void test001() {
+    final Service instance = InjectionScopeManager.getInstance(Service.class);
+    Assertions.assertNull(instance);
   }
+
+  public static class Service {}
+
 }

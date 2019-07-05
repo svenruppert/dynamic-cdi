@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package junit.org.rapidpm.ddi.classresolver.v015;
+package junit.org.rapidpm.ddi.classresolver.v018;
 
+import junit.org.rapidpm.ddi.DDIBaseTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.rapidpm.ddi.DI;
 import org.rapidpm.ddi.ResponsibleFor;
 import org.rapidpm.ddi.implresolver.ClassResolver;
 
@@ -29,15 +33,30 @@ import org.rapidpm.ddi.implresolver.ClassResolver;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
+ * <p>
  * Created by RapidPM - Team on 02.06.16.
  */
-@ResponsibleFor(Service.class)
-public class ServiceClassResolver implements ClassResolver<Service> {
-  @Override
-  public Class<? extends Service> resolve(final Class<Service> interf) {
-    Classresolver015Test.toggle = !Classresolver015Test.toggle;
-    System.out.println("toggle = " + Classresolver015Test.toggle);
-    return (Classresolver015Test.toggle) ? ServiceA.class : ServiceB.class;
+public class ClassResolver018Test
+    extends DDIBaseTest {
+
+  public static final Context context = Context.SPEZIAL;
+
+  @Test
+  public void test001() {
+    Assertions.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
   }
+
+  @ResponsibleFor(Service.class)
+  public static class ServiceClassResolver implements ClassResolver<Service> {
+    @Override
+    public Class<? extends Service> resolve(final Class<Service> interf) {
+      System.out.println("toggle = " + context);
+      return (context.equals(Context.SPEZIAL)) ? ServiceB.class : ServiceA.class;
+    }
+  }
+
 }
+
+
+
+

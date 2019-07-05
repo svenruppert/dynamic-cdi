@@ -13,10 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package junit.org.rapidpm.ddi.classresolver.v015;
+package junit.org.rapidpm.ddi.instancecreator.v002;
 
-import org.rapidpm.ddi.ResponsibleFor;
-import org.rapidpm.ddi.implresolver.ClassResolver;
+import junit.org.rapidpm.ddi.DDIBaseTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.rapidpm.ddi.DDIModelException;
+import org.rapidpm.ddi.Produces;
+import org.rapidpm.ddi.producer.InstanceCreator;
+import org.rapidpm.ddi.producer.Producer;
 
 /**
  * Copyright (C) 2010 RapidPM
@@ -30,14 +35,41 @@ import org.rapidpm.ddi.implresolver.ClassResolver;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Created by RapidPM - Team on 02.06.16.
+ * Created by RapidPM - Team on 02.08.16.
  */
-@ResponsibleFor(Service.class)
-public class ServiceClassResolver implements ClassResolver<Service> {
-  @Override
-  public Class<? extends Service> resolve(final Class<Service> interf) {
-    Classresolver015Test.toggle = !Classresolver015Test.toggle;
-    System.out.println("toggle = " + Classresolver015Test.toggle);
-    return (Classresolver015Test.toggle) ? ServiceA.class : ServiceB.class;
+public class InstanceCreator002Test
+    extends DDIBaseTest {
+
+
+  @Test
+  public void test001() {
+    try {
+      final ServiceImpl instantiate = new InstanceCreator().instantiate(ServiceImpl.class);
+      Assertions.fail("too bad..");
+    } catch (DDIModelException e) {
+      Assertions.assertTrue(e.getMessage().contains("to many Producer and no Produce"));
+    }
   }
+
+  public static class ServiceImpl {
+  }
+
+
+  @Produces(ServiceImpl.class)
+  public static class ServiceProducer implements Producer<ServiceImpl> {
+    @Override
+    public ServiceImpl create() {
+      return new ServiceImpl() {
+      };
+    }
+  }
+
+  @Produces(ServiceImpl.class)
+  public static class ServiceImplProducer implements Producer<ServiceImpl> {
+    @Override
+    public ServiceImpl create() {
+      return new ServiceImpl();
+    }
+  }
+
 }

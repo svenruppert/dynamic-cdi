@@ -15,8 +15,10 @@
  */
 package junit.org.rapidpm.ddi.classresolver.v015;
 
-import org.rapidpm.ddi.ResponsibleFor;
-import org.rapidpm.ddi.implresolver.ClassResolver;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.rapidpm.ddi.DI;
 
 /**
  * Copyright (C) 2010 RapidPM
@@ -32,12 +34,23 @@ import org.rapidpm.ddi.implresolver.ClassResolver;
  *
  * Created by RapidPM - Team on 02.06.16.
  */
-@ResponsibleFor(Service.class)
-public class ServiceClassResolver implements ClassResolver<Service> {
-  @Override
-  public Class<? extends Service> resolve(final Class<Service> interf) {
-    Classresolver015Test.toggle = !Classresolver015Test.toggle;
-    System.out.println("toggle = " + Classresolver015Test.toggle);
-    return (Classresolver015Test.toggle) ? ServiceA.class : ServiceB.class;
+public class Classresolver015Test {
+
+  public static Boolean toggle = true;
+
+  @BeforeEach
+  public void setUp() {
+    DI.clearReflectionModel();
+    DI.activatePackages("org.rapidpm");
+    DI.activatePackages(this.getClass());
   }
+
+  @Test
+  public void test001() {
+    Assertions.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(ServiceA.class, DI.activateDI(Service.class).getClass());
+    Assertions.assertEquals(ServiceB.class, DI.activateDI(Service.class).getClass());
+    DI.clearReflectionModel();
+  }
+
 }
