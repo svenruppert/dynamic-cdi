@@ -29,7 +29,7 @@
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
   <packaging>jar</packaging>
-  <version>01.02.00-RPM</version>
+  <version>01.02.01-RPM-SNAPSHOT</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
