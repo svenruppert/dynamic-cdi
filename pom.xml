@@ -20,9 +20,6 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <packaging>pom</packaging>
-
-
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
@@ -31,6 +28,7 @@
 
   <groupId>org.rapidpm.dynamic-cdi</groupId>
   <artifactId>rapidpm-dynamic-cdi</artifactId>
+  <packaging>jar</packaging>
   <version>01.02.00-RPM</version>
 
   <inceptionYear>2013</inceptionYear>
@@ -75,9 +73,6 @@
   </licenses>
 
 
-  <modules>
-    <module>modules</module>
-  </modules>
 
   <properties>
     <rapidpm-dynamic-cdi.version>1.2.0</rapidpm-dynamic-cdi.version>
@@ -102,6 +97,25 @@
     </dependencies>
   </dependencyManagement>
 
+  <dependencies>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.rapidpm</groupId>
+      <artifactId>rapidpm-dependencies-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.oneandone.reflections8</groupId>
+      <artifactId>reflections8</artifactId>
+      <version>0.11.4</version>
+    </dependency>
+  </dependencies>
 
   <profiles>
     <profile>
