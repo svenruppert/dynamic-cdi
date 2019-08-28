@@ -18,13 +18,13 @@ jobs:
       run: mvn clean package --file pom.xml
     - name: Copy Jacoco Report
       uses: actions/upload-artifact@master
-        with:
-          name: Jacoco Report
-          path: target/site/jacoco
+      with:
+        name: Jacoco Report
+        path: target/site/jacoco
     - name: Mutation Testing
         run: mvn pitest:mutationCoverage --file pom.xml
     - name: Copy PiTest Report
       uses: actions/upload-artifact@master
-        with:
-          name: Mutation Test Coverage Report
-          path: target/pit-reports
+      with:
+        name: Mutation Test Coverage Report
+        path: target/pit-reports
