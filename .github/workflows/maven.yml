@@ -28,3 +28,18 @@ jobs:
       with:
         name: Mutation Test Coverage Report
         path: target/pit-reports
+
+  matrix-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '1.8', '9.0.x', '12.0.2' ]
+    name: test JDK Versin  ${{ matrix.java }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup java ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+          architecture: x64
+      - run: mvn clean test --file pom.xml
