@@ -21,7 +21,7 @@ jobs:
           name: Jacoco Report
           path: target/site/jacoco
     - name: Mutation Testing
-      run: mvn pitest:mutationCoverage --file pom.xml
+        run: mvn pitest:mutationCoverage --file pom.xml
     - name: Copy PiTest Report
     - uses: actions/upload-artifact@v1
         with:
