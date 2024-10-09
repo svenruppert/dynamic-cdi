@@ -20,24 +20,25 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
-    <groupId>org.rapidpm</groupId>
-    <artifactId>rapidpm-dependencies</artifactId>
-    <version>04.01.10-RPM</version>
+    <groupId>com.svenruppert</groupId>
+    <artifactId>dependencies</artifactId>
+    <version>06.00.00-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.rapidpm.dynamic-cdi</groupId>
-  <artifactId>rapidpm-dynamic-cdi</artifactId>
+  <groupId>com.svenruppert.dynamic-cdi</groupId>
+  <artifactId>dynamic-cdi</artifactId>
   <packaging>jar</packaging>
-  <version>01.02.01-RPM-SNAPSHOT</version>
+  <version>02.00.00-SNAPSHOT</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
-    <name>RapidPM</name>
-    <url>http://www.rapidpm.org</url>
+    <name>Sven Ruppert</name>
+    <url>http://www.svenruppert.com</url>
   </organization>
-  <url>http://www.dynamic-dependency-injection.org/</url>
-  <name>RapidPM Dynamic Dependency Injection</name>
+  <url>hhttp://www.svenruppert.com</url>
+  <name>Dynamic Dependency Injection</name>
   <description>Dynamic Dependency Injection with different ways to manage the resolver-strategy</description>
 
   <scm>
@@ -75,11 +76,11 @@
 
 
   <properties>
-    <rapidpm-dynamic-cdi.version>1.2.0</rapidpm-dynamic-cdi.version>
+    <dynamic-cdi.version>1.2.0</dynamic-cdi.version>
 
     <!--<maven.compiler.release>8</maven.compiler.release> &lt;!&ndash;release makes source and target&ndash;&gt;-->
-    <maven.compiler.source>8</maven.compiler.source> <!--redundant, but IntelliJ doesn't-->
-    <maven.compiler.target>8</maven.compiler.target> <!--use release when importing-->
+    <maven.compiler.source>21</maven.compiler.source> <!--redundant, but IntelliJ doesn't-->
+    <maven.compiler.target>21</maven.compiler.target> <!--use release when importing-->
 
     <minimum-maven.version>3.3.9</minimum-maven.version>
 
@@ -87,13 +88,58 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+      <id>reposilite-repository-snapshots</id>
+      <name>Reposilite Repository</name>
+      <url>http://0.0.0.0:8080/snapshots</url>
+    </repository>
+    <repository>
+      <id>reposilite-repository-releases</id>
+      <name>Reposilite Repository</name>
+      <url>http://0.0.0.0:8080/releases</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>libs-release</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
+    </repository>
+
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>reposilite-repository-releases</id>
+      <name>Reposilite Repository</name>
+      <url>http://0.0.0.0:8080/releases</url>
+    </pluginRepository>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>libs-release</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.rapidpm.dynamic-cdi</groupId>
-        <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
-        <version>${rapidpm-dynamic-cdi.version}</version>
-      </dependency>
+<!--      <dependency>-->
+<!--        <groupId>org.rapidpm.dynamic-cdi</groupId>-->
+<!--        <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>-->
+<!--        <version>${dynamic-cdi.version}</version>-->
+<!--      </dependency>-->
     </dependencies>
   </dependencyManagement>
 
@@ -103,8 +149,14 @@
       <artifactId>javax.annotation-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.rapidpm</groupId>
-      <artifactId>rapidpm-dependencies-core</artifactId>
+      <groupId>com.svenruppert</groupId>
+      <artifactId>core</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.svenruppert</groupId>
+      <artifactId>functional-reactive</artifactId>
+      <version>03.00.00-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -122,7 +174,7 @@
       <plugin>
         <groupId>de.sormuras.junit</groupId>
         <artifactId>junit-platform-maven-plugin</artifactId>
-        <version>${junit-platform-maven-plugin.version}</version>
+        <version>1.1.7</version>
         <extensions>true</extensions> <!-- Necessary to execute it in 'test' phase. -->
 
         <configuration>
@@ -146,22 +198,22 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>sys-nexus-deploy</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <distributionManagement>
-        <repository>
-          <id>sonatype-nexus</id>
-          <url>${sonatype-nexus-url}</url>
-        </repository>
-        <snapshotRepository>
-          <id>sonatype-nexus-snapshots</id>
-          <url>${sonatype-nexus-snapshots-url}</url>
-        </snapshotRepository>
-      </distributionManagement>
-    </profile>
+<!--    <profile>-->
+<!--      <id>sys-nexus-deploy</id>-->
+<!--      <activation>-->
+<!--        <activeByDefault>true</activeByDefault>-->
+<!--      </activation>-->
+<!--      <distributionManagement>-->
+<!--        <repository>-->
+<!--          <id>sonatype-nexus</id>-->
+<!--          <url>${sonatype-nexus-url}</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--          <id>sonatype-nexus-snapshots</id>-->
+<!--          <url>${sonatype-nexus-snapshots-url}</url>-->
+<!--        </snapshotRepository>-->
+<!--      </distributionManagement>-->
+<!--    </profile>-->
   </profiles>
 
 </project>

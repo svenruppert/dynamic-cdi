@@ -34,7 +34,7 @@
 package org.rapidpm.ddi;
 
 
-import static org.rapidpm.ddi.scopes.InjectionScopeManager.listAllActiveScopeNames;
+import static com.svenruppert.ddi.scopes.InjectionScopeManager.listAllActiveScopeNames;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -55,14 +55,14 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;
-import org.rapidpm.ddi.implresolver.ImplementingClassResolver;
-import org.rapidpm.ddi.producer.InstanceCreator;
-import org.rapidpm.ddi.producer.ProducerLocator;
-import org.rapidpm.ddi.reflections.ReflectionsModel;
-import org.rapidpm.ddi.scopes.InjectionScopeManager;
-import org.rapidpm.dependencies.core.logger.Logger;
-import org.rapidpm.dependencies.core.logger.LoggingService;
+import com.svenruppert.ddi.bootstrap.ClassResolverCheck001;
+import com.svenruppert.ddi.implresolver.ImplementingClassResolver;
+import com.svenruppert.ddi.producer.InstanceCreator;
+import com.svenruppert.ddi.producer.ProducerLocator;
+import com.svenruppert.ddi.reflections.ReflectionsModel;
+import com.svenruppert.ddi.scopes.InjectionScopeManager;
+import com.svenruppert.dependencies.core.logger.Logger;
+import com.svenruppert.dependencies.core.logger.LoggingService;
 
 public class DI {
 
