@@ -47,10 +47,10 @@ import com.svenruppert.ddi.producerresolver.ProducerResolver;
 import com.svenruppert.ddi.producerresolver.ProducerResolverLocator;
 import com.svenruppert.ddi.scopes.InjectionScopeManager;
 import com.svenruppert.dependencies.core.logger.Logger;
-import com.svenruppert.dependencies.core.logger.LoggingService;
+import com.svenruppert.dependencies.core.logger.Logger;
 
 <span class="fc" id="L35">public class InstanceCreator {</span>
-<span class="fc" id="L36">  private static final LoggingService LOGGER = Logger.getLogger(InstanceCreator.class);</span>
+<span class="fc" id="L36">  private static final Logger LOGGER = LoggerFactory.getLogger(InstanceCreator.class);</span>
 
   public &lt;T&gt; T instantiate(Class&lt;T&gt; clazz) {
 
@@ -165,7 +165,7 @@ import com.svenruppert.dependencies.core.logger.LoggingService;
 //      return DI.activateDI(instance);
 <span class="fc" id="L149">      return instance;</span>
 <span class="fc" id="L150">    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {</span>
-<span class="fc" id="L151">      LOGGER.warning(&quot;could not create instance &quot; , e);</span>
+<span class="fc" id="L151">      LOGGER.warn(&quot;could not create instance &quot; , e);</span>
 <span class="fc" id="L152">      throw new DDIModelException(e);</span>
     }
   }

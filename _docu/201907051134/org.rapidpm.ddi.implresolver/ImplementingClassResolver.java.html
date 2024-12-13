@@ -491,7 +491,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import com.svenruppert.dependencies.core.logger.LoggingService;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.dependencies.core.logger.Logger;</span></pre></td></tr>
 
 
 <tr>
@@ -671,7 +671,7 @@
 </span>
 </span>
 </td>
-<td class='covered'><pre><span  class=''>  private static final LoggingService LOGGER = Logger.getLogger(ImplementingClassResolver.class);</span></pre></td></tr>
+<td class='covered'><pre><span  class=''>  private static final Logger LOGGER = LoggerFactory.getLogger(ImplementingClassResolver.class);</span></pre></td></tr>
 
 
 <tr>
@@ -1919,12 +1919,12 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@12209826_123'>1</a>
 <span>
-1. handleOneResolver : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; SURVIVED<br/>
+1. handleOneResolver : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; SURVIVED<br/>
 
 </span>
 </span>
 </td>
-<td class='covered'><pre><span  class='survived'>      LOGGER.warning(&#34;could not create instance &#34; , e);</span></pre></td></tr>
+<td class='covered'><pre><span  class='survived'>      LOGGER.warn(&#34;could not create instance &#34; , e);</span></pre></td></tr>
 
 
 <tr>
@@ -1966,12 +1966,12 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@12209826_126'>1</a>
 <span>
-1. handleOneResolver : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE<br/>
+1. handleOneResolver : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE<br/>
 
 </span>
 </span>
 </td>
-<td class='uncovered'><pre><span  class='survived'>      LOGGER.warning(&#34;could not create instance &#34; , e);</span></pre></td></tr>
+<td class='uncovered'><pre><span  class='survived'>      LOGGER.warn(&#34;could not create instance &#34; , e);</span></pre></td></tr>
 
 
 <tr>
@@ -2650,7 +2650,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@12209826_123'/> 
 
-<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handleOneResolver<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; SURVIVED</p> 
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handleOneResolver<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; SURVIVED</p>
 </td>
 </tr>
 <tr>
@@ -2660,7 +2660,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@12209826_126'/> 
 
-<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handleOneResolver<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE</p> 
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handleOneResolver<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE</p>
 </td>
 </tr>
 <tr>

@@ -49,7 +49,7 @@ import com.svenruppert.ddi.DDIModelException;
 import com.svenruppert.ddi.DI;
 import com.svenruppert.ddi.ResponsibleFor;
 import com.svenruppert.dependencies.core.logger.Logger;
-import com.svenruppert.dependencies.core.logger.LoggingService;
+import com.svenruppert.dependencies.core.logger.Logger;
 
 /**
  * one subtype - will return this class
@@ -61,7 +61,7 @@ import com.svenruppert.dependencies.core.logger.LoggingService;
  */
 <span class="fc" id="L45">public class ImplementingClassResolver {</span>
 
-<span class="fc" id="L47">  private static final LoggingService LOGGER = Logger.getLogger(ImplementingClassResolver.class);</span>
+<span class="fc" id="L47">  private static final Logger LOGGER = LoggerFactory.getLogger(ImplementingClassResolver.class);</span>
 <span class="fc" id="L48">  private static final ImplementingClassResolver INSTANCE = new ImplementingClassResolver();</span>
 
 
@@ -141,10 +141,10 @@ import com.svenruppert.dependencies.core.logger.LoggingService;
 <span class="fc" id="L124">      final ClassResolver&lt;I&gt; classResolver = classResolverClass.getDeclaredConstructor().newInstance();</span>
 <span class="fc" id="L125">      return classResolver.resolve(interf);</span>
 <span class="fc" id="L126">    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {</span>
-<span class="fc" id="L127">      LOGGER.warning(&quot;could not create instance &quot; , e);</span>
+<span class="fc" id="L127">      LOGGER.warn(&quot;could not create instance &quot; , e);</span>
 <span class="fc" id="L128">      throw new DDIModelException(interf + &quot; -- &quot; + e);</span>
 <span class="nc" id="L129">    } catch (InvocationTargetException e) {</span>
-<span class="nc" id="L130">      LOGGER.warning(&quot;could not create instance &quot; , e);</span>
+<span class="nc" id="L130">      LOGGER.warn(&quot;could not create instance &quot; , e);</span>
 <span class="nc" id="L131">      throw new DDIModelException(interf + &quot; -- &quot; + e);</span>
     }
   }

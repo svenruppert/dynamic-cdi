@@ -62,11 +62,11 @@ import com.svenruppert.ddi.producer.ProducerLocator;
 import com.svenruppert.ddi.reflections.ReflectionsModel;
 import com.svenruppert.ddi.scopes.InjectionScopeManager;
 import com.svenruppert.dependencies.core.logger.Logger;
-import com.svenruppert.dependencies.core.logger.LoggingService;
+import com.svenruppert.dependencies.core.logger.Logger;
 
 public class DI {
 
-<span class="fc" id="L52">  private static final LoggingService LOGGER = Logger.getLogger(DI.class);</span>
+<span class="fc" id="L52">  private static final Logger LOGGER = LoggerFactory.getLogger(DI.class);</span>
   public static final String ORG_RAPIDPM_DDI_PACKAGESFILE = &quot;org.rapidpm.ddi.packagesfile&quot;;
 <span class="fc" id="L54">  private static ReflectionsModel reflectionsModel = new ReflectionsModel();</span>
 <span class="fc" id="L55">  private static boolean bootstrapedNeeded = true;</span>
@@ -105,7 +105,7 @@ public class DI {
 <span class="fc" id="L88">    try (InputStream is = new FileInputStream(path)) {</span>
 <span class="fc" id="L89">      bootstrapFromResource(is);</span>
 <span class="fc" id="L90">    } catch (IOException e1) {</span>
-<span class="fc" id="L91">      LOGGER.warning(String.format(&quot;Error loading file &lt;%s&gt; &lt;%s&gt;&quot; , path , e.getMessage()));</span>
+<span class="fc" id="L91">      LOGGER.warn(String.format(&quot;Error loading file &lt;%s&gt; &lt;%s&gt;&quot; , path , e.getMessage()));</span>
 <span class="fc" id="L92">      throw new DDIModelException(&quot;Unable to load packages from file&quot; , e1);</span>
 <span class="fc" id="L93">    }</span>
 <span class="fc" id="L94">  }</span>
@@ -125,7 +125,7 @@ public class DI {
 <span class="fc" id="L108">        reflectionsModel.rescann(line);</span>
       }
 <span class="nc" id="L110">    } catch (IOException e) {</span>
-<span class="nc" id="L111">      LOGGER.warning(String.format(&quot;Error loading packages&quot;));</span>
+<span class="nc" id="L111">      LOGGER.warn(String.format(&quot;Error loading packages&quot;));</span>
 <span class="nc" id="L112">      throw new DDIModelException(&quot;Unable to load packages from file&quot; , e);</span>
 <span class="fc" id="L113">    }</span>
 <span class="fc" id="L114">  }</span>
@@ -256,7 +256,7 @@ public class DI {
 <span class="fc" id="L239">        field.set(instance , target);</span>
 <span class="fc" id="L240">        return null; // return nothing...</span>
 <span class="nc" id="L241">      } catch (IllegalArgumentException | IllegalAccessException ex) {</span>
-<span class="nc" id="L242">        LOGGER.warning(&quot;Cannot set field: &quot; , ex);</span>
+<span class="nc" id="L242">        LOGGER.warn(&quot;Cannot set field: &quot; , ex);</span>
 <span class="nc" id="L243">        throw new IllegalStateException(&quot;Cannot set field: &quot; + field , ex);</span>
       } finally {
 <span class="fc" id="L245">        field.setAccessible(wasAccessible);</span>
@@ -287,7 +287,7 @@ public class DI {
 <span class="fc" id="L270">        m.invoke(instance);</span>
 <span class="fc" id="L271">        m.setAccessible(accessible);</span>
 <span class="nc" id="L272">      } catch (IllegalAccessException | InvocationTargetException e) {</span>
-<span class="nc" id="L273">        LOGGER.warning(&quot;method could not invoked &quot; , e);</span>
+<span class="nc" id="L273">        LOGGER.warn(&quot;method could not invoked &quot; , e);</span>
 <span class="fc" id="L274">      }</span>
 <span class="fc" id="L275">    });</span>
 <span class="fc" id="L276">  }</span>

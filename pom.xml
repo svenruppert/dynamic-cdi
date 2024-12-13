@@ -24,13 +24,12 @@
   <parent>
     <groupId>com.svenruppert</groupId>
     <artifactId>dependencies</artifactId>
-    <version>06.00.00-SNAPSHOT</version>
+    <version>06.00.00</version>
   </parent>
 
-  <groupId>com.svenruppert.dynamic-cdi</groupId>
   <artifactId>dynamic-cdi</artifactId>
   <packaging>jar</packaging>
-  <version>02.00.00-SNAPSHOT</version>
+  <version>02.00.00</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
@@ -73,8 +72,6 @@
     </license>
   </licenses>
 
-
-
   <properties>
     <dynamic-cdi.version>1.2.0</dynamic-cdi.version>
 
@@ -86,6 +83,7 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <jacoco.java.option></jacoco.java.option>
   </properties>
 
 
@@ -156,7 +154,7 @@
     <dependency>
       <groupId>com.svenruppert</groupId>
       <artifactId>functional-reactive</artifactId>
-      <version>03.00.00-SNAPSHOT</version>
+      <version>03.00.00</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>

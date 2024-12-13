@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2013 Sven Ruppert (sven.ruppert@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 import com.svenruppert.ddi.DDIModelException;
 import com.svenruppert.ddi.DI;
 import com.svenruppert.ddi.ResponsibleFor;
-import com.svenruppert.dependencies.core.logger.Logger;
-import com.svenruppert.dependencies.core.logger.LoggingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * one subtype - will return this class
@@ -40,7 +40,7 @@ import com.svenruppert.dependencies.core.logger.LoggingService;
  */
 public class ImplementingClassResolver {
 
-  private static final LoggingService LOGGER = Logger.getLogger(ImplementingClassResolver.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ImplementingClassResolver.class);
   private static final ImplementingClassResolver INSTANCE = new ImplementingClassResolver();
 
 
@@ -120,10 +120,10 @@ public class ImplementingClassResolver {
       final ClassResolver<I> classResolver = classResolverClass.getDeclaredConstructor().newInstance();
       return classResolver.resolve(interf);
     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-      LOGGER.warning("could not create instance " , e);
+      LOGGER.warn("could not create instance " , e);
       throw new DDIModelException(interf + " -- " + e);
     } catch (InvocationTargetException e) {
-      LOGGER.warning("could not create instance " , e);
+      LOGGER.warn("could not create instance " , e);
       throw new DDIModelException(interf + " -- " + e);
     }
   }

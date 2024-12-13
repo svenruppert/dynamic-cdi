@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2013 Sven Ruppert (sven.ruppert@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,14 +24,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.svenruppert.ddi.DI;
-import com.svenruppert.dependencies.core.logger.Logger;
-import com.svenruppert.dependencies.core.logger.LoggingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class InjectionScopeManager {
 
 
-  private static final LoggingService LOGGER = Logger.getLogger(InjectionScopeManager.class);
+//  private static final Logger LOGGER = LoggerFactory.getLogger(InjectionScopeManager.class);
+private static final Logger LOGGER = LoggerFactory.getLogger(InjectionScopeManager.class);
   private static final Map<String, String> CLASS_NAME_2_SCOPENAME_MAP = new ConcurrentHashMap<>();
   private static final Map<String, InjectionScope> INJECTION_SCOPE_MAP = new ConcurrentHashMap<>();
 
@@ -79,7 +80,7 @@ public class InjectionScopeManager {
           try {
             return c.getDeclaredConstructor().newInstance();
           } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            LOGGER.warning("could not create an instance " , e);
+            LOGGER.warn("could not create an instance " , e);
           }
           return null;
         })
@@ -104,7 +105,7 @@ public class InjectionScopeManager {
                      return c.getDeclaredConstructor().newInstance();
                    } catch (InstantiationException | IllegalAccessException
                        | NoSuchMethodException | InvocationTargetException e) {
-                     LOGGER.warning("could not create new instance " , e);
+                     LOGGER.warn("could not create new instance " , e);
                    }
                    return null;
                  })
@@ -164,7 +165,7 @@ public class InjectionScopeManager {
         INJECTION_SCOPE_MAP.put(injectionScope.getScopeName() , injectionScope);
       } catch (InstantiationException | IllegalAccessException
           | NoSuchMethodException | InvocationTargetException e) {
-        LOGGER.warning("could not create an instance " , e);
+        LOGGER.warn("could not create an instance " , e);
       }
     }
 

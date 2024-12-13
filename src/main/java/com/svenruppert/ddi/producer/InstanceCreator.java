@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2013 Sven Ruppert (sven.ruppert@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,11 +25,11 @@ import com.svenruppert.ddi.DI;
 import com.svenruppert.ddi.producerresolver.ProducerResolver;
 import com.svenruppert.ddi.producerresolver.ProducerResolverLocator;
 import com.svenruppert.ddi.scopes.InjectionScopeManager;
-import com.svenruppert.dependencies.core.logger.Logger;
-import com.svenruppert.dependencies.core.logger.LoggingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InstanceCreator {
-  private static final LoggingService LOGGER = Logger.getLogger(InstanceCreator.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(InstanceCreator.class);
 
   public <T> T instantiate(Class<T> clazz) {
 
@@ -144,7 +144,7 @@ public class InstanceCreator {
 //      return DI.activateDI(instance);
       return instance;
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-      LOGGER.warning("could not create instance " , e);
+      LOGGER.warn("could not create instance " , e);
       throw new DDIModelException(e);
     }
   }

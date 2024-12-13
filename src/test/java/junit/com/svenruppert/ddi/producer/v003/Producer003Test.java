@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2013 Sven Ruppert (sven.ruppert@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,9 @@ public class Producer003Test
     Assertions.assertNotNull(businessModul);
     Assertions.assertNotNull(businessModul.service);
     Assertions.assertNotNull(businessModul.service.workOn("AEAE"));
-    Assertions.assertEquals("AEAE_" + ServiceProducer.class.getSimpleName(), businessModul.service.workOn("AEAE"));
+    Assertions.assertEquals(
+        "AEAE_" + ServiceProducer.class.getSimpleName(),
+        businessModul.service.workOn("AEAE"));
 
   }
 

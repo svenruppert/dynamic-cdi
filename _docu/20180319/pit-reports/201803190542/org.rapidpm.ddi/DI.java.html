@@ -698,7 +698,7 @@
 <span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import com.svenruppert.dependencies.core.logger.LoggingService;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.dependencies.core.logger.Logger;</span></pre></td></tr>
 
 
 <tr>
@@ -754,7 +754,7 @@
 <span>
 </span>
 </td>
-<td class='covered'><pre><span  class=''>  private static final LoggingService LOGGER = Logger.getLogger(DI.class);</span></pre></td></tr>
+<td class='covered'><pre><span  class=''>  private static final Logger LOGGER = LoggerFactory.getLogger(DI.class);</span></pre></td></tr>
 
 
 <tr>
@@ -1317,11 +1317,11 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2f0ccb34_91'>1</a>
 <span>
-1. loadFilesystemResource : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; SURVIVED<br/>
+1. loadFilesystemResource : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; SURVIVED<br/>
 
 </span>
 </td>
-<td class='covered'><pre><span  class='survived'>      LOGGER.warning(String.format(&#34;Error loading file &#60;%s&#62; &#60;%s&#62;&#34; , path , e.getMessage()));</span></pre></td></tr>
+<td class='covered'><pre><span  class='survived'>      LOGGER.warn(String.format(&#34;Error loading file &#60;%s&#62; &#60;%s&#62;&#34; , path , e.getMessage()));</span></pre></td></tr>
 
 
 <tr>
@@ -1607,11 +1607,11 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2f0ccb34_111'>1</a>
 <span>
-1. bootstrapFromResource : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE<br/>
+1. bootstrapFromResource : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE<br/>
 
 </span>
 </td>
-<td class='uncovered'><pre><span  class='survived'>      LOGGER.warning(String.format(&#34;Error loading packages&#34;));</span></pre></td></tr>
+<td class='uncovered'><pre><span  class='survived'>      LOGGER.warn(String.format(&#34;Error loading packages&#34;));</span></pre></td></tr>
 
 
 <tr>
@@ -3513,11 +3513,11 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2f0ccb34_242'>1</a>
 <span>
-1. lambda$injectIntoField$0 : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE<br/>
+1. lambda$injectIntoField$0 : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE<br/>
 
 </span>
 </td>
-<td class='uncovered'><pre><span  class='survived'>        LOGGER.warning(&#34;Cannot set field: &#34; , ex);</span></pre></td></tr>
+<td class='uncovered'><pre><span  class='survived'>        LOGGER.warn(&#34;Cannot set field: &#34; , ex);</span></pre></td></tr>
 
 
 <tr>
@@ -3961,11 +3961,11 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2f0ccb34_273'>1</a>
 <span>
-1. lambda$invokeMethodWithAnnotation$1 : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE<br/>
+1. lambda$invokeMethodWithAnnotation$1 : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE<br/>
 
 </span>
 </td>
-<td class='uncovered'><pre><span  class='survived'>        LOGGER.warning(&#34;method could not invoked &#34; , e);</span></pre></td></tr>
+<td class='uncovered'><pre><span  class='survived'>        LOGGER.warn(&#34;method could not invoked &#34; , e);</span></pre></td></tr>
 
 
 <tr>
@@ -4732,7 +4732,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@2f0ccb34_91'/> 
 
-<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadFilesystemResource<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; SURVIVED</p> 
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadFilesystemResource<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; SURVIVED</p>
 </td>
 </tr>
 <tr>
@@ -4782,7 +4782,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@2f0ccb34_111'/> 
 
-<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE</p> 
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE</p>
 </td>
 </tr>
 <tr>
@@ -5132,7 +5132,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@2f0ccb34_242'/> 
 
-<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lambda$injectIntoField$0<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE</p> 
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lambda$injectIntoField$0<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE</p>
 </td>
 </tr>
 <tr>
@@ -5202,7 +5202,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@2f0ccb34_273'/> 
 
-<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lambda$invokeMethodWithAnnotation$1<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE</p> 
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lambda$invokeMethodWithAnnotation$1<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE</p>
 </td>
 </tr>
 <tr>
