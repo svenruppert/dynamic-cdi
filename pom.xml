@@ -29,7 +29,7 @@
 
   <artifactId>dynamic-cdi</artifactId>
   <packaging>jar</packaging>
-  <version>02.00.00</version>
+  <version>02.00.01-SNAPSHOT</version>
 
   <inceptionYear>2013</inceptionYear>
   <organization>
