@@ -15,7 +15,7 @@
     limitations under the License.
 
 -->
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImplementingClassResolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rapidpm-dynamic-cdi-modules-core</a> &gt; <a href="index.source.html" class="el_package">org.rapidpm.ddi.implresolver</a> &gt; <span class="el_source">ImplementingClassResolver.java</span></div><h1>ImplementingClassResolver.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImplementingClassResolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rapidpm-dynamic-cdi-modules-core</a> &gt; <a href="index.source.html" class="el_package">com.svenruppert.ddi.implresolver</a> &gt; <span class="el_source">ImplementingClassResolver.java</span></div><h1>ImplementingClassResolver.java</h1><pre class="source lang-java linenums">/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -34,9 +34,9 @@
  * under the License.
  */
 
-package org.rapidpm.ddi.implresolver;
+package com.svenruppert.ddi.implresolver;
 
-import static org.rapidpm.ddi.producer.ProducerLocator.findProducersFor;
+import static com.svenruppert.ddi.producer.ProducerLocator.findProducersFor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -45,11 +45,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import org.rapidpm.ddi.DDIModelException;
-import org.rapidpm.ddi.DI;
-import org.rapidpm.ddi.ResponsibleFor;
-import org.rapidpm.dependencies.core.logger.Logger;
-import org.rapidpm.dependencies.core.logger.LoggingService;
+import com.svenruppert.ddi.DDIModelException;
+import com.svenruppert.ddi.DI;
+import com.svenruppert.ddi.ResponsibleFor;
+import com.svenruppert.dependencies.core.logger.Logger;
+import com.svenruppert.dependencies.core.logger.Logger;
 
 /**
  * one subtype - will return this class
@@ -61,7 +61,7 @@ import org.rapidpm.dependencies.core.logger.LoggingService;
  */
 <span class="fc" id="L45">public class ImplementingClassResolver {</span>
 
-<span class="fc" id="L47">  private static final LoggingService LOGGER = Logger.getLogger(ImplementingClassResolver.class);</span>
+<span class="fc" id="L47">  private static final Logger LOGGER = LoggerFactory.getLogger(ImplementingClassResolver.class);</span>
 <span class="fc" id="L48">  private static final ImplementingClassResolver INSTANCE = new ImplementingClassResolver();</span>
 
 
@@ -141,10 +141,10 @@ import org.rapidpm.dependencies.core.logger.LoggingService;
 <span class="fc" id="L124">      final ClassResolver&lt;I&gt; classResolver = classResolverClass.getDeclaredConstructor().newInstance();</span>
 <span class="fc" id="L125">      return classResolver.resolve(interf);</span>
 <span class="fc" id="L126">    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {</span>
-<span class="fc" id="L127">      LOGGER.warning(&quot;could not create instance &quot; , e);</span>
+<span class="fc" id="L127">      LOGGER.warn(&quot;could not create instance &quot; , e);</span>
 <span class="fc" id="L128">      throw new DDIModelException(interf + &quot; -- &quot; + e);</span>
 <span class="nc" id="L129">    } catch (InvocationTargetException e) {</span>
-<span class="nc" id="L130">      LOGGER.warning(&quot;could not create instance &quot; , e);</span>
+<span class="nc" id="L130">      LOGGER.warn(&quot;could not create instance &quot; , e);</span>
 <span class="nc" id="L131">      throw new DDIModelException(interf + &quot; -- &quot; + e);</span>
     }
   }

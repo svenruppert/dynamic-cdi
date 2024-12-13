@@ -311,7 +311,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import static org.rapidpm.ddi.scopes.InjectionScopeManager.listAllActiveScopeNames;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import static com.svenruppert.ddi.scopes.InjectionScopeManager.listAllActiveScopeNames;</span></pre></td></tr>
 
 
 <tr>
@@ -626,7 +626,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.rapidpm.ddi.bootstrap.ClassResolverCheck001;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.ddi.bootstrap.ClassResolverCheck001;</span></pre></td></tr>
 
 
 <tr>
@@ -641,7 +641,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.rapidpm.ddi.implresolver.ImplementingClassResolver;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.ddi.implresolver.ImplementingClassResolver;</span></pre></td></tr>
 
 
 <tr>
@@ -656,7 +656,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.rapidpm.ddi.producer.InstanceCreator;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.ddi.producer.InstanceCreator;</span></pre></td></tr>
 
 
 <tr>
@@ -671,7 +671,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.rapidpm.ddi.producer.ProducerLocator;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.ddi.producer.ProducerLocator;</span></pre></td></tr>
 
 
 <tr>
@@ -686,7 +686,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.rapidpm.ddi.reflections.ReflectionsModel;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.ddi.reflections.ReflectionsModel;</span></pre></td></tr>
 
 
 <tr>
@@ -701,7 +701,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.rapidpm.ddi.scopes.InjectionScopeManager;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.ddi.scopes.InjectionScopeManager;</span></pre></td></tr>
 
 
 <tr>
@@ -716,7 +716,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.rapidpm.dependencies.core.logger.Logger;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.dependencies.core.logger.Logger;</span></pre></td></tr>
 
 
 <tr>
@@ -731,7 +731,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.rapidpm.dependencies.core.logger.LoggingService;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.svenruppert.dependencies.core.logger.Logger;</span></pre></td></tr>
 
 
 <tr>
@@ -791,7 +791,7 @@
 </span>
 </span>
 </td>
-<td class='covered'><pre><span  class=''>  private static final LoggingService LOGGER = Logger.getLogger(DI.class);</span></pre></td></tr>
+<td class='covered'><pre><span  class=''>  private static final Logger LOGGER = LoggerFactory.getLogger(DI.class);</span></pre></td></tr>
 
 
 <tr>
@@ -1404,12 +1404,12 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_90'>1</a>
 <span>
-1. loadFilesystemResource : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; SURVIVED<br/>
+1. loadFilesystemResource : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; SURVIVED<br/>
 
 </span>
 </span>
 </td>
-<td class='covered'><pre><span  class='survived'>      LOGGER.warning(String.format(&#34;Error loading file &#60;%s&#62; &#60;%s&#62;&#34; , path , e.getMessage()));</span></pre></td></tr>
+<td class='covered'><pre><span  class='survived'>      LOGGER.warn(String.format(&#34;Error loading file &#60;%s&#62; &#60;%s&#62;&#34; , path , e.getMessage()));</span></pre></td></tr>
 
 
 <tr>
@@ -1719,12 +1719,12 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_110'>1</a>
 <span>
-1. bootstrapFromResource : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE<br/>
+1. bootstrapFromResource : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE<br/>
 
 </span>
 </span>
 </td>
-<td class='uncovered'><pre><span  class='survived'>      LOGGER.warning(&#34;Error loading packages&#34;);</span></pre></td></tr>
+<td class='uncovered'><pre><span  class='survived'>      LOGGER.warn(&#34;Error loading packages&#34;);</span></pre></td></tr>
 
 
 <tr>
@@ -3756,12 +3756,12 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_241'>1</a>
 <span>
-1. lambda$injectIntoField$0 : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE<br/>
+1. lambda$injectIntoField$0 : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE<br/>
 
 </span>
 </span>
 </td>
-<td class='uncovered'><pre><span  class='survived'>        LOGGER.warning(&#34;Cannot set field: &#34; , ex);</span></pre></td></tr>
+<td class='uncovered'><pre><span  class='survived'>        LOGGER.warn(&#34;Cannot set field: &#34; , ex);</span></pre></td></tr>
 
 
 <tr>
@@ -4235,12 +4235,12 @@
 <span class='pop'>
 <a href='#grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_272'>1</a>
 <span>
-1. lambda$invokeMethodWithAnnotation$1 : removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE<br/>
+1. lambda$invokeMethodWithAnnotation$1 : removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE<br/>
 
 </span>
 </span>
 </td>
-<td class='uncovered'><pre><span  class='survived'>        LOGGER.warning(&#34;method could not invoked &#34; , e);</span></pre></td></tr>
+<td class='uncovered'><pre><span  class='survived'>        LOGGER.warn(&#34;method could not invoked &#34; , e);</span></pre></td></tr>
 
 
 <tr>
@@ -4963,7 +4963,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_61'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>checkActiveModel<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test002.BadClassResolverTest.test001()</span></span> removed call to org/rapidpm/ddi/bootstrap/ClassResolverCheck001::execute &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>checkActiveModel<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test002.BadClassResolverTest.test001()</span></span> removed call to org/rapidpm/ddi/bootstrap/ClassResolverCheck001::execute &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -4983,7 +4983,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_67'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrap<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> negated conditional &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrap<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> negated conditional &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -4993,7 +4993,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_69'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrap<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>bootstrap<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> negated conditional &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrap<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>bootstrap<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> negated conditional &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5003,7 +5003,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_70'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrap<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> removed call to org/rapidpm/ddi/DI::bootstrapFromResource &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrap<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> removed call to org/rapidpm/ddi/DI::bootstrapFromResource &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5033,7 +5033,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_80'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> removed call to org/rapidpm/ddi/DI::loadJarResource &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> removed call to org/rapidpm/ddi/DI::loadJarResource &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5053,7 +5053,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_82'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> removed call to org/rapidpm/ddi/DI::loadFilesystemResource &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> removed call to org/rapidpm/ddi/DI::loadFilesystemResource &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5073,7 +5073,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_88'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadFilesystemResource<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test003()</span></span> removed call to org/rapidpm/ddi/DI::bootstrapFromResource &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadFilesystemResource<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test003()</span></span> removed call to org/rapidpm/ddi/DI::bootstrapFromResource &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5093,7 +5093,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_90'/> 
 
-<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadFilesystemResource<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; SURVIVED</p> 
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadFilesystemResource<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; SURVIVED</p>
 </td>
 </tr>
 <tr>
@@ -5103,7 +5103,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_96'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadJarResource<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> negated conditional &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadJarResource<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test005()</span></span> negated conditional &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5113,7 +5113,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_97'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadJarResource<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test006()</span></span> removed call to org/rapidpm/ddi/DI::bootstrapFromResource &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>loadJarResource<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test006()</span></span> removed call to org/rapidpm/ddi/DI::bootstrapFromResource &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5133,7 +5133,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_106'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test003()</span></span> negated conditional &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test003()</span></span> negated conditional &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5143,7 +5143,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_107'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test003()</span></span> removed call to org/rapidpm/ddi/reflections/ReflectionsModel::rescann &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test003()</span></span> removed call to org/rapidpm/ddi/reflections/ReflectionsModel::rescann &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5163,7 +5163,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_110'/> 
 
-<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE</p> 
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bootstrapFromResource<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE</p>
 </td>
 </tr>
 <tr>
@@ -5183,7 +5183,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_118'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>clearReflectionModel<br/><b>Killed by : </b>junit.org.rapidpm.ddi.scopes.v001.Scopes001Test.test001()</span></span> removed call to org/rapidpm/ddi/scopes/InjectionScopeManager::reInitAllScopes &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>clearReflectionModel<br/><b>Killed by : </b>junit.com.svenruppert.ddi.scopes.v001.Scopes001Test.test001()</span></span> removed call to org/rapidpm/ddi/scopes/InjectionScopeManager::reInitAllScopes &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5213,7 +5213,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_125'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>clearCaches<br/><b>Killed by : </b>junit.org.rapidpm.ddi.scopes.v003.Scopes003Test.test001()</span></span> removed call to org/rapidpm/ddi/scopes/InjectionScopeManager::cleanUp &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>clearCaches<br/><b>Killed by : </b>junit.com.svenruppert.ddi.scopes.v003.Scopes003Test.test001()</span></span> removed call to org/rapidpm/ddi/scopes/InjectionScopeManager::cleanUp &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5263,7 +5263,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_137'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>activatePackages<br/><b>Killed by : </b>junit.org.rapidpm.ddi.scopes.v003.Scopes003Test.test001()</span></span> removed call to org/rapidpm/ddi/DI::clearCaches &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>activatePackages<br/><b>Killed by : </b>junit.com.svenruppert.ddi.scopes.v003.Scopes003Test.test001()</span></span> removed call to org/rapidpm/ddi/DI::clearCaches &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5363,7 +5363,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_189'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>activateDI<br/><b>Killed by : </b>junit.org.rapidpm.ddi.scopes.v004.Scopes004Test.test001()</span></span> removed call to org/rapidpm/ddi/DI::injectAttributes &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>activateDI<br/><b>Killed by : </b>junit.com.svenruppert.ddi.scopes.v004.Scopes004Test.test001()</span></span> removed call to org/rapidpm/ddi/DI::injectAttributes &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5383,7 +5383,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_191'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>activateDI<br/><b>Killed by : </b>junit.org.rapidpm.ddi.scopes.v002.Scopes002Test.test002()</span></span> mutated return of Object value for org/rapidpm/ddi/DI::activateDI to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>activateDI<br/><b>Killed by : </b>junit.com.svenruppert.ddi.scopes.v002.Scopes002Test.test002()</span></span> mutated return of Object value for org/rapidpm/ddi/DI::activateDI to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5393,7 +5393,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_195'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>listAllActiveScopes<br/><b>Killed by : </b>junit.org.rapidpm.ddi.scopes.v003.Scopes003Test.test001()</span></span> mutated return of Object value for org/rapidpm/ddi/DI::listAllActiveScopes to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>listAllActiveScopes<br/><b>Killed by : </b>junit.com.svenruppert.ddi.scopes.v003.Scopes003Test.test001()</span></span> mutated return of Object value for org/rapidpm/ddi/DI::listAllActiveScopes to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5403,7 +5403,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_199'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>registerClassForScope<br/><b>Killed by : </b>junit.org.rapidpm.ddi.scopes.v005.Scope005Test.test001()</span></span> removed call to org/rapidpm/ddi/scopes/InjectionScopeManager::registerClassForScope &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>registerClassForScope<br/><b>Killed by : </b>junit.com.svenruppert.ddi.scopes.v005.Scope005Test.test001()</span></span> removed call to org/rapidpm/ddi/scopes/InjectionScopeManager::registerClassForScope &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5413,7 +5413,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_203'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>deRegisterClassForScope<br/><b>Killed by : </b>junit.org.rapidpm.ddi.scopes.v001.Scopes001Test.test001()</span></span> removed call to org/rapidpm/ddi/scopes/InjectionScopeManager::deRegisterClassForScope &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>deRegisterClassForScope<br/><b>Killed by : </b>junit.com.svenruppert.ddi.scopes.v001.Scopes001Test.test001()</span></span> removed call to org/rapidpm/ddi/scopes/InjectionScopeManager::deRegisterClassForScope &rarr; KILLED</p>
 </td>
 </tr>
 <tr>
@@ -5513,7 +5513,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_241'/> 
 
-<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lambda$injectIntoField$0<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE</p> 
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lambda$injectIntoField$0<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE</p>
 </td>
 </tr>
 <tr>
@@ -5583,7 +5583,7 @@
 
 <a name='grouporg.pitest.mutationtest.report.html.SourceFile@74ebd159_272'/> 
 
-<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lambda$invokeMethodWithAnnotation$1<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/LoggingService::warning &rarr; NO_COVERAGE</p> 
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lambda$invokeMethodWithAnnotation$1<br/><b>Killed by : </b>none</span></span> removed call to org/rapidpm/dependencies/core/logger/Logger::warning &rarr; NO_COVERAGE</p>
 </td>
 </tr>
 <tr>
@@ -5704,7 +5704,30 @@
 
 <h2>Tests examined</h2>
 <ul>
-<li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test006() (409 ms)</li><li>junit.org.rapidpm.ddi.base.DI002Test.testInjection001() (245 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v004.ProducerResolver004Test.test001() (176 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v003.ProducerResolver003Test.test001() (172 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v002.ClassResolver002Test.testProducer001() (188 ms)</li><li>junit.org.rapidpm.ddi.scopes.v005.Scope005Test.test001() (1 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v006.ProducerResolver006Test.test001() (224 ms)</li><li>junit.org.rapidpm.ddi.base.DI009Test.test001() (291 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.ReflectionModel001Test.test002() (108 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v005.ClassResolver005Test.test002() (192 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v005.ProducerResolver005Test.test001() (186 ms)</li><li>junit.org.rapidpm.ddi.scopes.v004.Scopes004Test.test001() (168 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test002() (397 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test002_b() (183 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test004() (761 ms)</li><li>junit.org.rapidpm.ddi.scopes.v004.Scopes004Test.test003() (231 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v002.InstanceCreator002Test.test001() (248 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.testInjection001() (154 ms)</li><li>junit.org.rapidpm.ddi.scopes.v003.Scopes003Test.test001() (169 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v013.Classresolver013Test.test001() (242 ms)</li><li>junit.org.rapidpm.ddi.base.DI006Test.test001() (253 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v001.ProducerResolver001Test.test001() (174 ms)</li><li>junit.org.rapidpm.ddi.named.Named001Test.testInjection001() (186 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v017.Classresolver017Test.test002() (367 ms)</li><li>junit.org.rapidpm.ddi.producer.v004.Producer004Test.test001() (173 ms)</li><li>junit.org.rapidpm.ddi.producerresolver.v002.ProducerResolver002Test.test001() (155 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModel004Test.test002_b() (382 ms)</li><li>junit.org.rapidpm.ddi.producer.v001.Producer001Test.testProducer001() (598 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v014.Classresolver014Test.test001() (484 ms)</li><li>junit.org.rapidpm.ddi.scopes.v002.Scopes002Test.test001() (167 ms)</li><li>junit.org.rapidpm.ddi.producer.v006.Producer006Test.test001() (156 ms)</li><li>junit.org.rapidpm.ddi.base.DI007Test.test001() (380 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v009.ClassResolver009Test.testProxy001() (267 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v018.ClassResolver018Test.test001() (596 ms)</li><li>junit.org.rapidpm.ddi.base.DI010Test.test001() (564 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v003.InstanceCreator003Test.test001() (179 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test003_b() (202 ms)</li><li>junit.org.rapidpm.ddi.scopes.v001.Scopes001Test.test001() (230 ms)</li><li>junit.org.rapidpm.ddi.producer.v002.Producer002Test.testProducer001() (460 ms)</li><li>junit.org.rapidpm.ddi.scopes.v001.Scopes001Test.test003() (194 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v003.ClassResolver003Test.testProducer001() (191 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v015.Classresolver015Test.test001() (366 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v010.ClassResolver010Test.test001() (963 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModel004Test.test001_b() (158 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.ReflectionModel001Test.test001() (189 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v005.ClassResolver005Test.test001() (239 ms)</li><li>junit.org.rapidpm.ddi.producer.v003.Producer003Test.testProducer001() (186 ms)</li><li>junit.org.rapidpm.ddi.base.DI005Test.test001() (177 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v007.ClassResolver007Test.testProxy001() (210 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v016.Classresolver016Test.test001() (607 ms)</li><li>junit.org.rapidpm.ddi.producer.v008.Producer008Test.test001() (187 ms)</li><li>junit.org.rapidpm.ddi.base.DI003Test.testInjection001() (217 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v011.ClassResolver011Test.test001() (304 ms)</li><li>junit.org.rapidpm.ddi.base.DI001Test.testInjection001() (929 ms)</li><li>junit.org.rapidpm.ddi.scopes.v004.Scopes004Test.test004() (178 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test002_a() (204 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test003() (362 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v001.ClassResolver001Test.testProducer001() (208 ms)</li><li>junit.org.rapidpm.ddi.scopes.v004.Scopes004Test.test002() (179 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test002.BadClassResolverTest.test001() (216 ms)</li><li>junit.org.rapidpm.ddi.bootstrap.test001.BootstrapTest.test005() (180 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v004.InstanceCreator004Test.test001() (182 ms)</li><li>junit.org.rapidpm.ddi.named.Named002Test.testInjection001() (204 ms)</li><li>junit.org.rapidpm.ddi.producer.v005.Producer005Test.test001() (154 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test001() (259 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v008.ClassResolver008Test.testProxy001() (189 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v006.ClassResolver006Test.testProducer001() (187 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v017.Classresolver017Test.test001() (669 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v012.ClassResolver012Test.test001() (195 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModel004Test.test002_a() (250 ms)</li><li>junit.org.rapidpm.ddi.scopes.v002.Scopes002Test.test002() (153 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v009.ClassResolver009Test.testProxy002() (312 ms)</li><li>junit.org.rapidpm.ddi.named.Named003Test.testInjection001() (313 ms)</li><li>junit.org.rapidpm.ddi.scopes.v006.Scope006Test.test001() (174 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v004.ClassResolver004Test.testProducer001() (204 ms)</li><li>junit.org.rapidpm.ddi.base.DI004Test.testInjection001() (192 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v001.InstanceCreator001Test.test001() (334 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v003.ReflectionModel003Test.test001() (114 ms)</li><li>junit.org.rapidpm.ddi.scopes.v001.Scopes001Test.test002() (186 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v007.ReflectionModel007Test.test001() (161 ms)</li><li>junit.org.rapidpm.ddi.producer.v007.Producer007Test.test001() (172 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModel004Test.test001_a() (182 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test003_a() (183 ms)</li>
+<li>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test006() (409 ms)</li><li>junit.org.rapidpm.ddi.base.DI002Test.testInjection001() (245 ms)</li><li>junit.com.svenruppert.ddi.producerresolver.v004.ProducerResolver004Test.test001()
+    (176 ms)</li><li>junit.com.svenruppert.ddi.producerresolver.v003.ProducerResolver003Test.test001() (172 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v002.ClassResolver002Test.testProducer001() (188 ms)</li><li>junit.com.svenruppert.ddi.scopes.v005.Scope005Test.test001()
+    (1 ms)</li><li>junit.com.svenruppert.ddi.producerresolver.v006.ProducerResolver006Test.test001() (224 ms)</li><li>junit.org.rapidpm.ddi.base.DI009Test.test001() (291 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.ReflectionModel001Test.test002() (108 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v005.ClassResolver005Test.test002() (192 ms)</li><li>junit.com.svenruppert.ddi.producerresolver.v005.ProducerResolver005Test.test001()
+    (186 ms)</li><li>junit.com.svenruppert.ddi.scopes.v004.Scopes004Test.test001() (168 ms)</li><li>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test002()
+    (397 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test002_b() (183 ms)</li><li>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test004()
+    (761 ms)</li><li>junit.com.svenruppert.ddi.scopes.v004.Scopes004Test.test003() (231 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v002.InstanceCreator002Test.test001() (248 ms)</li><li>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.testInjection001()
+    (154 ms)</li><li>junit.com.svenruppert.ddi.scopes.v003.Scopes003Test.test001() (169 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v013.Classresolver013Test.test001() (242 ms)</li><li>junit.org.rapidpm.ddi.base.DI006Test.test001() (253 ms)</li><li>junit.com.svenruppert.ddi.producerresolver.v001.ProducerResolver001Test.test001()
+    (174 ms)</li><li>junit.org.rapidpm.ddi.named.Named001Test.testInjection001() (186 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v017.Classresolver017Test.test002() (367 ms)</li><li>junit.com.svenruppert.ddi.producer.v004.Producer004Test.test001()
+    (173 ms)</li><li>junit.com.svenruppert.ddi.producerresolver.v002.ProducerResolver002Test.test001() (155 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModel004Test.test002_b() (382 ms)</li><li>junit.com.svenruppert.ddi.producer.v001.Producer001Test.testProducer001()
+    (598 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v014.Classresolver014Test.test001() (484 ms)</li><li>junit.com.svenruppert.ddi.scopes.v002.Scopes002Test.test001()
+    (167 ms)</li><li>junit.com.svenruppert.ddi.producer.v006.Producer006Test.test001() (156 ms)</li><li>junit.org.rapidpm.ddi.base.DI007Test.test001() (380 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v009.ClassResolver009Test.testProxy001() (267 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v018.ClassResolver018Test.test001() (596 ms)</li><li>junit.org.rapidpm.ddi.base.DI010Test.test001() (564 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v003.InstanceCreator003Test.test001() (179 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test003_b() (202 ms)</li><li>junit.com.svenruppert.ddi.scopes.v001.Scopes001Test.test001()
+    (230 ms)</li><li>junit.com.svenruppert.ddi.producer.v002.Producer002Test.testProducer001() (460 ms)</li><li>junit.com.svenruppert.ddi.scopes.v001.Scopes001Test.test003()
+    (194 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v003.ClassResolver003Test.testProducer001() (191 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v015.Classresolver015Test.test001() (366 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v010.ClassResolver010Test.test001() (963 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModel004Test.test001_b() (158 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.ReflectionModel001Test.test001() (189 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v005.ClassResolver005Test.test001() (239 ms)</li><li>junit.com.svenruppert.ddi.producer.v003.Producer003Test.testProducer001()
+    (186 ms)</li><li>junit.org.rapidpm.ddi.base.DI005Test.test001() (177 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v007.ClassResolver007Test.testProxy001() (210 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v016.Classresolver016Test.test001() (607 ms)</li><li>junit.com.svenruppert.ddi.producer.v008.Producer008Test.test001()
+    (187 ms)</li><li>junit.org.rapidpm.ddi.base.DI003Test.testInjection001() (217 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v011.ClassResolver011Test.test001() (304 ms)</li><li>junit.org.rapidpm.ddi.base.DI001Test.testInjection001() (929 ms)</li><li>junit.com.svenruppert.ddi.scopes.v004.Scopes004Test.test004()
+    (178 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test002_a() (204 ms)</li><li>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test003()
+    (362 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v001.ClassResolver001Test.testProducer001() (208 ms)</li><li>junit.com.svenruppert.ddi.scopes.v004.Scopes004Test.test002()
+    (179 ms)</li><li>junit.com.svenruppert.ddi.bootstrap.test002.BadClassResolverTest.test001() (216 ms)</li><li>junit.com.svenruppert.ddi.bootstrap.test001.BootstrapTest.test005()
+    (180 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v004.InstanceCreator004Test.test001() (182 ms)</li><li>junit.org.rapidpm.ddi.named.Named002Test.testInjection001() (204 ms)</li><li>junit.com.svenruppert.ddi.producer.v005.Producer005Test.test001()
+    (154 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test001() (259 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v008.ClassResolver008Test.testProxy001() (189 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v006.ClassResolver006Test.testProducer001() (187 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v017.Classresolver017Test.test001() (669 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v012.ClassResolver012Test.test001() (195 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModel004Test.test002_a() (250 ms)</li><li>junit.com.svenruppert.ddi.scopes.v002.Scopes002Test.test002()
+    (153 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v009.ClassResolver009Test.testProxy002() (312 ms)</li><li>junit.org.rapidpm.ddi.named.Named003Test.testInjection001() (313 ms)</li><li>junit.com.svenruppert.ddi.scopes.v006.Scope006Test.test001()
+    (174 ms)</li><li>junit.org.rapidpm.ddi.classresolver.v004.ClassResolver004Test.testProducer001() (204 ms)</li><li>junit.org.rapidpm.ddi.base.DI004Test.testInjection001() (192 ms)</li><li>junit.org.rapidpm.ddi.instancecreator.v001.InstanceCreator001Test.test001() (334 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v003.ReflectionModel003Test.test001() (114 ms)</li><li>junit.com.svenruppert.ddi.scopes.v001.Scopes001Test.test002()
+    (186 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v007.ReflectionModel007Test.test001() (161 ms)</li><li>junit.com.svenruppert.ddi.producer.v007.Producer007Test.test001()
+    (172 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v004.ReflectionModel004Test.test001_a() (182 ms)</li><li>junit.org.rapidpm.ddi.reflectionmodel.v002.ReflectionModel002Test.test003_a() (183 ms)</li>
 </ul>
 
 <br/>
