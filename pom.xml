@@ -83,7 +83,7 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <jacoco.java.option></jacoco.java.option>
+    <jacoco.java.option/>
   </properties>
 
 
@@ -154,7 +154,7 @@
     <dependency>
       <groupId>com.svenruppert</groupId>
       <artifactId>functional-reactive</artifactId>
-      <version>03.00.00</version>
+      <version>06.00.06</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
